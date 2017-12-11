@@ -2,9 +2,10 @@ import React from 'react';
 
 class Snippet extends React.Component {
   render () {
+    const snippet = this.props.details;
     return (
       <li className="sp-snippet">
-        Snippet
+        {snippet.id}
       </li>
     )
   }

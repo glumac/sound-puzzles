@@ -4,15 +4,16 @@ import { randomFromArray } from '../helpers.js';
 
 class Song extends React.Component {
   render(){ 
+    const details = this.props.details;
     return (
       <div className="sp-song">
         { /* individual challenge goes here */ }
-        <h1>{this.props.songTitle}</h1>
+        <h1>{details.title}</h1>
         <ul className="sp-snippets">
-          <Snippet />
-          <Snippet />
-          <Snippet />
-          <Snippet />
+
+        {
+          details.snippets.map((snippet, index) => <Snippet key={snippet.id} details={details.snippets[index]} />)
+        }
         </ul>
       </div>
     )

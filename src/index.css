@@ -24,17 +24,16 @@ a:visited {
   text-align: center;
 }
 
-ul { 
+ul {
   list-style: none;
 }
 
-.sp-song{
+.sp-song {
   margin-bottom: 20px;
   background: #0B1424;
   padding: 40px;
   color: #fff;
   padding: 40px;
-
 }
 
 .sp-snippets {
@@ -42,14 +41,13 @@ ul {
   justify-content: space-between;
   align-items: baseline;
 }
+
 .sp-snippet {
   border-radius: 8px;
   padding: 20px;
   color: #3A69BD;
   color: #fff;
 }
-
-
 
 .sp-snippet {
   background: #ff830e;

@@ -3,9 +3,33 @@ import logo from './logo.svg';
 import './App.css';
 import Song from './components/Song';
 import Header from './components/Header';
+import songsData from './songs-data';
 
 class App extends Component {
+  // constructor() {
+  //   super();
+
+  //   this.addFish = this.addFish.bind(this);
+  //   this.loadSamples = this.loadSamples.bind(this);
+
+  //   // getinitialState
+  //   this.state = {
+  //     fishes: {},
+  //     order: {}
+  //   };
+  // }
+
+  constructor() {
+    super();
+
+    this.state = {
+      songsData: songsData
+    }
+  }
+
   render() {
+    console.log(this.state.songs);
+
     return (
       <div className="App">
         { /* 
@@ -19,10 +43,9 @@ class App extends Component {
 
         */ }
 
-        <Header />
-
-        <Song songId={1} songTitle="Take it Easy" />
-
+        {
+          songsData.songs.map((song, index) => <Song key={song.id} details={this.state.songsData.songs[index]}/>)
+        }
       </div>
     );
   }
