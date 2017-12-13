@@ -37,9 +37,11 @@ ul {
 }
 
 .sp-snippets {
+  padding: 0;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  background: white;
 }
 
 .sp-snippet {
@@ -51,6 +53,10 @@ ul {
 
 .sp-snippet {
   background: #ff830e;
+}
+
+.sp-snippet.playing {
+  background: #ff3046;
 }
 
 .header-link--red {
