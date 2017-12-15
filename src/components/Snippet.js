@@ -5,7 +5,7 @@ class Snippet extends React.Component {
     const { details, isPlaying } = this.props;
 
     return (
-      <li className={`sp-snippet ${isPlaying ? 'playing' : 'not-playing'}`} onClick={() => this.props.playSnippet(details.id) }>
+      <li className={`sp-snippet ${isPlaying ? 'playing' : 'not-playing'}`} onClick={() => this.props.playSnippet(details) }>
         {details.id}
       </li>
     )

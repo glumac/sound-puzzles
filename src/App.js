@@ -6,19 +6,6 @@ import Header from './components/Header';
 import songsData from './songs-data';
 
 class App extends Component {
-  // constructor() {
-  //   super();
-
-  //   this.addFish = this.addFish.bind(this);
-  //   this.loadSamples = this.loadSamples.bind(this);
-
-  //   // getinitialState
-  //   this.state = {
-  //     fishes: {},
-  //     order: {}
-  //   };
-  // }
-
   constructor() {
     super();
 

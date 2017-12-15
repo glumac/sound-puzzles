@@ -1,3 +1,41 @@
+// module.exports = {
+//   songs: [
+//     {
+//       id: "song-one",
+//       title: 'Song one',
+//       fileName: 'http://glum.ac/sounds/better-off.mp3',
+//       snippets: [
+//         {
+//           id: 0,
+//           startTime: 3,
+//           endTime: 6,
+//           length: 3
+//         },
+//         {
+//           id: 1,
+//           startTime: 9,
+//           endTime: 12,
+//           length: 3
+//         },
+//         {
+//           id: 2,
+//           startTime: 0,
+//           endTime: 3,
+//           length: 3
+//         },
+//         {
+//           id: 3,
+//           startTime: 6,
+//           endTime: 9,
+//           length: 3
+//         }
+//       ]
+//     }
+//   ]
+// }
+
+
+// In order
 module.exports = {
   songs: [
     {
@@ -8,25 +46,25 @@ module.exports = {
         {
           id: 0,
           startTime: 0,
-          endTime: 3000,
+          endTime: 3,
           length: 3
         },
         {
           id: 1,
-          startTime: 3000,
-          endTime: 6000,
+          startTime: 3,
+          endTime: 6,
           length: 3
         },
         {
           id: 2,
-          startTime: 6000,
-          endTime: 9000,
+          startTime: 6,
+          endTime: 9,
           length: 3
         },
         {
           id: 3,
-          startTime: 9000,
-          endTime: 12000,
+          startTime: 9,
+          endTime: 12,
           length: 3
         }
       ]

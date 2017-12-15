@@ -11,7 +11,8 @@ class Song extends React.Component {
 
     this.state = {
       currentlyPlayingSnippet: null,
-      playFromPosition: 0, 
+      currentlyPlayingAll: false,
+      position: 0, 
       playStatus: Sound.status.STOPPED
     };
   }
@@ -19,32 +20,106 @@ class Song extends React.Component {
   stopSnippet = (snippetId) => {
     console.log('stopping');
 
+    this.audioElem.pause();
+
     this.setState({
-      playStatus: Sound.status.STOPPED,
       currentlyPlayingSnippet: null,
     }, function () {
       console.log(this.state);
     });
   }
 
-  playSnippet = (snippetId) => {
-    if (this.state.currentlyPlayingSnippet == snippetId) {
-      return this.stopSnippet(snippetId);
-    }
+  playSnippet = (details) => {
+    if (this.state.currentlyPlayingSnippet == details.id) {
+      return this.stopSnippet(details.id);
+    } 
+
+    this.audioElem.currentTime = details.startTime;
+    this.audioElem.play()
+
+    console.log(details, 'audiooo',  this.audioElem.currentTime);
+
 
     this.setState({
-      currentlyPlayingSnippet: snippetId,
-      playFromPosition: this.props.details.snippets[snippetId].startTime,
-      playStatus: Sound.status.PLAYING
+      currentlyPlayingSnippet: details.id,
+      position: details.startTime
 
     }, function(){
-      console.log(this.state.playFromPosition);
+      // console.log(this.state.position);
     });
+
+
+    const listenForPause = (event) => {
+      const pauseTime = details.endTime;
+
+      console.log(event.target.currentTime, pauseTime);
+
+      if (event.target.currentTime >= pauseTime) {
+        console.log('pausing', pauseTime);
+
+        event.target.removeEventListener("timeupdate", listenForPause, true);
+
+        this.stopSnippet(details.id);
+      }
+    }
+
+    console.log('elem', this.audioElem);
+
+    this.audioElem.addEventListener("timeupdate", listenForPause, true);
   };
 
+
+  
+
   playAll = () => {
-    console.log('playing all', this.props);
+
+    this.setState({
+      currentlyPlayingAll: true
+    });
+
+
+    let snippetIndex = 0;
+    let currentSnippetEndTime = this.props.details.snippets[snippetIndex].endTime;
+    console.log('playing all',  this.props.details.snippets[snippetIndex]);
+
+    this.audioElem.currentTime = this.props.details.snippets[snippetIndex].startTime;
+    this.audioElem.play();
+
+    const listenForSnippetEnd = (event) => {
+      this.setState({
+        currentlyPlayingSnippet: this.props.details.snippets[snippetIndex].id
+      });
+   
+      if (event.target.currentTime >= currentSnippetEndTime) {
+        snippetIndex += 1;
+        console.log(event.target.currentTime, currentSnippetEndTime);
+ 
+        // Remove event listener if we are at the last snippet;
+        if (snippetIndex == this.props.details.snippets.length) {
+          event.target.removeEventListener("timeupdate", listenForSnippetEnd, true);
+
+          this.setState({
+            currentlyPlayingSnippet: null
+          });
+
+          return this.audioElem.pause();
+        }
+
+        this.audioElem.currentTime = this.props.details.snippets[snippetIndex].startTime;
+        currentSnippetEndTime = this.props.details.snippets[snippetIndex].endTime;
+ 
+      }
+    };
+
+    this.audioElem.addEventListener("timeupdate", listenForSnippetEnd, true);
   };
+
+
+  componentDidMount() {
+    // So can bind timeupdate event listener to audio
+    // this.audioElem = this.refs.sound;
+    this.audioElem = this.refs.audio;
+  }
 
   render(){ 
     const details = this.props.details;
@@ -55,21 +130,29 @@ class Song extends React.Component {
         <ul className="sp-snippets">
 
         {
-            details.snippets.map((snippet, index) => {<Snippet key={snippet.id} details={details.snippets[index]} playSnippet={this.playSnippet} isPlaying={this.state.currentlyPlayingSnippet == snippet.id}/>})
+          details.snippets.map((snippet, index) => <Snippet key={snippet.id} details={details.snippets[index]} playSnippet={this.playSnippet} isPlaying={this.state.currentlyPlayingSnippet == snippet.id}/>)
         }
         </ul>
 
-        <button onClick={this.playAll}>Play All</button>
+        <button onClick={this.playAll}>{this.state.currentlyPlayingAll ? 'Playing' :  'Play All'}</button>
 
-        <Sound
-          autoLoad = true
-          url={details.fileName}
-          playFromPosition={this.state.playFromPosition /* in milliseconds */}
-          playStatus={this.state.playStatus}
-        />
+        <audio 
+          ref='audio'
+          className="sound-one"
+          src={details.fileName}
+        >
+        </audio>
       </div>
     )
   }
 }
 
 export default Song;
+
+// <Sound
+//   ref='sound'
+//   autoLoad={true}
+//   url={details.fileName}
+//   position={this.state.position/* in milliseconds */}
+//   playStatus={this.state.playStatus}
+// />
