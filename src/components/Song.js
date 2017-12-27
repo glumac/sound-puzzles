@@ -33,9 +33,8 @@ class Song extends React.Component {
 
   componentDidMount() {
     this.snippetAction = null;
-    this.context = new (window.AudioContext || window.webkitAudioContext)();
 
-    this.buffer = new Buffer(this.context, this.props.details.fileName);
+    this.buffer = new Buffer(this.props.context, this.props.details.fileName);
     this.snippetActionSound = this.buffer.getBuffer();
   }
 
@@ -46,9 +45,9 @@ class Song extends React.Component {
 
     // this.audioElem.currentTime = details.startTime;
 
-    console.log('CONTEXTTTTTTTTT', this.context);
+    console.log('CONTEXTTTTTTTTT', this.props.context);
 
-    this.snippetAction = new SnippetAction(this.context, this.buffer.getSound(0));
+    this.snippetAction = new SnippetAction(this.props.context, this.buffer.getSound(0));
     this.snippetAction.play();
 
     this.setState({

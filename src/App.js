@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.songs);
+    const context = new (window.AudioContext || window.webkitAudioContext)();
 
     return (
       <div className="App">
@@ -31,7 +31,7 @@ class App extends Component {
         */ }
 
         {
-          songsData.songs.map((song, index) => <Song key={song.id} details={this.state.songsData.songs[index]}/>)
+          songsData.songs.map((song, index) => <Song key={song.id} details={this.state.songsData.songs[index]} context={context}/>)
         }
       </div>
     );
