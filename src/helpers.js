@@ -6,7 +6,6 @@ export function randomFromArray(arr) {
 
 // Probably helper function here for splitting up audio track into "snippets" with beginning and ending timestamps
 
-
 export class Buffer {
   constructor(context, urls) {
     this.context = context;
@@ -27,9 +26,7 @@ export class Buffer {
 
         if (index == thisBuffer.urls.length - 1) {
           // thisBuffer.loaded();
-
-
-          console.log(thisBuffer)
+          console.log('loaded', thisBuffer)
         }
       })
   }
@@ -45,7 +42,6 @@ export class Buffer {
   }
 }
 
-
 export class SnippetAction{
   constructor(context, buffer) {
     this.context = context;
@@ -54,7 +50,6 @@ export class SnippetAction{
 
   setup() {
     console.log(this.context);
-
 
     this.gainNode = this.context.createGain();
     this.source = this.context.createBufferSource();

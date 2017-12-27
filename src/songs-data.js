@@ -41,7 +41,7 @@ module.exports = {
     {
       id: "song-one",
       title: 'Song one',
-      fileName: ['https://glum.ac/sounds/better-off.m4a'],
+      fileName: ['https://glum.ac/sounds/better-off-guitar.m4a'],
       // fileName: './songs/better-off.wav',
       snippets: [
         {
