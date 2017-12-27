@@ -3,7 +3,7 @@
 //     {
 //       id: "song-one",
 //       title: 'Song one',
-//       fileName: 'http://glum.ac/sounds/better-off.mp3',
+//       fileName: 'http://glum.ac/sounds/better-off.m4a',
 //       snippets: [
 //         {
 //           id: 0,
@@ -41,7 +41,8 @@ module.exports = {
     {
       id: "song-one",
       title: 'Song one',
-      fileName: 'http://glum.ac/sounds/better-off.mp3',
+      fileName: ['https://glum.ac/sounds/better-off.m4a'],
+      // fileName: './songs/better-off.wav',
       snippets: [
         {
           id: 0,

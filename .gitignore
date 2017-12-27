@@ -22,3 +22,4 @@ yarn-error.log*
 
 # ignore mp3s
 *.mp3
+*.m4a
