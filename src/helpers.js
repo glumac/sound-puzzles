@@ -24,9 +24,9 @@ export class Buffer {
 
         // updateProgress(thisBuffer.urls.length);
 
-        if (index == thisBuffer.urls.length - 1) {
+        if (index === thisBuffer.urls.length - 1) {
           // thisBuffer.loaded();
-          console.log('loaded', thisBuffer)
+          // console.log('loaded', thisBuffer)
         }
       })
   }
@@ -49,7 +49,7 @@ export class SnippetAction{
   }
 
   setup() {
-    console.log(this.context);
+    // console.log(this.context);
 
     this.gainNode = this.context.createGain();
     this.source = this.context.createBufferSource();
@@ -60,17 +60,16 @@ export class SnippetAction{
     this.gainNode.gain.setValueAtTime(0.8, this.context.currentTime);
   }
 
-  play() {
+  play(offset) {
     this.setup();
-    this.source.start(this.context.currentTime);
+    this.source.start(this.context.currentTime, offset);
   }
 
   stop() {
-    console.log(ct);
-    var ct = this.context.currentTime + 0.5;
+    var ct = this.context.currentTime + 0.2;
     this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
     this.source.stop(ct);
-    console.log(this.context);
+    // console.log(this.context);
   }
 
 }

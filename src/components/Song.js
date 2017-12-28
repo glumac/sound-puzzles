@@ -27,7 +27,7 @@ class Song extends React.Component {
     this.setState({
       currentlyPlayingSnippet: null,
     }, function () {
-      console.log(this.state);
+      // console.log(this.state);
     }); 
   }
 
@@ -43,12 +43,20 @@ class Song extends React.Component {
       return this.stopSnippet(details.id);
     } 
 
+    // console.log('currentplay', this.state.currentlyPlayingSnippet);
+
+    if (typeof this.state.currentlyPlayingSnippet === 'number') {
+      console.log('currentplay', this.state.currentlyPlayingSnippet);
+      
+      this.stopSnippet(this.state.currentlyPlayingSnippet);
+    } 
+
     // this.audioElem.currentTime = details.startTime;
 
-    console.log('CONTEXTTTTTTTTT', this.props.context);
+    // console.log('CONTEXTTTTTTTTT', this.props.context);
 
     this.snippetAction = new SnippetAction(this.props.context, this.buffer.getSound(0));
-    this.snippetAction.play();
+    this.snippetAction.play(details.startTime);
 
     this.setState({
       currentlyPlayingSnippet: details.id,
