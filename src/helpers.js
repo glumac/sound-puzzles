@@ -60,9 +60,10 @@ export class SnippetAction{
     this.gainNode.gain.setValueAtTime(0.8, this.context.currentTime);
   }
 
-  play(offset) {
+  play(offset, length) {
+    const ct = this.context.currentTime + 0.2;
     this.setup();
-    this.source.start(this.context.currentTime, offset);
+    this.source.start(this.context.currentTime, offset, length);
   }
 
   stop() {

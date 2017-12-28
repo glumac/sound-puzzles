@@ -52,11 +52,10 @@ class Song extends React.Component {
     } 
 
     // this.audioElem.currentTime = details.startTime;
-
     // console.log('CONTEXTTTTTTTTT', this.props.context);
 
     this.snippetAction = new SnippetAction(this.props.context, this.buffer.getSound(0));
-    this.snippetAction.play(details.startTime);
+    this.snippetAction.play(details.startTime, details.length);
 
     this.setState({
       currentlyPlayingSnippet: details.id,
