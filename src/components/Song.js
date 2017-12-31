@@ -33,13 +33,27 @@ class Song extends React.Component {
 
   componentDidMount() {
     this.snippetAction = null;
+    this.nextNotetime = this.props.context.currentTime;
+    this.timerID = null;
 
-    this.buffer = new Buffer(this.props.context, this.props.details.fileName);
+    this.buffer = new Buffer(this.props.context, this.props.details.fileName, this.props.songLoaded, this.props.songKey);
     this.snippetActionSound = this.buffer.getBuffer();
   }
 
+  // componentWillUpdate() {
+  //   console.log('updatingggggg');    
+  // }
+
   playSnippet = (details) => {
+    let playing = false;
+    var stopPlayingTimeout;
+
+    console.log(window);
+
     if (this.state.currentlyPlayingSnippet === details.id) {
+      console.log('stoppingasfasdfaasdfasdfadsf');
+      window.clearTimeout(stopPlayingTimeout);
+      playing = false;
       return this.stopSnippet(details.id);
     } 
 
@@ -56,79 +70,155 @@ class Song extends React.Component {
 
     this.snippetAction = new SnippetAction(this.props.context, this.buffer.getSound(0));
     this.snippetAction.play(details.startTime, details.length);
+    
+    playing = true;
 
     this.setState({
       currentlyPlayingSnippet: details.id,
       position: details.startTime
+    })
+    // stopPlayingTimeout = window.setTimeout(function () { console.log("Hello"); }, details.length * 1000);
 
-    }, function(){
-      // console.log(this.state.position);
-    });
+    var stopPlayingTimeout = setTimeout(() => {
+      console.log('stopping music');
+      if (!playing || this.state.currentlyPlayingSnippet !== details.id) return;
+
+      this.setState({
+        currentlyPlayingSnippet: null,
+      })
+    }, details.length * 1000);
   };
+
+  // window.setInterval(scheduler, 50.0);
 
   playAll = () => {
     console.log(playTimeout);
-    
+    let nextNotetime = this.props.context.currentTime;
 
-    if (this.state.currentlyPlayingAll === true ) {
+    if (this.state.currentlyPlayingAll === true) {
       this.setState({
-        currentlyPlayingSnippet: null, 
+        currentlyPlayingSnippet: null,
         currentlyPlayingAll: false
       });
 
-      return this.audioElem.pause();
+      // return this.audioElem.pause();
 
-      clearTimeout(playTimeout);
+      // clearTimeout(playTimeout);
     }
 
     this.setState({
       currentlyPlayingAll: true
     });
 
-    let snippetIndex = 0;
-  
+    // this.props.details.snippets.map((snippet, index) => {
+    //   var snippetAction = new SnippetAction(this.props.context, this.buffer.getSound(0));
+      
+    //   snippetAction.play(snippet.startTime, snippet.length, index * 3);
+    // })
 
-    this.audioElem.currentTime = this.props.details.snippets[snippetIndex].startTime;
+    var nextSnippet = 0;
+    var snippetsLength = this.props.details.snippets.length;
+    var allSnippets = [];
+    
 
-    this.audioElem.play();
-
-    console.log('playing all',  this.props.details.snippets[snippetIndex]);
-
-    const prepNextSnippet = () => {
-      console.log(snippetIndex);
-
-      if (snippetIndex == this.props.details.snippets.length - 1) {
-        playTimeout = setTimeout(() => {
-          console.log('last');
-
-          this.audioElem.pause();
-
-          this.setState({
-            currentlyPlayingSnippet: null,
-            currentlyPlayingAll: false
-          });
-        }, this.props.details.snippets[snippetIndex].length * 1000);
-      } else {
-        snippetIndex += 1;
-
-        playTimeout = setTimeout(() => {
-          this.audioElem.currentTime = this.props.details.snippets[snippetIndex].startTime;
-
-
-          this.setState({
-            currentlyPlayingSnippet: snippetIndex
-          });
-
-          prepNextSnippet();
-        }, this.props.details.snippets[snippetIndex].length * 1000);
-      }
+    var clearPlayAll = () => {
+      this.setState({
+        currentlyPlayingSnippet: null,
+        currentlyPlayingAll: false
+      });
     }
 
-    this.setState({
-      currentlyPlayingSnippet: snippetIndex
-    })
 
-    prepNextSnippet();
+    var scheduler = () => {
+      var snippet = this.props.details.snippets[nextSnippet];
+
+      console.log('scheduler', nextSnippet. snippet);
+
+      if (nextSnippet >= snippetsLength) {
+        return clearPlayAll();
+      }
+      
+
+
+
+      while (nextNotetime < this.props.context.currentTime) {
+
+        this.setState({
+          currentlyPlayingSnippet: nextSnippet
+        })
+
+        nextNotetime += snippet.length;
+        // console.log(nextNotetime);
+
+        // var nextSnippet = typeof this.state.currentlyPlayingSnippet === 'number' ? this.state.currentlyPlayingSnippet + 1 : 0;
+
+        allSnippets[nextSnippet] = new SnippetAction(this.props.context, this.buffer.getSound(0));
+        allSnippets[nextSnippet].play(snippet.startTime, snippet.length);
+
+        if (nextSnippet > 0) allSnippets[nextSnippet - 1].stop();
+
+        nextSnippet += 1;
+
+        //   //   // console.log(nextNotetime, this.props.context.currentTime + 0.1);
+
+        //   nextNotetime += 0.5;
+        //   console.log(nextNotetime);
+        // })
+      } 
+
+      console.log(nextNotetime, this.props.context.currentTime + 0.1, snippet.length, snippet.id,  snippetsLength);
+
+      window.setTimeout(scheduler, 50.0);    
+    };
+    
+   
+    scheduler();    
+  
+
+
+
+  
+    // this.audioElem.currentTime = this.props.details.snippets[snippetIndex].startTime;
+
+    // this.audioElem.play();
+
+    // console.log('playing all', this.props.details.snippets[snippetIndex]);
+
+    // const prepNextSnippet = () => {
+    //   console.log(snippetIndex);
+
+    //   if (snippetIndex == this.props.details.snippets.length - 1) {
+    //     playTimeout = setTimeout(() => {
+    //       console.log('last');
+
+    //       this.audioElem.pause();
+
+    //       this.setState({
+    //         currentlyPlayingSnippet: null,
+    //         currentlyPlayingAll: false
+    //       });
+    //     }, this.props.details.snippets[snippetIndex].length * 1000);
+    //   } else {
+    //     snippetIndex += 1;
+
+    //     playTimeout = setTimeout(() => {
+    //       this.audioElem.currentTime = this.props.details.snippets[snippetIndex].startTime;
+
+
+    //       this.setState({
+    //         currentlyPlayingSnippet: snippetIndex
+    //       });
+
+    //       prepNextSnippet();
+    //     }, this.props.details.snippets[snippetIndex].length * 1000);
+    //   }
+    // }
+
+    // this.setState({
+    //   currentlyPlayingSnippet: snippetIndex
+    // })
+
+    // prepNextSnippet();
 
     // setTimeOut(goToNextSnippet, currentSnippetLength * 1000);
 
@@ -136,11 +226,11 @@ class Song extends React.Component {
     //   this.setState({
     //     currentlyPlayingSnippet: this.props.details.snippets[snippetIndex].id
     //   });
-   
+
     //   if (event.target.currentTime >= currentSnippetEndTime) {
     //     snippetIndex += 1;
     //     console.log(event.target.currentTime, currentSnippetEndTime);
- 
+
     //     // Remove event listener if we are at the last snippet;
     //     if (snippetIndex == this.props.details.snippets.length) {
     //       event.target.removeEventListener("timeupdate", listenForSnippetEnd, true);
@@ -154,12 +244,14 @@ class Song extends React.Component {
 
     //     this.audioElem.currentTime = this.props.details.snippets[snippetIndex].startTime;
     //     currentSnippetEndTime = this.props.details.snippets[snippetIndex].endTime;
- 
+
     //   }
     // };
 
     // this.audioElem.addEventListener("timeupdate", listenForSnippetEnd, true);
   };
+
+
 
   render(){ 
     const details = this.props.details;
@@ -176,23 +268,15 @@ class Song extends React.Component {
 
         <button onClick={this.playAll}>{this.state.currentlyPlayingAll ? 'Playing' :  'Play All'}</button>
 
-        <audio 
-          ref='audio'
-          className="sound-one"
-          src={details.fileName}
-        >
-        </audio>
+        <div className={`sp-song-loading-overlay ${details.loaded ? 'loaded' : 'loading'}`}>
+          <h2>Loading song...</h2>
+        </div>
+
+        
+
       </div>
     )
   }
 }
 
 export default Song;
-
-// <Sound
-//   ref='sound'
-//   autoLoad={true}
-//   url={details.fileName}
-//   position={this.state.position/* in milliseconds */}
-//   playStatus={this.state.playStatus}
-// />

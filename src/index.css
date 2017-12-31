@@ -29,6 +29,7 @@ ul {
 }
 
 .sp-song {
+  position: relative;
   margin-bottom: 20px;
   background: #0B1424;
   padding: 40px;
@@ -49,6 +50,21 @@ ul {
   padding: 20px;
   color: #3A69BD;
   color: #fff;
+}
+
+.sp-song-loading-overlay {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: rgba(0,0,0,.8);
+}
+
+.sp-song-loading-overlay.loaded {
+  display: none;
+
 }
 
 .sp-snippet {

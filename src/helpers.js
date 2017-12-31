@@ -7,10 +7,12 @@ export function randomFromArray(arr) {
 // Probably helper function here for splitting up audio track into "snippets" with beginning and ending timestamps
 
 export class Buffer {
-  constructor(context, urls) {
+  constructor(context, urls, songLoaded, songKey) {
     this.context = context;
     this.urls = urls;
     this.buffer = [];
+    this.songLoaded = songLoaded;
+    this.songKey = songKey;
   }
 
   loadSound(url, index) {
@@ -22,12 +24,17 @@ export class Buffer {
       .then(audioBuffer => {
         thisBuffer.buffer[index] = audioBuffer;
 
+
+        this.songLoaded(this.songKey);
+
         // updateProgress(thisBuffer.urls.length);
 
         if (index === thisBuffer.urls.length - 1) {
           // thisBuffer.loaded();
           // console.log('loaded', thisBuffer)
         }
+      }).catch(error => {
+        console.log(error);
       })
   }
 
@@ -57,17 +64,24 @@ export class SnippetAction{
     this.source.connect(this.gainNode);
     this.gainNode.connect(this.context.destination);
 
-    this.gainNode.gain.setValueAtTime(0.8, this.context.currentTime);
+    // this.gainNode.gain.setValueAtTime(0.8, this.context.currentTime);
+    this.gainNode.gain.setValueAtTime(0.001, this.context.currentTime);
   }
 
-  play(offset, length) {
-    const ct = this.context.currentTime + 0.2;
+  play(offset, length, startTime) {
+    const timeToStart = startTime ? startTime : 0;
+    const ct = this.context.currentTime + timeToStart + 0.1;
     this.setup();
-    this.source.start(this.context.currentTime, offset, length);
+    this.source.start(this.context.currentTime + timeToStart, offset);
+    this.gainNode.gain.exponentialRampToValueAtTime(0.8, ct);
+
+    this.source.stop(ct + length);
+
+    console.log(offset, length, startTime);
   }
 
-  stop() {
-    var ct = this.context.currentTime + 0.2;
+  stop(time) {
+    var ct = time + 0.1 || this.context.currentTime + 0.1;
     this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
     this.source.stop(ct);
     // console.log(this.context);

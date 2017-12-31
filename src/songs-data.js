@@ -2,8 +2,9 @@
 //   songs: [
 //     {
 //       id: "song-one",
+//       loaded: false,
 //       title: 'Song one',
-//       fileName: 'http://glum.ac/sounds/better-off.m4a',
+//       fileName: ['https://glum.ac/sounds/better-off-guitar.m4a'],
 //       snippets: [
 //         {
 //           id: 0,
@@ -40,6 +41,7 @@ module.exports = {
   songs: [
     {
       id: "song-one",
+      loaded: false,
       title: 'Song one',
       fileName: ['https://glum.ac/sounds/better-off-guitar.m4a'],
       // fileName: './songs/better-off.wav',

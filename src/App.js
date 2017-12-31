@@ -14,6 +14,14 @@ class App extends Component {
     }
   }
 
+  songLoaded = (key) => {
+    const songsData = { ...this.state.songsData };
+    songsData.songs[key].loaded = true;
+    this.setState({ songsData });
+
+    console.log('loadedddd!!');
+  };
+
   render() {
     const context = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -31,7 +39,7 @@ class App extends Component {
         */ }
 
         {
-          songsData.songs.map((song, index) => <Song key={song.id} details={this.state.songsData.songs[index]} context={context}/>)
+          songsData.songs.map((song, index) => <Song key={index} songKey={index} details={this.state.songsData.songs[index]} context={context} songLoaded={this.songLoaded}/>)
         }
       </div>
     );
