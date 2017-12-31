@@ -18,6 +18,8 @@ export class Buffer {
   loadSound(url, index) {
     let thisBuffer = this;
 
+    console.log(this.setCurrentlyPlayingSnippet);
+
     fetch(url)
       .then(response => response.arrayBuffer())
       .then(arrayBuffer => this.context.decodeAudioData(arrayBuffer))
@@ -50,9 +52,10 @@ export class Buffer {
 }
 
 export class SnippetAction{
-  constructor(context, buffer) {
+  constructor(context, buffer, setCurrentlyPlayingSnippet) {
     this.context = context;
     this.buffer = buffer;
+    this.setCurrentlyPlayingSnippet = setCurrentlyPlayingSnippet;
   }
 
   setup() {
@@ -68,20 +71,22 @@ export class SnippetAction{
     this.gainNode.gain.setValueAtTime(0.001, this.context.currentTime);
   }
 
-  play(offset, length, startTime) {
+  play(offset, length, startTime, id) {
     const timeToStart = startTime ? startTime : 0;
-    const ct = this.context.currentTime + timeToStart + 0.1;
+    const ct = this.context.currentTime + timeToStart + 0.025;
     this.setup();
     this.source.start(this.context.currentTime + timeToStart, offset);
     this.gainNode.gain.exponentialRampToValueAtTime(0.8, ct);
 
     this.source.stop(ct + length);
 
+    this.setCurrentlyPlayingSnippet(id);
+
     console.log(offset, length, startTime);
   }
 
   stop(time) {
-    var ct = time + 0.1 || this.context.currentTime + 0.1;
+    var ct = time + 0.025 || this.context.currentTime + 0.025;
     this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
     this.source.stop(ct);
     // console.log(this.context);
