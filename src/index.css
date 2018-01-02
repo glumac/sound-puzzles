@@ -8,6 +8,10 @@ body {
   font-family: sans-serif;
   background: #3A69BD;
   min-height: 100%;
+
+}
+
+#root {
   display: flex;
   justify-content: center;
 }
