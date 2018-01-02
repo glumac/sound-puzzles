@@ -80,7 +80,6 @@ class Song extends React.Component {
     
     playing = true;
 
-
     // stopPlayingTimeout = window.setTimeout(function () { console.log("Hello"); }, details.length * 1000);
 
     var stopPlayingTimeout = setTimeout(() => {
@@ -95,84 +94,79 @@ class Song extends React.Component {
 
   // window.setInterval(scheduler, 50.0);
 
-  playAll = () => {
-    console.log(playTimeout);
-    let nextNotetime = this.props.context.currentTime;
-
-    if (this.state.currentlyPlayingAll === true) {
-      this.setState({
-        currentlyPlayingSnippet: null,
-        currentlyPlayingAll: false
-      });
-
-      
-      // return this.audioElem.pause();
-
-      // clearTimeout(playTimeout);
-    }
-
+  clearPlayAll = () => {
     this.setState({
-      currentlyPlayingAll: true
+      currentlyPlayingSnippet: null,
+      currentlyPlayingAll: false
     });
+  }
 
-    // this.props.details.snippets.map((snippet, index) => {
-    //   var snippetAction = new SnippetAction(this.props.context, this.buffer.getSound(0));
-      
-    //   snippetAction.play(snippet.startTime, snippet.length, index * 3);
-    // })
 
-    var nextSnippet = 0;
-    var snippetsLength = this.props.details.snippets.length;
-    var allSnippets = [];
-    
+  playAll = () => {
+    this.setState({
+      currentlyPlayingAll: !this.state.currentlyPlayingAll
+    }, () => {
+      console.log(playTimeout);
 
-    var clearPlayAll = () => {
-      this.setState({
-        currentlyPlayingSnippet: null,
-        currentlyPlayingAll: false
-      });
-    }
+      let nextNotetime = this.props.context.currentTime;
 
-    var scheduler = () => {
-      var snippet = this.props.details.snippets[nextSnippet];
+      if ( !this.state.currentlyPlayingAll ) {
+        return;
 
-      // console.log('scheduler', nextSnippet. snippet);
+        // return this.audioElem.pause();
 
-      if (nextSnippet >= snippetsLength) {
-        clearPlayAll();
-
-        return false;
+        // clearTimeout(playTimeout);
       }
-      
-      while (nextNotetime < this.props.context.currentTime) {
-        nextNotetime += snippet.length + .005;
-        // console.log(nextNotetime);
 
-        // var nextSnippet = typeof this.state.currentlyPlayingSnippet === 'number' ? this.state.currentlyPlayingSnippet + 1 : 0;
+      // this.props.details.snippets.map((snippet, index) => {
+      //   var snippetAction = new SnippetAction(this.props.context, this.buffer.getSound(0));
 
-        allSnippets[nextSnippet] = new SnippetAction(this.props.context, this.buffer.getSound(0), this.setCurrentlyPlayingSnippet);
-        allSnippets[nextSnippet].play(snippet.startTime, snippet.length, null, snippet.id);
+      //   snippetAction.play(snippet.startTime, snippet.length, index * 3);
+      // })
 
-        if (nextSnippet > 0) allSnippets[nextSnippet - 1].stop();
+      var nextSnippet = 0;
+      var snippetsLength = this.props.details.snippets.length;
+      var allSnippets = [];
 
-        nextSnippet += 1;
+      var scheduler = () => {
+        var snippet = this.props.details.snippets[nextSnippet];
 
-        //   //   // console.log(nextNotetime, this.props.context.currentTime + 0.1);
+        // console.log('scheduler', nextSnippet. snippet);
 
-        //   nextNotetime += 0.5;
-        //   console.log(nextNotetime);
-        // })
-      } 
+        if (nextSnippet >= snippetsLength) {
+          this.clearPlayAll();
 
-      // console.log(nextNotetime, this.props.context.currentTime + 0.1, snippet.length, snippet.id,  snippetsLength);
+          return false;
+        }
 
-      window.setTimeout(scheduler, 100.0);    
-    };
-    
-    scheduler();    
+        while (nextNotetime < this.props.context.currentTime) {
+          nextNotetime += snippet.length + .005;
+          // console.log(nextNotetime);
+
+          // var nextSnippet = typeof this.state.currentlyPlayingSnippet === 'number' ? this.state.currentlyPlayingSnippet + 1 : 0;
+
+          allSnippets[nextSnippet] = new SnippetAction(this.props.context, this.buffer.getSound(0), this.setCurrentlyPlayingSnippet);
+          allSnippets[nextSnippet].play(snippet.startTime, snippet.length, null, snippet.id);
+
+          if (nextSnippet > 0) allSnippets[nextSnippet - 1].stop();
+
+          nextSnippet += 1;
+
+          //   //   // console.log(nextNotetime, this.props.context.currentTime + 0.1);
+
+          //   nextNotetime += 0.5;
+          //   console.log(nextNotetime);
+          // })
+        }
+
+        // console.log(nextNotetime, this.props.context.currentTime + 0.1, snippet.length, snippet.id,  snippetsLength);
+
+        window.setTimeout(scheduler, 100.0);
+      };
+
+      scheduler();    
+    });
   };
-
-
 
   render(){ 
     const details = this.props.details;
