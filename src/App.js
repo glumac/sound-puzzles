@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import Song from './components/Song';
-// import Header from './components/Header';
+import Header from './components/Header';
 import songsData from './songs-data';
 
 class App extends Component {
@@ -37,6 +37,7 @@ class App extends Component {
         </p>
 
         */ }
+        <Header />
 
         {
           songsData.songs.map((song, index) => <Song key={index} songKey={index} details={this.state.songsData.songs[index]} context={context} songLoaded={this.songLoaded}/>)

@@ -105,6 +105,7 @@ class Song extends React.Component {
         currentlyPlayingAll: false
       });
 
+      
       // return this.audioElem.pause();
 
       // clearTimeout(playTimeout);
@@ -135,7 +136,7 @@ class Song extends React.Component {
     var scheduler = () => {
       var snippet = this.props.details.snippets[nextSnippet];
 
-      console.log('scheduler', nextSnippet. snippet);
+      // console.log('scheduler', nextSnippet. snippet);
 
       if (nextSnippet >= snippetsLength) {
         clearPlayAll();
@@ -144,7 +145,7 @@ class Song extends React.Component {
       }
       
       while (nextNotetime < this.props.context.currentTime) {
-        nextNotetime += snippet.length;
+        nextNotetime += snippet.length + .005;
         // console.log(nextNotetime);
 
         // var nextSnippet = typeof this.state.currentlyPlayingSnippet === 'number' ? this.state.currentlyPlayingSnippet + 1 : 0;
@@ -163,9 +164,9 @@ class Song extends React.Component {
         // })
       } 
 
-      console.log(nextNotetime, this.props.context.currentTime + 0.1, snippet.length, snippet.id,  snippetsLength);
+      // console.log(nextNotetime, this.props.context.currentTime + 0.1, snippet.length, snippet.id,  snippetsLength);
 
-      window.setTimeout(scheduler, 50.0);    
+      window.setTimeout(scheduler, 100.0);    
     };
     
     scheduler();    
@@ -178,7 +179,7 @@ class Song extends React.Component {
     return (
       <div className="sp-song">
         { /* individual song challenge goes here */ }
-        <h1>{details.title}</h1>
+        <h1><a href={details.songUrl} target="blank">{details.title}</a> - <a href={details.artistUrl} target="blank">{details.artist}</a></h1>
         <ul className="sp-snippets">
 
         {
@@ -186,7 +187,7 @@ class Song extends React.Component {
         }
         </ul>
 
-        <button onClick={this.playAll}>{this.state.currentlyPlayingAll ? 'Playing' :  'Play All'}</button>
+        <button className={`sp-btn sp-play-all ${this.state.currentlyPlayingAll ? 'sp-play-all--playing' : ''}`} onClick={this.playAll}>{this.state.currentlyPlayingAll ? 'Playing' :  'Play All'}</button>
 
         <div className={`sp-song-loading-overlay ${details.loaded ? 'loaded' : 'loading'}`}>
           <h2>Loading song...</h2>
