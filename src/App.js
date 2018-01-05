@@ -4,6 +4,12 @@ import './App.css';
 import Song from './components/Song';
 import Header from './components/Header';
 import songsData from './songs-data';
+import update from 'immutability-helper';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
+
+const context = new (window.AudioContext || window.webkitAudioContext)();
 
 class App extends Component {
   constructor() {
@@ -22,9 +28,33 @@ class App extends Component {
     console.log('loadedddd!!');
   };
 
-  render() {
-    const context = new (window.AudioContext || window.webkitAudioContext)();
+  moveSnippet = (dragIndex, hoverIndex) => {
+    const songsData = { ...this.state.songsData };
 
+    // const { cards } = this.state.songsData.songs[0].snippets;
+
+    // console.log(cards);
+
+    const dragSnippet = songsData.songs[0].snippets[dragIndex];
+
+
+    songsData.songs[0].snippets.splice(dragIndex, 1);
+    songsData.songs[0].snippets.splice(hoverIndex, 0, dragSnippet);
+    
+    
+
+    this.setState({songsData});
+
+    // this.setState(
+    //   update(this.state, {
+    //     cards: {
+    //       $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
+    //     },
+    //   }),
+    // )
+  }
+
+  render() {
     return (
       <div className="App">
         { /* 
@@ -40,11 +70,11 @@ class App extends Component {
         <Header />
 
         {
-          songsData.songs.map((song, index) => <Song key={index} songKey={index} details={this.state.songsData.songs[index]} context={context} songLoaded={this.songLoaded}/>)
+          songsData.songs.map((song, index) => <Song key={index} songKey={index} details={this.state.songsData.songs[index]} context={context} songLoaded={this.songLoaded} moveSnippet={this.moveSnippet} />)
         }
       </div>
     );
   }
 }
 
-export default App;
+export default DragDropContext(HTML5Backend)(App);

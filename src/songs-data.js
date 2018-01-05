@@ -1,42 +1,42 @@
-module.exports = {
-  songs: [
-    {
-      id: "song-one",
-      loaded: false,
-      title: 'Guilty',
-      artist: 'Lady Wray',
-      artistUrl: 'https://open.spotify.com/artist/1plioVQ0mcgAO7uhvWkJJy',
-      songUrl: 'https://open.spotify.com/track/5ICdHl6m8XMMZbvAR3fylo',
-      fileName: ['https://glum.ac/sounds/guilty_final_chorus.m4a'],
-      snippets: [
-        {
-          id: 0,
-          startTime: 3,
-          endTime: 6,
-          length: 3
-        },
-        {
-          id: 1,
-          startTime: 9,
-          endTime: 12,
-          length: 3
-        },
-        {
-          id: 2,
-          startTime: 0,
-          endTime: 3,
-          length: 3
-        },
-        {
-          id: 3,
-          startTime: 6,
-          endTime: 9,
-          length: 3
-        }
-      ]
-    }
-  ]
-}
+// module.exports = {
+//   songs: [
+//     {
+//       id: "song-one",
+//       loaded: false,
+//       title: 'Guilty',
+//       artist: 'Lady Wray',
+//       artistUrl: 'https://open.spotify.com/artist/1plioVQ0mcgAO7uhvWkJJy',
+//       songUrl: 'https://open.spotify.com/track/5ICdHl6m8XMMZbvAR3fylo',
+//       fileName: ['https://glum.ac/sounds/guilty_final_chorus.m4a'],
+//       snippets: [
+//         {
+//           id: 0,
+//           startTime: 3,
+//           endTime: 6,
+//           length: 3
+//         },
+//         {
+//           id: 1,
+//           startTime: 9,
+//           endTime: 12,
+//           length: 3
+//         },
+//         {
+//           id: 2,
+//           startTime: 0,
+//           endTime: 3,
+//           length: 3
+//         },
+//         {
+//           id: 3,
+//           startTime: 6,
+//           endTime: 9,
+//           length: 3
+//         }
+//       ]
+//     }
+//   ]
+// }
 
 
 // In order
@@ -50,13 +50,12 @@ module.exports = {
       artistUrl: 'https://open.spotify.com/artist/1plioVQ0mcgAO7uhvWkJJy',
       songUrl: 'https://open.spotify.com/track/5ICdHl6m8XMMZbvAR3fylo',
       fileName: ['https://glum.ac/sounds/guilty_final_chorus.m4a'],
-      // fileName: './songs/better-off.wav',
       snippets: [
         {
           id: 0,
           startTime: 0,
-          endTime: 2.99999,
-          length: 2.99999
+          endTime: 3.1,
+          length: 3.1
         },
         {
           id: 1,

@@ -176,7 +176,14 @@ class Song extends React.Component {
         <ul className="sp-snippets">
 
         {
-          details.snippets.map((snippet, index) => <Snippet key={snippet.id} details={details.snippets[index]} playSnippet={this.playSnippet} isPlaying={this.state.currentlyPlayingSnippet == snippet.id} moveCard={this.props.moveCard}/>)
+          details.snippets.map((snippet, index) => <Snippet 
+            key={snippet.id}
+            index={index}
+            details={details.snippets[index]} 
+            playSnippet={this.playSnippet} 
+            isPlaying={this.state.currentlyPlayingSnippet == snippet.id} 
+            moveSnippet={this.props.moveSnippet}
+          />)
         }
         </ul>
 

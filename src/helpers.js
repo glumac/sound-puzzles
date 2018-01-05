@@ -72,7 +72,10 @@ export class SnippetAction{
   }
 
   play(offset, length, startTime, id) {
-    const timeToStart = startTime ? startTime - .005 : 0;
+    const timeToStart = startTime > 0 ? startTime - .005 : 0;
+
+    console.log(timeToStart);
+    
     const ct = this.context.currentTime + timeToStart + 0.03;
     this.setup();
     this.source.start(this.context.currentTime + timeToStart, offset);
