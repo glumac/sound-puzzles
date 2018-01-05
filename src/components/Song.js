@@ -6,7 +6,8 @@ import Snippet from './Snippet'
 import { Buffer } from '../helpers.js';
 import { SnippetAction } from '../helpers.js';
 
-let playTimeout = function () { };
+let playTimeout = '';
+let playAllSnippets = [];
 
 class Song extends React.Component {
   constructor() {
@@ -34,7 +35,6 @@ class Song extends React.Component {
   setCurrentlyPlayingSnippet = (snippetId) => {
     this.setState({
       currentlyPlayingSnippet: snippetId
-      // position: details.startTime
     })
   }
 
@@ -101,8 +101,8 @@ class Song extends React.Component {
     });
   }
 
-
   playAll = () => {
+    
     this.setState({
       currentlyPlayingAll: !this.state.currentlyPlayingAll
     }, () => {
@@ -111,22 +111,19 @@ class Song extends React.Component {
       let nextNotetime = this.props.context.currentTime;
 
       if ( !this.state.currentlyPlayingAll ) {
-        return;
+        playAllSnippets[this.state.currentlyPlayingSnippet].stop();
 
+        this.clearPlayAll();
+
+        console.log("CLEAR THE TIMEOUT");
+
+        return clearTimeout(playTimeout);
         // return this.audioElem.pause();
-
-        // clearTimeout(playTimeout);
       }
-
-      // this.props.details.snippets.map((snippet, index) => {
-      //   var snippetAction = new SnippetAction(this.props.context, this.buffer.getSound(0));
-
-      //   snippetAction.play(snippet.startTime, snippet.length, index * 3);
-      // })
 
       var nextSnippet = 0;
       var snippetsLength = this.props.details.snippets.length;
-      var allSnippets = [];
+      
 
       var scheduler = () => {
         var snippet = this.props.details.snippets[nextSnippet];
@@ -145,10 +142,10 @@ class Song extends React.Component {
 
           // var nextSnippet = typeof this.state.currentlyPlayingSnippet === 'number' ? this.state.currentlyPlayingSnippet + 1 : 0;
 
-          allSnippets[nextSnippet] = new SnippetAction(this.props.context, this.buffer.getSound(0), this.setCurrentlyPlayingSnippet);
-          allSnippets[nextSnippet].play(snippet.startTime, snippet.length, null, snippet.id);
+          playAllSnippets[nextSnippet] = new SnippetAction(this.props.context, this.buffer.getSound(0), this.setCurrentlyPlayingSnippet);
+          playAllSnippets[nextSnippet].play(snippet.startTime, snippet.length, null, snippet.id);
 
-          if (nextSnippet > 0) allSnippets[nextSnippet - 1].stop();
+          if (nextSnippet > 0) playAllSnippets[nextSnippet - 1].stop();
 
           nextSnippet += 1;
 
@@ -161,7 +158,9 @@ class Song extends React.Component {
 
         // console.log(nextNotetime, this.props.context.currentTime + 0.1, snippet.length, snippet.id,  snippetsLength);
 
-        window.setTimeout(scheduler, 100.0);
+        playTimeout = window.setTimeout(scheduler, 100.0);
+
+        console.log(playTimeout);
       };
 
       scheduler();    
@@ -177,7 +176,7 @@ class Song extends React.Component {
         <ul className="sp-snippets">
 
         {
-          details.snippets.map((snippet, index) => <Snippet key={snippet.id} details={details.snippets[index]} playSnippet={this.playSnippet} isPlaying={this.state.currentlyPlayingSnippet == snippet.id}/>)
+          details.snippets.map((snippet, index) => <Snippet key={snippet.id} details={details.snippets[index]} playSnippet={this.playSnippet} isPlaying={this.state.currentlyPlayingSnippet == snippet.id} moveCard={this.props.moveCard}/>)
         }
         </ul>
 
@@ -186,8 +185,6 @@ class Song extends React.Component {
         <div className={`sp-song-loading-overlay ${details.loaded ? 'loaded' : 'loading'}`}>
           <h2>Loading song...</h2>
         </div>
-
-        
 
       </div>
     )
