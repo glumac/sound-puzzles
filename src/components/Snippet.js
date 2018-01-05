@@ -81,12 +81,19 @@ class Snippet extends React.Component {
     // const { details, isPlaying } = this.props;
     const { details, isPlaying, isDragging, connectDragSource, connectDropTarget } = this.props;
 
-
+    const snippetStyle = {
+      // backgroundColor: isDragging ? 'red' : details.color
+      backgroundColor: details.color
+    }
     return connectDragSource(connectDropTarget(
-      <li className={`sp-snippet ${isPlaying ? 'playing' : 'not-playing'}`} onClick={() => this.props.playSnippet(details) }>
+      <li 
+        className={`sp-snippet ${isDragging ? "dragging" : ""} ${isPlaying ? "playing" : "not-playing"}`}
+        onClick={() => this.props.playSnippet(details)} 
+        style={snippetStyle}
+      >
         {details.id}
       </li>
-    ))
+    ));
   }
 }
 

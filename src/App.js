@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Song from './components/Song';
 import Header from './components/Header';
+import Footer from "./components/Footer";
 import songsData from './songs-data';
 import update from 'immutability-helper';
 import { DragDropContext } from 'react-dnd';
@@ -55,9 +56,8 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <div className="App">
-        { /* 
+    return <div className="App">
+        {/* 
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
@@ -66,14 +66,22 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
 
-        */ }
+        */}
         <Header />
 
-        {
-          songsData.songs.map((song, index) => <Song key={index} songKey={index} details={this.state.songsData.songs[index]} context={context} songLoaded={this.songLoaded} moveSnippet={this.moveSnippet} />)
-        }
-      </div>
-    );
+        {songsData.songs.map((song, index) => (
+          <Song
+            key={index}
+            songKey={index}
+            details={this.state.songsData.songs[index]}
+            context={context}
+            songLoaded={this.songLoaded}
+            moveSnippet={this.moveSnippet}
+          />
+        ))}
+
+        <Footer />
+      </div>;
   }
 }
 

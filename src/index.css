@@ -1,25 +1,29 @@
-html, body {
-  min-height: 100%;
-}
-
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   background: #3A69BD;
-  min-height: 100%;
-
 }
 
 #root {
   display: flex;
   justify-content: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+  border: 2px solid white;
 }
 
 .wrapper {
   width: 1200px;
   color: #fff;
   background: #0B1424;
+}
+
+.App {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 a,
@@ -47,14 +51,14 @@ ul {
 
 .sp-snippets {
   padding: 0;
-  display: flex;
-  justify-content: space-between;
+  display: inline-flex;
+  justify-content: center;
   align-items: baseline;
   background: #3A69BD;
 }
 
 .sp-snippet {
-  border-radius: 8px;
+  /* border-radius: 8px; */
   padding: 20px;
   color: #3A69BD;
   color: #fff;
@@ -78,10 +82,21 @@ ul {
 .sp-snippet {
   background-color: #ff830e;
   transition: all .25s ease-out;
+  cursor: pointer;
+  border: 3px solid rgba(255,255,255,0);
 }
+
+/* .sp-snippet:active {
+  cursor: move;
+} */
+
+/* .sp-snippet.dragging {
+  background-color: red;
+} */
 
 .sp-snippet.playing {
   background-color: #ff3046;
+  border: 3px solid #fff;
 }
 
 .header-link--dark-orange {
@@ -90,11 +105,11 @@ ul {
 
 .sp-btn {
   background-color: #ff0960;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   border: none;
   color: #fff;
   padding: 8px;
-  width: 100px;
+  width: 120px;
   font-size: 16px;
   font-weight: bold;
   margin-top: 20px;
@@ -116,4 +131,8 @@ ul {
 
 .header--2__link {
   margin-left: 30px;
+}
+
+.sp-footer {
+  padding: 30px 0;
 }

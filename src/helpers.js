@@ -4,6 +4,26 @@ export function randomFromArray(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+export function getRandomColor() {
+  const colors = ["#023fa5", "#7d87b9", "#bec1d4", "#d6bcc0", "#bb7784", "#8e063b", "#4a6fe3", "#8595e1", "#b5bbe3", "#e6afb9", "#e07b91", "#d33f6a", "#11c638", "#8dd593", "#c6dec7", "#ead3c6", "#f0b98d", "#ef9708", "#0fcfc0", "#9cded6", "#d5eae7", "#f3e1eb", "#f6c4e1", "#f79cd4"];
+
+  return randomFromArray(colors);
+}
+
+export function checkIfInOrder(arr) {
+  let inOrder = true;
+
+  for (let i = 0; i < arr.length - 1; i++) {
+      if (i != arr[i].id) {
+          inOrder = false;
+          break;
+      }
+  }
+
+  return inOrder;
+}
+
+
 // Probably helper function here for splitting up audio track into "snippets" with beginning and ending timestamps
 
 export class Buffer {
@@ -59,22 +79,18 @@ export class SnippetAction{
   }
 
   setup() {
-    // console.log(this.context);
-
     this.gainNode = this.context.createGain();
     this.source = this.context.createBufferSource();
     this.source.buffer = this.buffer;
     this.source.connect(this.gainNode);
     this.gainNode.connect(this.context.destination);
-
-    // this.gainNode.gain.setValueAtTime(0.8, this.context.currentTime);
     this.gainNode.gain.setValueAtTime(0.001, this.context.currentTime);
   }
 
   play(offset, length, startTime, id) {
     const timeToStart = startTime > 0 ? startTime - .005 : 0;
 
-    console.log(timeToStart);
+    // console.log(timeToStart);
     
     const ct = this.context.currentTime + timeToStart + 0.03;
     this.setup();
@@ -85,7 +101,7 @@ export class SnippetAction{
 
     this.setCurrentlyPlayingSnippet(id);
 
-    console.log(offset, length, startTime);
+    // console.log(offset, length, startTime);
   }
 
   stop(time) {
