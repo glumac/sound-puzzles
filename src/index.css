@@ -57,12 +57,34 @@ ul {
   padding: 40px;
 }
 
+.sp-song.sp-song--in-order {
+  background: #ff3046;
+  border: 5px solid white;
+}
+
+.sp-snippets-wrap {
+  position: relative;
+}
+
 .sp-snippets {
   padding: 0;
   display: inline-flex;
   justify-content: center;
   align-items: baseline;
   background: #3A69BD;
+}
+
+.sp-snippets-overlay {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .8);
 }
 
 .sp-snippet {
@@ -80,11 +102,6 @@ ul {
   text-align: center;
   left: 0; right: 0; top: 0; bottom: 0;
   background: rgba(0,0,0,.8);
-}
-
-.sp-song-loading-overlay.loaded {
-  display: none;
-
 }
 
 .sp-snippet {

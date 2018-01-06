@@ -10,10 +10,12 @@ class Song extends React.Component {
   constructor() {
     super();
 
+    // TO DO - move these to app state on song in array
     this.state = {
       currentlyPlayingSnippet: null,
       currentlyPlayingAll: false,
-      position: 0
+      position: 0,
+      isInCorrectOrder: false
     };
   }
 
@@ -38,7 +40,7 @@ class Song extends React.Component {
     this.nextNotetime = this.props.context.currentTime;
     this.timerID = null;
 
-    this.buffer = new Buffer(this.props.context, this.props.details.fileName, this.props.songLoaded, this.props.songKey);
+    this.buffer = new Buffer(this.props.context, this.props.details.fileName, this.props.songLoaded,this.props.songKey);
     this.snippetActionSound = this.buffer.getBuffer();
   }
 
@@ -97,14 +99,22 @@ class Song extends React.Component {
 
   // window.setInterval(scheduler, 50.0);
 
-  clearPlayAll = () => {
+  clearPlayAll = (orderCheck) => {
     console.log('clearingplayall', Date.now());
     
-
     this.setState({
       currentlyPlayingSnippet: null,
       currentlyPlayingAll: false
     });
+
+    if (!orderCheck) return;
+
+    if (checkIfInOrder(this.props.details.snippets)) {
+      console.log('ITS IN ORDER!!!');
+      this.setState({
+        isInCorrectOrder: true
+      });
+    }
   }
 
   playAll = () => {
@@ -154,7 +164,7 @@ class Song extends React.Component {
 
           console.log("scheduleing clearingplayall", Date.now());
 
-          return window.setTimeout(this.clearPlayAll, prevSnippet.length * 1000);
+          return playTimeout = window.setTimeout(() => {this.clearPlayAll(true)}, prevSnippet.length * 1000);
         }
 
         while (nextNotetime < this.props.context.currentTime) {
@@ -192,37 +202,41 @@ class Song extends React.Component {
 
   render(){ 
     const details = this.props.details;
-    return <div className="sp-song">
-        {/* individual song challenge goes here */}
-        <h1>
-          <a href={details.songUrl} target="blank">
-            {details.title}
-          </a> - <a href={details.artistUrl} target="blank">
-            {details.artist}
-          </a>
-        </h1>
-        <div className="sp-snippet-wrap">
-          <ul className="sp-snippets">
-            {details.snippets.map((snippet, index) => (
-              <Snippet
-                key={snippet.id}
-                index={index}
-                details={details.snippets[index]}
-                playSnippet={this.playSnippet}
-                isPlaying={this.state.currentlyPlayingSnippet == snippet.id}
-                moveSnippet={this.props.moveSnippet}
-              />
-            ))}
-          </ul>
-        </div>
-        <button className={`sp-btn sp-play-all ${this.state.currentlyPlayingAll ? "sp-play-all--playing" : ""}`} onClick={this.playAll}>
-          {this.state.currentlyPlayingAll ? "Playing All" : "Play All"}
-        </button>
+    return <div className={`sp-song ${this.state.isInCorrectOrder ? "sp-song--in-order" : ""}`}>
+      {/* individual song challenge goes here */}
+      <h1>
+        <a href={details.songUrl} target="blank">
+          {details.title}
+        </a> - <a href={details.artistUrl} target="blank">
+          {details.artist}
+        </a>
+      </h1>
+      <div className="sp-snippets-wrap">
+        <ul className="sp-snippets">
+          {details.snippets.map((snippet, index) => (
+            <Snippet
+              key={snippet.id}
+              index={index}
+              details={details.snippets[index]}
+              playSnippet={this.playSnippet}
+              isPlaying={this.state.currentlyPlayingSnippet == snippet.id}
+              moveSnippet={this.props.moveSnippet}
+            />
+          ))}
+        </ul>
+        {this.state.isInCorrectOrder && <div className="sp-snippets-overlay">
+            <h3>You got it!</h3>
+          </div>}
+      </div>
+      <button className={`sp-btn sp-play-all ${this.state.currentlyPlayingAll ? "sp-play-all--playing" : ""}`} onClick={this.playAll}>
+        {this.state.currentlyPlayingAll ? "Playing All" : "Play All"}
+      </button>
 
-        <div className={`sp-song-loading-overlay ${details.loaded ? "loaded" : "loading"}`}>
+      {!details.loaded && 
+        <div className="sp-song-loading-overlay">
           <h2>Loading song...</h2>
-        </div>
-      </div>;
+        </div>}
+    </div>
   }
 }
 

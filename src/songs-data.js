@@ -8,6 +8,7 @@ const songs = {
     {
       id: "song-one",
       loaded: false,
+      inCorrectOrder: false,
       title: 'Guilty',
       artist: 'Lady Wray',
       artistUrl: 'https://open.spotify.com/artist/1plioVQ0mcgAO7uhvWkJJy',
