@@ -80,6 +80,12 @@ class App extends Component {
               moveSnippet={this.moveSnippet}
             />
           ))}
+
+          <p className="sp-instructions">
+            Instructions: Click to play the sound snippets blocks.
+            Drag them into sequence, and "Play All" to see if you have the
+            order right!
+          </p>
         </div>
 
         <Footer />
