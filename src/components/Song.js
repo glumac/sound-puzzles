@@ -81,7 +81,7 @@ class Song extends React.Component {
     // console.log('CONTEXTTTTTTTTT', this.props.context);
 
     this.snippetAction = new SnippetAction(this.props.context, this.buffer.getSound(0), this.setCurrentlyPlayingSnippet);
-    this.snippetAction.play(details.startTime, details.length, null, details.id);
+    this.snippetAction.play(details.startTime, details.length, null, details.id, true);
     
     playing = true;
 
@@ -99,18 +99,18 @@ class Song extends React.Component {
 
   // window.setInterval(scheduler, 50.0);
 
-  clearPlayAll = (orderCheck) => {
-    console.log('clearingplayall', Date.now());
+  clearPlayAll = (orderCheck, snippetToStop) => {
     
     this.setState({
       currentlyPlayingSnippet: null,
       currentlyPlayingAll: false
     });
 
-    if (!orderCheck) return;
+    if (!orderCheck) return snippetToStop.stop();
 
     if (checkIfInOrder(this.props.details.snippets)) {
       console.log('ITS IN ORDER!!!');
+      // snippetToStop.stop();
       this.setState({
         isInCorrectOrder: true
       });
@@ -160,11 +160,13 @@ class Song extends React.Component {
         // console.log(playAllNextSnippet >= snippetsLength);
 
         if (playAllNextSnippet >= snippetsLength ) {
-          console.log("here", prevSnippet.length);
+          // console.log("here", prevSnippet.length);
 
-          console.log("scheduleing clearingplayall", Date.now());
+          // console.log("scheduleing clearingplayall", Date.now());
 
-          return playTimeout = window.setTimeout(() => {this.clearPlayAll(true)}, prevSnippet.length * 1000);
+          console.log(playAllSnippets, playAllNextSnippet - 1, playAllSnippets[playAllNextSnippet - 1]);
+
+          return playTimeout = window.setTimeout(() => {this.clearPlayAll(true, playAllSnippets[playAllNextSnippet - 1])}, prevSnippet.length * 1000);
         }
 
         while (nextNotetime < this.props.context.currentTime) {
@@ -174,7 +176,7 @@ class Song extends React.Component {
           // var playAllNextSnippet = typeof this.state.currentlyPlayingSnippet === 'number' ? this.state.currentlyPlayingSnippet + 1 : 0;f
 
           playAllSnippets[playAllNextSnippet] = new SnippetAction(this.props.context, this.buffer.getSound(0), this.setCurrentlyPlayingSnippet);
-          playAllSnippets[playAllNextSnippet].play(snippet.startTime, snippet.length, null, snippet.id);
+          playAllSnippets[playAllNextSnippet].play(snippet.startTime, snippet.length, null, snippet.id, false);
 
           // console.log(playAllSnippets, this.state.currentlyPlayingSnippet), playAllSnippets[this.state.currentlyPlayingSnippet];
 

@@ -91,7 +91,7 @@ class Snippet extends React.Component {
         onClick={() => this.props.playSnippet(details)} 
         style={snippetStyle}
       >
-        {details.id}
+        {/*details.id*/}
       </li>
     ));
   }

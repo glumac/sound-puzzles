@@ -84,7 +84,7 @@ export class SnippetAction{
     this.gainNode.gain.setValueAtTime(0.001, this.context.currentTime);
   }
 
-  play(offset, length, startTime, id) {
+  play(offset, length, startTime, id, stopSnippet) {
     const timeToStart = startTime > 0 ? startTime - .005 : 0;
 
     // console.log(timeToStart);
@@ -93,8 +93,8 @@ export class SnippetAction{
     this.setup();
     this.source.start(this.context.currentTime + timeToStart, offset);
     this.gainNode.gain.exponentialRampToValueAtTime(0.8, ct);
-
-    this.source.stop(ct + length);
+  
+    if (length && stopSnippet) this.source.stop(ct + length);
 
     this.setCurrentlyPlayingSnippet(id);
 
