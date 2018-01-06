@@ -1,15 +1,14 @@
 // To possibly get random songs
-
 export function randomFromArray(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
+export const colors = ["#023fa5", "#7d87b9", "#bec1d4", "#d6bcc0", "#bb7784", "#8e063b", "#4a6fe3", "#8595e1", "#b5bbe3", "#e6afb9", "#e07b91", "#d33f6a", "#11c638", "#8dd593", "#c6dec7", "#ead3c6", "#f0b98d", "#ef9708", "#0fcfc0", "#9cded6", "#d5eae7", "#f3e1eb", "#f6c4e1", "#f79cd4"];
 
 export function getRandomColor() {
   const colors = ["#023fa5", "#7d87b9", "#bec1d4", "#d6bcc0", "#bb7784", "#8e063b", "#4a6fe3", "#8595e1", "#b5bbe3", "#e6afb9", "#e07b91", "#d33f6a", "#11c638", "#8dd593", "#c6dec7", "#ead3c6", "#f0b98d", "#ef9708", "#0fcfc0", "#9cded6", "#d5eae7", "#f3e1eb", "#f6c4e1", "#f79cd4"];
 
   return randomFromArray(colors);
 }
-
 export function checkIfInOrder(arr) {
   let inOrder = true;
 
@@ -23,9 +22,7 @@ export function checkIfInOrder(arr) {
   return inOrder;
 }
 
-
 // Probably helper function here for splitting up audio track into "snippets" with beginning and ending timestamps
-
 export class Buffer {
   constructor(context, urls, songLoaded, songKey) {
     this.context = context;
@@ -97,15 +94,17 @@ export class SnippetAction{
     this.source.start(this.context.currentTime + timeToStart, offset);
     this.gainNode.gain.exponentialRampToValueAtTime(0.8, ct);
 
-    this.source.stop(ct + length );
+    this.source.stop(ct + length);
 
     this.setCurrentlyPlayingSnippet(id);
 
     // console.log(offset, length, startTime);
   }
 
-  stop(time) {
-    var ct = time + 0.03 || this.context.currentTime + 0.2;
+  stop(time, decay) {
+    console.log('decay', decay)
+
+    var ct = decay ? time + decay : this.context.currentTime + 0.2;
     this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
     this.source.stop(ct);
     // console.log(this.context);

@@ -17,10 +17,10 @@ class Song extends React.Component {
     };
   }
 
-  stopSnippet = (snippetId) => {
+  stopSnippet = () => {
     console.log('stopping');
 
-    this.snippetAction.stop();
+    this.snippetAction.stop(null, .2);
   
     this.setState({
       currentlyPlayingSnippet: null,
@@ -49,7 +49,17 @@ class Song extends React.Component {
     var stopPlayingTimeout;
 
     if (this.state.currentlyPlayingAll) {
-      this.playAll();
+        const snippetToStop = playAllSnippets[playAllNextSnippet - 1];
+
+        if (snippetToStop) snippetToStop.stop(null, .2);
+
+        this.clearPlayAll();
+
+        playAllNextSnippet = null;
+
+        console.log("CLEAR THE TIMEOUT");
+
+        return clearTimeout(playTimeout);
     } else if (this.state.currentlyPlayingSnippet === details.id) {
       console.log('stoppingasfasdfaasdfasdfadsf');
       window.clearTimeout(stopPlayingTimeout);
@@ -88,6 +98,9 @@ class Song extends React.Component {
   // window.setInterval(scheduler, 50.0);
 
   clearPlayAll = () => {
+    console.log('clearingplayall', Date.now());
+    
+
     this.setState({
       currentlyPlayingSnippet: null,
       currentlyPlayingAll: false
@@ -108,7 +121,7 @@ class Song extends React.Component {
 
         const snippetToStop = playAllSnippets[playAllNextSnippet - 1];
 
-        if (snippetToStop) snippetToStop.stop();
+        if (snippetToStop) snippetToStop.stop(); 
 
         this.clearPlayAll();
 
@@ -130,13 +143,18 @@ class Song extends React.Component {
 
       var scheduler = () => {
         var snippet = this.props.details.snippets[playAllNextSnippet];
+        var prevSnippet = this.props.details.snippets[playAllNextSnippet -1];
 
         // console.log('scheduler', playAllNextSnippet. snippet);
 
-        if (playAllNextSnippet >= snippetsLength) {
-          this.clearPlayAll();
+        // console.log(playAllNextSnippet >= snippetsLength);
 
-          return false;
+        if (playAllNextSnippet >= snippetsLength ) {
+          console.log("here", prevSnippet.length);
+
+          console.log("scheduleing clearingplayall", Date.now());
+
+          return window.setTimeout(this.clearPlayAll, prevSnippet.length * 1000);
         }
 
         while (nextNotetime < this.props.context.currentTime) {

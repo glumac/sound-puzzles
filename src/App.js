@@ -69,16 +69,18 @@ class App extends Component {
         */}
         <Header />
 
-        {songsData.songs.map((song, index) => (
-          <Song
-            key={index}
-            songKey={index}
-            details={this.state.songsData.songs[index]}
-            context={context}
-            songLoaded={this.songLoaded}
-            moveSnippet={this.moveSnippet}
-          />
-        ))}
+        <div className="sp-songs">
+          {songsData.songs.map((song, index) => (
+            <Song
+              key={index}
+              songKey={index}
+              details={this.state.songsData.songs[index]}
+              context={context}
+              songLoaded={this.songLoaded}
+              moveSnippet={this.moveSnippet}
+            />
+          ))}
+        </div>
 
         <Footer />
       </div>;

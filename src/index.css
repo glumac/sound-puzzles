@@ -10,7 +10,6 @@ body {
   justify-content: center;
   min-height: 100vh;
   box-sizing: border-box;
-  border: 2px solid white;
 }
 
 .wrapper {
@@ -26,6 +25,10 @@ body {
   flex-direction: column;
 }
 
+.sp-header {
+  padding-bottom: 30px;
+}
+
 a,
 a:hover,
 a:visited {
@@ -38,6 +41,11 @@ a:visited {
 
 ul {
   list-style: none;
+}
+
+.sp-songs {
+  flex-grow: 1;
+  flex-basis: 1;
 }
 
 .sp-song {
@@ -105,6 +113,7 @@ ul {
 
 .sp-btn {
   background-color: #ff0960;
+  transition: all .25s ease-out;
   /* border-radius: 8px; */
   border: none;
   color: #fff;

@@ -1,5 +1,7 @@
-import { getRandomColor } from "./helpers";
+import { colors, getRandomColor } from "./helpers";
 import shuffle from "lodash/shuffle";
+
+const randomOrderColors = shuffle(colors); 
 
 const songs = {
   songs: [
@@ -15,9 +17,9 @@ const songs = {
         {
           id: 0,
           startTime: 0,
-          endTime: 3.1,
-          length: 3.1,
-          color: getRandomColor()
+          endTime: 2.99999,
+          length: 2.99999,
+          color: randomOrderColors[0]
           
         },
         {
@@ -25,7 +27,7 @@ const songs = {
           startTime: 3,
           endTime: 5.99999,
           length: 2.99999,
-          color: getRandomColor()
+          color: randomOrderColors[1]
           
         },
         {
@@ -33,7 +35,7 @@ const songs = {
           startTime: 6,
           endTime: 8.99999,
           length: 2.99999,
-          color: getRandomColor()
+          color: randomOrderColors[2]
           
         },
         {
@@ -41,7 +43,7 @@ const songs = {
           startTime: 9,
           endTime: 11.99999,
           length: 2.99999,
-          color: getRandomColor()
+          color: randomOrderColors[3]
         }
       ])
     }

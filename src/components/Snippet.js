@@ -18,7 +18,7 @@ const snippetTarget = {
     const dragIndex = monitor.getItem().index;
     const hoverIndex = props.index;
 
-    console.log(dragIndex, hoverIndex, props.moveSnippet);
+    // console.log(dragIndex, hoverIndex, props.moveSnippet);
     
 
     // Don't replace items with themselves
