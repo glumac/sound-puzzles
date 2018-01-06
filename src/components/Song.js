@@ -114,6 +114,8 @@ class Song extends React.Component {
       this.setState({
         isInCorrectOrder: true
       });
+    } else {
+      snippetToStop.stop();
     }
   }
 
