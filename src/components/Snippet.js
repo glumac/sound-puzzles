@@ -42,12 +42,12 @@ const snippetTarget = {
     // When dragging downwards, only move when the cursor is below 50%
     // When dragging upwards, only move when the cursor is above 50%
 
-    // Dragging downwards
+    // Dragging left
     if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
       return;
     }
 
-    // Dragging upwards
+    // Dragging right
     if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
       return;
     }
@@ -83,7 +83,10 @@ class Snippet extends React.Component {
 
     const snippetStyle = {
       // backgroundColor: isDragging ? 'red' : details.color
-      backgroundColor: details.color
+      backgroundColor: details.color,
+      width: details.length * 50,
+      flexShrink: 0,
+      flexGrow: 0
     }
     return connectDragSource(connectDropTarget(
       <li 

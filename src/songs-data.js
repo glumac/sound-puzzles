@@ -1,7 +1,7 @@
-import { colors, getRandomColor } from "./helpers";
+import {getRandomColor, shuffleAssureNotInOriginalOrder, assignRandomColorsNoRepeats } from "./helpers";
 import shuffle from "lodash/shuffle";
 
-const randomOrderColors = shuffle(colors); 
+// const randomOrderColors = shuffle(colors); 
 
 const songs = {
   songs: [
@@ -9,47 +9,42 @@ const songs = {
       id: "song-one",
       loaded: false,
       inCorrectOrder: false,
-      title: 'Guilty',
-      artist: 'Lady Wray',
-      artistUrl: 'https://open.spotify.com/artist/1plioVQ0mcgAO7uhvWkJJy',
-      songUrl: 'https://open.spotify.com/track/5ICdHl6m8XMMZbvAR3fylo',
-      fileName: ['https://glum.ac/sounds/guilty_final_chorus.m4a'],
-      snippets: shuffle([
+      title: "Guilty",
+      difficulty: 'Easy',
+      artist: "Lady Wray",
+      artistUrl: "https://open.spotify.com/artist/1plioVQ0mcgAO7uhvWkJJy",
+      songUrl: "https://open.spotify.com/track/5ICdHl6m8XMMZbvAR3fylo",
+      fileName: ["https://glum.ac/sounds/guilty_final_chorus.m4a"],
+      snippets: assignRandomColorsNoRepeats([
         {
           id: 0,
           startTime: 0,
-          endTime: 2.99999,
-          length: 2.99999,
-          color: randomOrderColors[0]
-          
+          endTime: 1,
+          length: 1
         },
         {
           id: 1,
-          startTime: 3,
-          endTime: 5.99999,
-          length: 2.99999,
-          color: randomOrderColors[1]
-          
+          startTime: 1,
+          endTime: 2,
+          length: 1
         },
         {
           id: 2,
-          startTime: 6,
-          endTime: 8.99999,
-          length: 2.99999,
-          color: randomOrderColors[2]
-          
+          startTime: 2,
+          endTime: 3,
+          length: 1
         },
         {
           id: 3,
-          startTime: 9,
-          endTime: 11.99999,
-          length: 2.99999,
-          color: randomOrderColors[3]
+          startTime: 3,
+          endTime: 4,
+          length: 1
         }
       ])
     }
   ]
-}
+};
+
 
 
 // In order

@@ -26,7 +26,7 @@ class App extends Component {
     songsData.songs[key].loaded = true;
     this.setState({ songsData });
 
-    console.log('loadedddd!!');
+    // console.log('loadedddd!!');
   };
 
   moveSnippet = (dragIndex, hoverIndex) => {
@@ -38,12 +38,9 @@ class App extends Component {
 
     const dragSnippet = songsData.songs[0].snippets[dragIndex];
 
-
     songsData.songs[0].snippets.splice(dragIndex, 1);
     songsData.songs[0].snippets.splice(hoverIndex, 0, dragSnippet);
     
-    
-
     this.setState({songsData});
 
     // this.setState(

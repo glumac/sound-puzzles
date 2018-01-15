@@ -51,10 +51,10 @@ ul {
 .sp-song {
   position: relative;
   margin-bottom: 20px;
+  padding: 40px;
   background: #0B1424;
-  padding: 40px;
   color: #fff;
-  padding: 40px;
+
 }
 
 .sp-song.sp-song--in-order {
@@ -89,7 +89,8 @@ ul {
 
 .sp-snippet {
   /* border-radius: 8px; */
-  padding: 20px;
+  /* padding: 20px; */
+  height: 50px;
   color: #3A69BD;
   color: #fff;
 }
@@ -161,10 +162,18 @@ ul {
 
 .sp-instructions {
   padding-top: 15px;
+  margin: 0 auto;
   max-width: 400px;
   font-size: 14px;
 }
 
 .sp-footer {
   padding: 30px 0;
+}
+
+.sp-github-icon {
+  color: #fff;
+  width: 25px;
+  display: block;
+  margin: 20px auto 0;
 }
