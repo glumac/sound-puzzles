@@ -16,42 +16,10 @@ class App extends Component {
   constructor() {
     super();
 
-    this.state = {
-      songsData: songsData
-    }
+    // this.state = {
+    //   songsData: songsData
+    // }
   }
-
-  songLoaded = (key) => {
-    const songsData = { ...this.state.songsData };
-    songsData.songs[key].loaded = true;
-    this.setState({ songsData });
-
-    // console.log('loadedddd!!');
-  };
-
-  moveSnippet = (dragIndex, hoverIndex) => {
-    const songsData = { ...this.state.songsData };
-
-    // const { cards } = this.state.songsData.songs[0].snippets;
-
-    // console.log(cards);
-
-    const dragSnippet = songsData.songs[0].snippets[dragIndex];
-
-    songsData.songs[0].snippets.splice(dragIndex, 1);
-    songsData.songs[0].snippets.splice(hoverIndex, 0, dragSnippet);
-    
-    this.setState({songsData});
-
-    // this.setState(
-    //   update(this.state, {
-    //     cards: {
-    //       $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
-    //     },
-    //   }),
-    // )
-  }
-
   render() {
     return <div className="App">
         {/* 
@@ -70,11 +38,8 @@ class App extends Component {
           {songsData.songs.map((song, index) => (
             <Song
               key={index}
-              songKey={index}
-              details={this.state.songsData.songs[index]}
+              songIndex={index}
               context={context}
-              songLoaded={this.songLoaded}
-              moveSnippet={this.moveSnippet}
             />
           ))}
 

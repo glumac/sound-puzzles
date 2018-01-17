@@ -26,11 +26,12 @@ export function assignRandomColorsNoRepeats (array) {
   });
 } 
 
+// check if array of objects in order of their index values
 export function checkIfInOrder(arr) {
   let inOrder = true;
 
   for (let i = 0; i < arr.length - 1; i++) {
-    if (i != arr[i].id) {
+    if (i !== arr[i].id) {
       inOrder = false;
       break;
     }
@@ -64,15 +65,13 @@ export class Buffer {
   loadSound(url, index) {
     let thisBuffer = this;
 
-    console.log(this.setCurrentlyPlayingSnippet);
-
     fetch(url)
       .then(response => response.arrayBuffer())
       .then(arrayBuffer => this.context.decodeAudioData(arrayBuffer))
       .then(audioBuffer => {
         thisBuffer.buffer[index] = audioBuffer;
 
-        this.songLoaded(this.songKey);
+        this.songLoaded();
 
         // updateProgress(thisBuffer.urls.length);
 
@@ -126,7 +125,7 @@ export class SnippetAction{
 
     // console.log(length, stopSnippet);
 
-    this.setCurrentlyPlayingSnippet(id);
+    this.setCurrentlyPlayingSnippet(id, true);
 
     // console.log(this.context.currentTime, this.context.currentTime + length);
 
@@ -139,13 +138,17 @@ export class SnippetAction{
   }
 
   stop(time, decay) {
-    console.log(time, decay, 'stopping');
+    // console.log(time, decay, 'stopping');
 
     this.cancelScheduledValues();
 
     var ct = decay ? time + decay : this.context.currentTime + 1.9;
 
     // console.log(ct);
+    console.log('stopppppppping', time, decay);
+
+    
+    
     
     // this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
     // this.source.stop(ct);
