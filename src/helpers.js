@@ -54,40 +54,32 @@ export function shuffleAssureNotInOriginalOrder (array) {
 
 // Probably helper function here for splitting up audio track into "snippets" with beginning and ending timestamps
 export class Buffer {
-  constructor(context, urls, songLoaded, songKey) {
+  constructor(context, url, songLoaded, songKey) {
     this.context = context;
-    this.urls = urls;
+    this.url = url;
     this.buffer = [];
     this.songLoaded = songLoaded;
     this.songKey = songKey;
   }
 
-  loadSound(url, index) {
+
+  loadSound(url) {
     let thisBuffer = this;
 
     fetch(url)
       .then(response => response.arrayBuffer())
       .then(arrayBuffer => this.context.decodeAudioData(arrayBuffer))
-      .then(audioBuffer => {
-        thisBuffer.buffer[index] = audioBuffer;
+      .then((audioBuffer) => {
+        thisBuffer.buffer[0] = audioBuffer;
 
-        this.songLoaded();
-
-        // updateProgress(thisBuffer.urls.length);
-
-        if (index === thisBuffer.urls.length - 1) {
-          // thisBuffer.loaded();
-          // console.log('loaded', thisBuffer)
-        }
-      }).catch(error => {
+        return this.songLoaded();
+      }).catch((error) => {
         console.log(error);
       })
   }
-
-  getBuffer() {
-    this.urls.forEach((url, index) => {
-      this.loadSound(url, index);
-    })
+  
+  getBuffer() { 
+    this.loadSound(this.url);
   }
 
   getSound(index) {
@@ -142,7 +134,7 @@ export class SnippetAction{
 
     this.cancelScheduledValues();
 
-    var ct = decay ? time + decay : this.context.currentTime + 1.9;
+    // var ct = decay ? time + decay : this.context.currentTime + 1.9;
 
     // console.log(ct);
     console.log('stopppppppping', time, decay);

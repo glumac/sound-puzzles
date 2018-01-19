@@ -48,18 +48,26 @@ ul {
   flex-basis: 1;
 }
 
+.sp-difficulty {
+  text-align: left;
+  padding-bottom: 10px;
+}
+
 .sp-song {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
   padding: 40px;
   background: #0B1424;
   color: #fff;
-
 }
 
 .sp-song.sp-song--in-order {
   background: #ff3046;
   border: 5px solid white;
+}
+
+.sp-song.sp-song--in-order .sp-play-all {
+  background: black;
 }
 
 .sp-snippets-wrap {

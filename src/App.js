@@ -5,10 +5,9 @@ import Song from './components/Song';
 import Header from './components/Header';
 import Footer from "./components/Footer";
 import songsData from './songs-data';
-import update from 'immutability-helper';
+// import update from 'immutability-helper';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-
 
 const context = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -22,16 +21,6 @@ class App extends Component {
   }
   render() {
     return <div className="App">
-        {/* 
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-
-        */}
         <Header />
 
         <div className="sp-songs">
