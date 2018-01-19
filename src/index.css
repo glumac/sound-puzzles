@@ -87,14 +87,6 @@ ul {
   background: rgba(0, 0, 0, .8);
 }
 
-.sp-snippet {
-  /* border-radius: 8px; */
-  /* padding: 20px; */
-  height: 50px;
-  color: #3A69BD;
-  color: #fff;
-}
-
 .sp-song-loading-overlay {
   position: absolute;
   display: flex;
@@ -109,6 +101,8 @@ ul {
   background-color: #ff830e;
   transition: all .25s ease-out;
   cursor: pointer;
+  height: 50px;
+  flex-shrink: 1;
   border: 3px solid rgba(255,255,255,0);
 }
 

@@ -20,8 +20,7 @@ class Song extends React.Component {
     this.state = {
       details: songsData.songs[props.songIndex],
       currentlyPlayingSnippet: null,
-      currentlyPlayingAll: false,
-      position: 0,
+      isCurrentlyPlayingAll: false,
       isLoaded: false,
       isInCorrectOrder: false
     };
@@ -88,10 +87,7 @@ class Song extends React.Component {
   playSnippet = details => {
     // console.log(this.state.currentlyPlayingSnippet);
 
-    if (this.state.currentlyPlayingAll) {
-      // const snippetToStop = playAllSnippets[playAllSnippets.length - 2];
-
-      // if (snippetToStop) snippetToStop.stop(null, .2);
+    if (this.state.isCurrentlyPlayingAll) {
 
       this.clearPlayAll(false, true);
 
@@ -138,7 +134,7 @@ class Song extends React.Component {
   clearPlayAll = (orderCheck, stopSnippet) => {
     this.setState({
       currentlyPlayingSnippet: null,
-      currentlyPlayingAll: false
+      isCurrentlyPlayingAll: false
     });
 
     console.log(playAllSnippets.length);
@@ -167,16 +163,14 @@ class Song extends React.Component {
   playAll = () => {
     this.setState(
       {
-        currentlyPlayingAll: !this.state.currentlyPlayingAll
+        isCurrentlyPlayingAll: !this.state.isCurrentlyPlayingAll
       },
       () => {
         let nextNotetime = this.props.context.currentTime;
 
-        if (!this.state.currentlyPlayingAll) {
+        if (!this.state.isCurrentlyPlayingAll) {
           console.log(
-            playAllSnippets,
-            playAllNextSnippet,
-            playAllSnippets[playAllNextSnippet]
+            playAllSnippets, playAllNextSnippet, playAllSnippets[playAllNextSnippet]
           );
 
           // const snippetToStop = playAllSnippets[actuallyPlayingSnippet];
@@ -229,31 +223,32 @@ class Song extends React.Component {
               // console.log(snippet.id, this.state.details.snippets[playAllNextSnippet - 1].id);
             }
 
-            // if (playAllNextSnippet > 0 && snippet.id -1 === this.state.details.snippets[playAllNextSnippet - 1].id) {
-            //   //   // console.log(snippet, this.state.details.snippets[playAllNextSnippet + 1]);
-            //   console.log("its the same", playAllSnippets, actuallyPlayingSnippet);
+            if (playAllNextSnippet > 0 && snippet.id -1 === this.state.details.snippets[playAllNextSnippet - 1].id) {
+              //   // console.log(snippet, this.state.details.snippets[playAllNextSnippet + 1]);
+              console.log("its the same", playAllSnippets, actuallyPlayingSnippet);
 
-            //   this.setCurrentlyPlayingSnippet(snippet.id, false);
+              this.setCurrentlyPlayingSnippet(snippet.id, false);
 
-            //   // playAllSnippets[playAllNextSnippet - 1].cancelScheduledValues();
-            // } else {
+              // playAllSnippets[playAllNextSnippet - 1].cancelScheduledValues();
+            } else {
 
+              playAllSnippets.push(new SnippetAction(
+                this.props.context,
+                this.buffer.getSound(0),
+                this.setCurrentlyPlayingSnippet
+              ));
+              
+              last(playAllSnippets).play(
+                snippet.startTime,
+                null,
+                null,
+                snippet.id,
+                false
+              );
 
-            if (playAllSnippets.length > 0) last(playAllSnippets).stop();
-
-            playAllSnippets.push(new SnippetAction(
-              this.props.context,
-              this.buffer.getSound(0),
-              this.setCurrentlyPlayingSnippet
-            ));
-            
-            last(playAllSnippets).play(
-              snippet.startTime,
-              null,
-              null,
-              snippet.id,
-              false
-            );
+              // stop the previous snippet
+              if (playAllSnippets.length > 1) nth(playAllSnippets, -2).stop();
+            }
 
             console.log(playAllSnippets, actuallyPlayingSnippet);
 
@@ -265,7 +260,7 @@ class Song extends React.Component {
             playAllNextSnippet += 1;
           }
 
-          playTimeout = window.setTimeout(scheduler, 200.0);
+          playTimeout = window.setTimeout(scheduler, 500.0);
         };
 
         scheduler();
@@ -312,11 +307,11 @@ class Song extends React.Component {
         </div>
         <button
           className={`sp-btn sp-play-all ${
-            this.state.currentlyPlayingAll ? "sp-play-all--playing" : ""
+            this.state.isCurrentlyPlayingAll ? "sp-play-all--playing" : ""
           }`}
           onClick={this.playAll}
         >
-          {this.state.currentlyPlayingAll ? "Playing All" : "Play All"}
+          {this.state.isCurrentlyPlayingAll ? "Playing All" : "Play All"}
         </button>
 
         {!this.state.isLoaded && (

@@ -84,9 +84,7 @@ class Snippet extends React.Component {
     const snippetStyle = {
       // backgroundColor: isDragging ? 'red' : details.color
       backgroundColor: details.color,
-      width: details.length * 50,
-      flexShrink: 0,
-      flexGrow: 0
+      width: details.length * 50
     }
     return connectDragSource(connectDropTarget(
       <li 
