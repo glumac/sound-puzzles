@@ -2,27 +2,28 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background: #3A69BD;
+  background: #3a69bd;
 }
 
 #root {
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  /* justify-content: center; */
   min-height: 100vh;
   box-sizing: border-box;
 }
 
 .wrapper {
-  width: 1200px;
+  /* max-width: 1200px; */
   color: #fff;
-  background: #0B1424;
+  background: #0b1424;
 }
 
 .App {
   text-align: center;
-  display: flex;
+  /* display: flex;
   justify-content: space-between;
   flex-direction: column;
+  align-items: stretch; */
 }
 
 .sp-header {
@@ -44,8 +45,10 @@ ul {
 }
 
 .sp-songs {
-  flex-grow: 1;
-  flex-basis: 1;
+  /* flex-grow: 1;
+  flex-basis: 1; */
+  max-width: 890px;
+  margin: 0 auto;
 }
 
 .sp-difficulty {
@@ -57,7 +60,7 @@ ul {
   position: relative;
   margin-bottom: 35px;
   padding: 40px;
-  background: #0B1424;
+  background: #0b1424;
   color: #fff;
 }
 
@@ -66,8 +69,9 @@ ul {
   border: 5px solid white;
 }
 
-.sp-song.sp-song--in-order .sp-play-all {
-  background: black;
+.sp-song.sp-song--in-order .sp-play-all,
+.sp-song.sp-song--in-order .sp-play-all--playing {
+  background: #0b1424;
 }
 
 .sp-snippets-wrap {
@@ -76,10 +80,10 @@ ul {
 
 .sp-snippets {
   padding: 0;
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: baseline;
-  background: #3A69BD;
+  /* background: #3A69BD; */
 }
 
 .sp-snippets-overlay {
@@ -92,7 +96,7 @@ ul {
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, .8);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .sp-song-loading-overlay {
@@ -101,17 +105,22 @@ ul {
   justify-content: center;
   align-items: center;
   text-align: center;
-  left: 0; right: 0; top: 0; bottom: 0;
-  background: rgba(0,0,0,.8);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .sp-snippet {
   background-color: #ff830e;
-  transition: all .25s ease-out;
+  transition: all 0.25s ease-out; 
   cursor: pointer;
   height: 50px;
+  /* flex-basis: 50px; */
   flex-shrink: 1;
-  border: 3px solid rgba(255,255,255,0);
+  flex-grow: 0;
+  border: 3px solid rgba(255, 255, 255, 0);
 }
 
 /* .sp-snippet:active {
@@ -133,7 +142,7 @@ ul {
 
 .sp-btn {
   background-color: #ff0960;
-  transition: all .25s ease-out;
+  transition: all 0.25s ease-out;
   /* border-radius: 8px; */
   border: none;
   color: #fff;
@@ -151,6 +160,10 @@ ul {
 /* .sp-btn.sp-play-all--playing {
   background-color: #ff5d26;
 } */
+
+.sp-btn.sp-btn--reset {
+  background-color: #0b1424;
+}
 
 .main {
   padding: 40px;
@@ -178,4 +191,15 @@ ul {
   width: 25px;
   display: block;
   margin: 20px auto 0;
+  fill: white;
+}
+
+@media screen and (max-width: 800px) {
+  .sp-song {
+    padding: 40px 10px;
+  }
+
+  .sp-difficulty {
+    margin-left: 10px;
+  }
 }

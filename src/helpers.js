@@ -5,17 +5,42 @@ export function randomFromArray(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-const colors = ["#023fa5", "#7d87b9", "#bec1d4", "#d6bcc0", "#bb7784", "#8e063b", "#4a6fe3", "#8595e1", "#b5bbe3", "#e6afb9", "#e07b91", "#d33f6a", "#11c638", "#8dd593", "#c6dec7", "#ead3c6", "#f0b98d", "#ef9708", "#0fcfc0", "#9cded6", "#d5eae7", "#f3e1eb", "#f6c4e1", "#f79cd4"];
+const colors = [
+  "#023fa5",
+  "#7d87b9",
+  "#bec1d4",
+  "#d6bcc0",
+  "#bb7784",
+  "#8e063b",
+  "#4a6fe3",
+  "#8595e1",
+  "#b5bbe3",
+  "#e6afb9",
+  "#e07b91",
+  "#d33f6a",
+  "#11c638",
+  "#8dd593",
+  "#c6dec7",
+  "#ead3c6",
+  "#f0b98d",
+  "#ef9708",
+  "#0fcfc0",
+  "#9cded6",
+  "#d5eae7",
+  "#f3e1eb",
+  "#f6c4e1",
+  "#f79cd4"
+];
 
 export function getRandomColor() {
   return randomFromArray(colors);
 }
 
-export function assignRandomColorsNoRepeats (array) {
+export function assignRandomColorsNoRepeats(array) {
   let colorArray = colors.slice();
   let random;
 
-  return array.map((item) => {
+  return array.map(item => {
     random = Math.floor(Math.random() * colorArray.length);
     item.color = colorArray[random];
     colorArray.splice(random, 1);
@@ -24,7 +49,7 @@ export function assignRandomColorsNoRepeats (array) {
 
     return item;
   });
-} 
+}
 
 // check if array of objects in order of their index values
 export function checkIfInOrder(arr) {
@@ -40,17 +65,39 @@ export function checkIfInOrder(arr) {
   return inOrder;
 }
 
-export function shuffleAssureNotInOriginalOrder (array) {
+export function shuffleAssureNotInOriginalOrder(array) {
   let shuffledArray = shuffle(array);
 
-  while(checkIfInOrder(shuffledArray)){
-    console.log('was in order');
-    
+  while (checkIfInOrder(shuffledArray)) {
+    console.log("was in order");
+
     shuffledArray = shuffle(array);
   }
 
   return shuffledArray;
 }
+
+export const createSnippets = (numSnippets, snippetLength) => {
+  let snippets = [],
+    snippetIndex;
+
+  for (snippetIndex = 0; snippetIndex < numSnippets; snippetIndex++) {
+    let snippet = {};
+
+    snippet.id = snippetIndex;
+    snippet.startTime = snippetIndex * snippetLength;
+    snippet.endTime = snippetIndex + 1 * snippetLength;
+    snippet.length = snippetLength;
+
+    snippets.push(snippet);
+  }
+
+  snippets = assignRandomColorsNoRepeats(snippets);
+
+  // snippets = shuffleAssureNotInOriginalOrder(snippets);
+
+  return snippets;
+};
 
 // Probably helper function here for splitting up audio track into "snippets" with beginning and ending timestamps
 export class Buffer {
@@ -62,23 +109,23 @@ export class Buffer {
     this.songKey = songKey;
   }
 
-
   loadSound(url) {
     let thisBuffer = this;
 
     fetch(url)
       .then(response => response.arrayBuffer())
       .then(arrayBuffer => this.context.decodeAudioData(arrayBuffer))
-      .then((audioBuffer) => {
+      .then(audioBuffer => {
         thisBuffer.buffer[0] = audioBuffer;
 
         return this.songLoaded();
-      }).catch((error) => {
-        console.log(error);
       })
+      .catch(error => {
+        console.log(error);
+      });
   }
-  
-  getBuffer() { 
+
+  getBuffer() {
     this.loadSound(this.url);
   }
 
@@ -87,7 +134,7 @@ export class Buffer {
   }
 }
 
-export class SnippetAction{
+export class SnippetAction {
   constructor(context, buffer, setCurrentlyPlayingSnippet) {
     this.context = context;
     this.buffer = buffer;
@@ -104,15 +151,15 @@ export class SnippetAction{
   }
 
   play(offset, length, startTime, id, stopSnippet) {
-    const timeToStart = startTime > 0 ? startTime - .005 : 0;
+    const timeToStart = startTime > 0 ? startTime - 0.005 : 0;
 
     // console.log(timeToStart);
-    
+
     const ct = this.context.currentTime + timeToStart + 0.03;
     this.setup();
     this.source.start(this.context.currentTime + timeToStart, offset);
     this.gainNode.gain.exponentialRampToValueAtTime(0.8, ct);
-  
+
     // if (length && stopSnippet) this.source.stop(ct + length);
 
     // console.log(length, stopSnippet);
@@ -123,7 +170,13 @@ export class SnippetAction{
 
     if (!length) return;
 
-    this.gainNode.gain.setTargetAtTime(.00001, this.context.currentTime + length, 0.03);
+    this.source.buffer;
+
+    this.gainNode.gain.setTargetAtTime(
+      0.00001,
+      this.context.currentTime + length,
+      0.03
+    );
     this.source.stop(this.context.currentTime + length + 0.2);
 
     // console.log(offset, length, startTime);
@@ -137,23 +190,24 @@ export class SnippetAction{
     // var ct = decay ? time + decay : this.context.currentTime + 1.9;
 
     // console.log(ct);
-    console.log('stopppppppping', time, decay);
+    console.log("stopppppppping", time, decay);
 
-    
-    
-    
     // this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
     // this.source.stop(ct);
     // console.log(this.context);
 
     this.gainNode.gain.setTargetAtTime(0.001, this.context.currentTime, 0.03);
-    // still need to actually stop it or will hear oh so faintly playing 
+    // still need to actually stop it or will hear oh so faintly playing
     this.source.stop(this.context.currentTime + 0.5);
   }
 
+  setListenerForAudioEnd(setTrackEndedState) {
+    this.source.onended = function(event) {
+      setTrackEndedState();
+    };
+  }
 
   cancelScheduledValues() {
     this.gainNode.gain.cancelScheduledValues(this.context.currentTime);
   }
-
 }
