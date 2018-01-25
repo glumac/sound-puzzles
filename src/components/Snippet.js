@@ -5,7 +5,6 @@ import ItemTypes from "../ItemTypes";
 
 const snippetSource = {
   beginDrag(props) {
-    console.log("SOURCE", props.details.id, props.index);
     return {
       id: props.details.id,
       index: props.index

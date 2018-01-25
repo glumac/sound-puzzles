@@ -86,7 +86,7 @@ export const createSnippets = (numSnippets, snippetLength) => {
 
     snippet.id = snippetIndex;
     snippet.startTime = snippetIndex * snippetLength;
-    snippet.endTime = snippetIndex + 1 * snippetLength;
+    snippet.endTime = (snippetIndex * snippetLength) + snippetLength;
     snippet.length = snippetLength;
 
     snippets.push(snippet);
@@ -94,7 +94,9 @@ export const createSnippets = (numSnippets, snippetLength) => {
 
   snippets = assignRandomColorsNoRepeats(snippets);
 
-  // snippets = shuffleAssureNotInOriginalOrder(snippets);
+  snippets = shuffleAssureNotInOriginalOrder(snippets);
+
+  // console.log(snippets);
 
   return snippets;
 };
@@ -170,8 +172,6 @@ export class SnippetAction {
 
     if (!length) return;
 
-    this.source.buffer;
-
     this.gainNode.gain.setTargetAtTime(
       0.00001,
       this.context.currentTime + length,
@@ -190,7 +190,7 @@ export class SnippetAction {
     // var ct = decay ? time + decay : this.context.currentTime + 1.9;
 
     // console.log(ct);
-    console.log("stopppppppping", time, decay);
+    // console.log("stopppppppping", time, decay);
 
     // this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
     // this.source.stop(ct);

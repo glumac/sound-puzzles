@@ -3,12 +3,16 @@ body {
   padding: 0;
   font-family: sans-serif;
   background: #3a69bd;
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1{
+  font-family: 'Audiowide', cursive;
 }
 
 #root {
   /* display: flex; */
   /* justify-content: center; */
-  min-height: 100vh;
   box-sizing: border-box;
 }
 
@@ -19,15 +23,21 @@ body {
 }
 
 .App {
-  text-align: center;
+  /* text-align: center; */
   /* display: flex;
   justify-content: space-between;
   flex-direction: column;
   align-items: stretch; */
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
+  /* justify-items: center; */
 }
 
 .sp-header {
-  padding-bottom: 30px;
+ padding-bottom: 30px;
+ /* border: 4px solid red; */
 }
 
 a,
@@ -45,16 +55,72 @@ ul {
 }
 
 .sp-songs {
+  /* border: 4px solid green; */
+  padding: 20px 0;
   /* flex-grow: 1;
   flex-basis: 1; */
-  max-width: 890px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
+  width: 800px;
+  justify-self: center;
 }
 
-.sp-difficulty {
+.sp-levels {
+  display: flex;
+  /* flex-direction: column; */
+  /* border: 1px solid red; */
   text-align: left;
   padding-bottom: 10px;
 }
+
+.sp-level {
+  /* border: 1px solid green; */
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+
+}
+
+/* .sp-level:hover {
+  color: inherit;
+} */
+
+.sp-level--link {
+  color: rgb(190, 193, 212);
+}
+
+.sp-level--link--selected {
+  font-weight: bold;
+  color: #fff;
+}
+
+.sp-level--link {
+  display: block;
+  cursor: pointer;
+  padding: 5px;
+  line-height: 1;
+}
+
+.sp-level-songs {
+  display: flex;
+}
+
+.sp-level-song {
+  background: rgb(190, 193, 212);
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: all 0.25s ease-out;
+}
+
+.sp-level-song--solved {
+  background-color: #fff;
+}
+
+
+
+
 
 .sp-song {
   position: relative;
@@ -62,6 +128,12 @@ ul {
   padding: 40px;
   background: #0b1424;
   color: #fff;
+  border: 3px solid rgba(255, 255, 255, 0);
+  box-sizing: border-box;
+}
+
+.sp-music-link:hover {
+  color: #3a69bd;
 }
 
 .sp-song.sp-song--in-order {
@@ -184,6 +256,7 @@ ul {
 
 .sp-footer {
   padding: 30px 0;
+  /* border: 4px solid yellow; */
 }
 
 .sp-github-icon {
@@ -194,9 +267,14 @@ ul {
   fill: white;
 }
 
+
 @media screen and (max-width: 800px) {
   .sp-song {
     padding: 40px 10px;
+  }
+
+  .sp-songs {
+    width: 100%;
   }
 
   .sp-difficulty {

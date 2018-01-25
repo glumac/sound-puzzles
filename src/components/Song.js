@@ -15,9 +15,12 @@ class Song extends React.Component {
   constructor(props) {
     super();
 
+    console.log('LOGGING', props.difficultyLevel);
+    
+
     this.state = {
-      details: songsData.songs[props.songIndex],
-      snippets: createSnippets(songsData.songs[props.songIndex].numSnippets, songsData.songs[props.songIndex].snippetSecondsLength),
+      details: songsData[props.difficultyLevel][props.songIndex],
+      snippets: createSnippets(songsData[props.difficultyLevel][props.songIndex].numSnippets, songsData[props.difficultyLevel][props.songIndex].snippetSecondsLength),
       currentlyPlayingSnippet: null,
       isCurrentlyPlayingAll: false,
       isLoaded: false,
@@ -27,7 +30,7 @@ class Song extends React.Component {
   }
 
   resetSong = () => {
-    const songData = songsData.songs[this.props.songIndex];
+    const songData = songsData[this.props.difficultyLevel][this.props.songIndex];
 
     this.setState({
       details: songData,
@@ -42,22 +45,22 @@ class Song extends React.Component {
   songLoaded = () => {
     this.setState({ isLoaded: true });
 
-    // console.log('loadedddd!!');
+    console.log('loadedddd!!');
   };
 
   moveSnippet = (dragIndex, hoverIndex) => {
-    const songData = { ...this.state.details };
+    let snippets = [...this.state.snippets];
 
+    // console.log(snippets, dragIndex, hoverIndex);
+    
     // const { cards } = this.state.songData.songs[0].snippets;
 
-    // console.log(cards);
+    const dragSnippet = snippets[dragIndex];
 
-    const dragSnippet = songData.snippets[dragIndex];
+    snippets.splice(dragIndex, 1);
+    snippets.splice(hoverIndex, 0, dragSnippet);
 
-    songData.snippets.splice(dragIndex, 1);
-    songData.snippets.splice(hoverIndex, 0, dragSnippet);
-
-    this.setState({ details: songData });
+    this.setState({ snippets: snippets });
 
     // this.setState(
     //   update(this.state, {
@@ -114,7 +117,7 @@ class Song extends React.Component {
 
       return this.stopSnippet(details.id);
     } else if (typeof this.state.currentlyPlayingSnippet === "number") {
-      console.log("currentplay", this.state.currentlyPlayingSnippet);
+      // console.log("currentplay", this.state.currentlyPlayingSnippet);
 
       this.stopSnippet(this.state.currentlyPlayingSnippet);
     }
@@ -159,8 +162,6 @@ class Song extends React.Component {
 
     console.log(playAllSnippets.length);
 
-
-
     // nth(playAllSnippets, -2).stop();
 
     if (stopSnippet) {
@@ -180,6 +181,8 @@ class Song extends React.Component {
       // console.log("ITS IN ORDER!!!");
 
       this.setState({ isInCorrectOrder: true });
+
+      this.props.setSongAsSolved(this.props.difficultyLevel, this.props.songIndex);
     } else {
       this.setState({ isCurrentlyPlayingAll: false });
       last(playAllSnippets).stop();
@@ -257,7 +260,7 @@ class Song extends React.Component {
                 this.state.snippets[playAllNextSnippet - 1].id
             ) {
               //   // console.log(snippet, this.state.snippets[playAllNextSnippet + 1]);
-              console.log( "its the same", playAllSnippets, actuallyPlayingSnippet);
+              // console.log( "its the same", playAllSnippets, actuallyPlayingSnippet);
 
               this.setCurrentlyPlayingSnippet(snippet.id, false);
 
@@ -315,49 +318,45 @@ class Song extends React.Component {
 
 
     return (
-      <div>
-        <div className="sp-difficulty">
-          <span>Difficulty: {details.difficulty}</span>
-        </div>
-        <div
-          className={`sp-song ${
-            this.state.isInCorrectOrder ? "sp-song--in-order" : ""
-          }`}
-        >
-          <h1>
-            <a href={details.songUrl} target="blank">{details.title}</a>
-            {" "}-{" "}
-            <a href={details.artistUrl} target="blank">{details.artist}</a>
-          </h1>
-          <div className="sp-snippets-wrap">
-            <ul className="sp-snippets">
-              {snippets.map((snippet, index) => (
-                <Snippet
-                  key={snippet.id}
-                  index={index}
-                  details={snippets[index]}
-                  playSnippet={this.playSnippet}
-                  isPlaying={this.state.currentlyPlayingSnippet === snippet.id}
-                  moveSnippet={this.moveSnippet}
-                />
-              ))}
-            </ul>
-            {this.state.isInCorrectOrder && (
-              <div className="sp-snippets-overlay">
-                <h3>You got it!</h3>
-              </div>
-            )}
-          </div>
-
-          {button}
-
-          {!this.state.isLoaded && (
-            <div className="sp-song-loading-overlay">
-              <h2>Loading song...</h2>
+      <div
+        className={`sp-song ${
+          this.state.isInCorrectOrder ? "sp-song--in-order" : ""
+        }`}
+      >
+        <h2>
+          <a className="sp-music-link" href={details.songUrl} target="blank">{details.title}</a>
+          {" "}-{" "}
+          <a className="sp-music-link" href={details.artistUrl} target="blank">{details.artist}</a>
+        </h2>
+        <div className="sp-snippets-wrap">
+          <ul className="sp-snippets">
+            {snippets.map((snippet, index) => (
+              <Snippet
+                key={snippet.id}
+                index={index}
+                details={snippets[index]}
+                playSnippet={this.playSnippet}
+                isPlaying={this.state.currentlyPlayingSnippet === snippet.id}
+                moveSnippet={this.moveSnippet}
+              />
+            ))}
+          </ul>
+          {this.state.isInCorrectOrder && (
+            <div className="sp-snippets-overlay">
+              <h3>You got it!</h3>
             </div>
           )}
         </div>
+
+        {button}
+
+        {!this.state.isLoaded && (
+          <div className="sp-song-loading-overlay">
+            <h2>Loading song...</h2>
+          </div>
+        )}
       </div>
+
     );
   }
 }

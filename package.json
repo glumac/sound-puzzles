@@ -2,6 +2,7 @@
   "name": "sound-puzzles",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://glum.ac/sound-puzzles",
   "dependencies": {
     "immutability-helper": "^2.6.2",
     "lodash": "^4.17.4",

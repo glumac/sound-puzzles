@@ -10,32 +10,105 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 const context = new (window.AudioContext || window.webkitAudioContext)();
+const levels = ['Easy', 'Medium', 'Hard'];
 
 class App extends Component {
   constructor() {
     super();
 
-    // this.state = {
-    //   songsData: songsData
-    // }
+    this.state = {
+      songsData: songsData,
+      difficultyLevel: 'easy',
+      currentSongInLevel: 0
+    }
   }
+
+  findFirstIncomplete = () => {
+    const songsAtDifficulty = this.state.songsData[this.state.difficultyLevel];
+    let firstNotSolvedIndex = null;
+
+    for (let i = 0; i, i < songsAtDifficulty.length; i++){
+      if (!songsAtDifficulty[i].isSolved) {
+        firstNotSolvedIndex = i;
+
+        break;
+      }
+    }
+
+    console.log(firstNotSolvedIndex);
+    
+
+    return firstNotSolvedIndex;
+  }
+
+  setSongAsSolved = (difficulty, songIndex) => {
+    let songsData = {...this.state.songsData};
+
+    console.log("here", difficulty, songIndex, songsData[difficulty]);
+
+
+    
+    songsData[difficulty][songIndex].isSolved = true;
+      
+    this.setState({ songsData });
+  }
+
+  setDifficulty = (event, level) => {
+    event.preventDefault();
+
+    console.log('setting');
+
+    this.setState({
+      difficultyLevel: level.toLowerCase()
+    })
+  }
+
   render() {
+    const songIndex = this.findFirstIncomplete();
+    const difficultyLevel = this.state.difficultyLevel;
+
     return <div className="App">
         <Header />
 
         <div className="sp-songs">
-          {songsData.songs.map((song, index) => (
-            <Song
-              key={index}
-              songIndex={index}
-              context={context}
-            />
-          ))}
+          <div className="sp-levels">
+            <span>Difficulty:</span>
+
+            {
+              Object.keys(this.state.songsData).map((level, index) => {
+                
+                return <div key={level} className="sp-level">
+                    <a key={level} className={`sp-level--link ${this.state.difficultyLevel === level ? "sp-level--link--selected" : ""}`} onClick={event => this.setDifficulty(event, level)}>
+                      {level}
+                    </a>
+
+                    <div className="sp-level-songs">
+                      {this.state.songsData[level].map(song => {
+                        return <span key={song.id} className={`sp-level-song ${song.isSolved ? 'sp-level-song--solved' : ''}`}></span>;
+                      })}
+                    </div>
+                  </div>;})}
+          </div>
+
+          {Object.keys(this.state.songsData).map(key => {
+            console.log(this.findFirstIncomplete(key));
+            
+            if (key === difficultyLevel) {
+              // var firstIncomplete = this.findFirstIncomplete(difficultyLevel); 
+
+              return songsData[key].map((song, index) => {
+                console.log(song.title);
+                if (song.id === this.state.currentSongInLevel) {
+                  return <Song key={song.id} songIndex={song.id} context={context} difficultyLevel={song.difficulty} setSongAsSolved={this.setSongAsSolved} />;
+                }
+              });
+            }
+          })}
 
           <p className="sp-instructions">
-            Instructions: Click to play the sound snippets blocks.
-            Drag them into sequence, and "Play All" to see if you have the
-            order right!
+            Instructions: Click to play the sound snippets blocks. Drag them
+            into sequence, and "Play All" to see if you have the order
+            right!
           </p>
         </div>
 
