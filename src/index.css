@@ -8,6 +8,12 @@ body {
 
 h1{
   font-family: 'Audiowide', cursive;
+  line-height: 1;
+  margin: 30px 0 0;
+}
+
+h3 {
+  line-height: 1;
 }
 
 #root {
@@ -23,31 +29,29 @@ h1{
 }
 
 .App {
-  /* text-align: center; */
-  /* display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  align-items: stretch; */
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   grid-template-columns: 1fr;
-  /* justify-items: center; */
 }
 
 .sp-header {
  padding-bottom: 30px;
- /* border: 4px solid red; */
 }
 
 a,
 a:hover,
 a:visited {
-  color: #fff;
+  color: rgb(190, 193, 212);
+  transition: all 0.25s ease-out;
   text-decoration: none;
   line-height: 1;
   /* font-size: 20px; */
   text-align: center;
+}
+
+a:hover {
+  color: #fff;
 }
 
 ul {
@@ -55,11 +59,7 @@ ul {
 }
 
 .sp-songs {
-  /* border: 4px solid green; */
   padding: 20px 0;
-  /* flex-grow: 1;
-  flex-basis: 1; */
-  /* margin: 0 auto; */
   width: 800px;
   justify-self: center;
 }
@@ -70,7 +70,15 @@ ul {
   /* border: 1px solid red; */
   text-align: left;
   padding-bottom: 10px;
+  font-size: 18px;
 }
+
+
+.sp-levels__label {
+  position: relative;
+  top: 2px;
+  margin-right: 5px;
+};
 
 .sp-level {
   /* border: 1px solid green; */
@@ -86,6 +94,7 @@ ul {
 
 .sp-level--link {
   color: rgb(190, 193, 212);
+  margin: 0px 5px 5px 0;
 }
 
 .sp-level--link--selected {
@@ -119,9 +128,6 @@ ul {
 }
 
 
-
-
-
 .sp-song {
   position: relative;
   margin-bottom: 35px;
@@ -130,6 +136,15 @@ ul {
   color: #fff;
   border: 3px solid rgba(255, 255, 255, 0);
   box-sizing: border-box;
+}
+
+.sp-song-inner {
+  opacity: 0;
+  transition: all 1.1s ease-out;
+}
+
+.sp-song-inner--loaded {
+  opacity: 1;
 }
 
 .sp-music-link:hover {
@@ -251,7 +266,7 @@ ul {
   padding-top: 15px;
   margin: 0 auto;
   max-width: 400px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .sp-footer {
@@ -264,7 +279,12 @@ ul {
   width: 25px;
   display: block;
   margin: 20px auto 0;
-  fill: white;
+  fill: rgb(190, 193, 212);
+  transition: all 0.25s ease-out;
+}
+
+.sp-github-icon:hover {
+  fill: #fff;
 }
 
 

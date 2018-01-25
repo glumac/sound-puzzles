@@ -323,38 +323,41 @@ class Song extends React.Component {
           this.state.isInCorrectOrder ? "sp-song--in-order" : ""
         }`}
       >
-        <h2>
-          <a className="sp-music-link" href={details.songUrl} target="blank">{details.title}</a>
-          {" "}-{" "}
-          <a className="sp-music-link" href={details.artistUrl} target="blank">{details.artist}</a>
-        </h2>
-        <div className="sp-snippets-wrap">
-          <ul className="sp-snippets">
-            {snippets.map((snippet, index) => (
-              <Snippet
-                key={snippet.id}
-                index={index}
-                details={snippets[index]}
-                playSnippet={this.playSnippet}
-                isPlaying={this.state.currentlyPlayingSnippet === snippet.id}
-                moveSnippet={this.moveSnippet}
-              />
-            ))}
-          </ul>
-          {this.state.isInCorrectOrder && (
-            <div className="sp-snippets-overlay">
-              <h3>You got it!</h3>
-            </div>
-          )}
+        <div className={`sp-song-inner ${this.state.isLoaded ? "sp-song-inner--loaded" : ""}`}>
+          <h2>
+            <a className="sp-music-link" href={details.songUrl} target="blank">{details.title}</a>
+            {" "}-{" "}
+            <a className="sp-music-link" href={details.artistUrl} target="blank">{details.artist}</a>
+          </h2>
+          <div className="sp-snippets-wrap">
+            <ul className="sp-snippets">
+              {snippets.map((snippet, index) => (
+                <Snippet
+                  key={snippet.id}
+                  index={index}
+                  details={snippets[index]}
+                  playSnippet={this.playSnippet}
+                  isPlaying={this.state.currentlyPlayingSnippet === snippet.id}
+                  moveSnippet={this.moveSnippet}
+                />
+              ))}
+            </ul>
+            {this.state.isInCorrectOrder && (
+              <div className="sp-snippets-overlay">
+                <h3>You got it!</h3>
+              </div>
+            )}
+          </div>
+
+          {button}
+
         </div>
-
-        {button}
-
-        {!this.state.isLoaded && (
+        {/*!this.state.isLoaded && (
           <div className="sp-song-loading-overlay">
             <h2>Loading song...</h2>
           </div>
-        )}
+        )*/}
+     
       </div>
 
     );

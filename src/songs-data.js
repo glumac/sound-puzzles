@@ -10,7 +10,7 @@ const songs = {
       fileName: ["https://glum.ac/sounds/guilty_final_chorus.m4a"],
       difficulty: "easy",
       numSnippets: 4,
-      snippetSecondsLength: 1,
+      snippetSecondsLength: 2,
       isSolved: false
     },
     {

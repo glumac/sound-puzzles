@@ -8,8 +8,11 @@ import songsData from './songs-data';
 // import update from 'immutability-helper';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { capitalizeFirstLetter } from "./helpers.js";
 
-const context = new (window.AudioContext || window.webkitAudioContext)();
+
+
+let context = new (window.AudioContext || window.webkitAudioContext)();
 const levels = ['Easy', 'Medium', 'Hard'];
 
 class App extends Component {
@@ -35,9 +38,8 @@ class App extends Component {
       }
     }
 
-    console.log(firstNotSolvedIndex);
+    // console.log(firstNotSolvedIndex);
     
-
     return firstNotSolvedIndex;
   }
 
@@ -46,8 +48,6 @@ class App extends Component {
 
     console.log("here", difficulty, songIndex, songsData[difficulty]);
 
-
-    
     songsData[difficulty][songIndex].isSolved = true;
       
     this.setState({ songsData });
@@ -56,11 +56,13 @@ class App extends Component {
   setDifficulty = (event, level) => {
     event.preventDefault();
 
-    console.log('setting');
+    console.log(context);
 
-    this.setState({
-      difficultyLevel: level.toLowerCase()
-    })
+    context.close().then(() => {
+      context = new (window.AudioContext || window.webkitAudioContext)();
+
+      this.setState({ difficultyLevel: level.toLowerCase() });
+    });
   }
 
   render() {
@@ -72,20 +74,20 @@ class App extends Component {
 
         <div className="sp-songs">
           <div className="sp-levels">
-            <span>Difficulty:</span>
+            <span className="sp-levels__label">Difficulty:</span>
 
             {
               Object.keys(this.state.songsData).map((level, index) => {
                 
                 return <div key={level} className="sp-level">
                     <a key={level} className={`sp-level--link ${this.state.difficultyLevel === level ? "sp-level--link--selected" : ""}`} onClick={event => this.setDifficulty(event, level)}>
-                      {level}
+                      {capitalizeFirstLetter(level)}
                     </a>
 
                     <div className="sp-level-songs">
-                      {this.state.songsData[level].map(song => {
-                        return <span key={song.id} className={`sp-level-song ${song.isSolved ? 'sp-level-song--solved' : ''}`}></span>;
-                      })}
+                      {/*this.state.songsData[level].map(song => {
+                        return <span key={song.id} className={`sp-level-song ${song.isSolved ? "sp-level-song--solved" : ""}`} />;
+                      })*/}
                     </div>
                   </div>;})}
           </div>
