@@ -10,10 +10,7 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { capitalizeFirstLetter } from "./helpers.js";
 
-
-
 let context = new (window.AudioContext || window.webkitAudioContext)();
-const levels = ['Easy', 'Medium', 'Hard'];
 
 class App extends Component {
   constructor() {
@@ -30,7 +27,7 @@ class App extends Component {
     const songsAtDifficulty = this.state.songsData[this.state.difficultyLevel];
     let firstNotSolvedIndex = null;
 
-    for (let i = 0; i, i < songsAtDifficulty.length; i++){
+    for (let i = 0; i < songsAtDifficulty.length; i++){
       if (!songsAtDifficulty[i].isSolved) {
         firstNotSolvedIndex = i;
 
@@ -93,13 +90,12 @@ class App extends Component {
           </div>
 
           {Object.keys(this.state.songsData).map(key => {
-            console.log(this.findFirstIncomplete(key));
+            // console.log(this.findFirstIncomplete(key));
             
             if (key === difficultyLevel) {
               // var firstIncomplete = this.findFirstIncomplete(difficultyLevel); 
 
               return songsData[key].map((song, index) => {
-                console.log(song.title);
                 if (song.id === this.state.currentSongInLevel) {
                   return <Song key={song.id} songIndex={song.id} context={context} difficultyLevel={song.difficulty} setSongAsSolved={this.setSongAsSolved} />;
                 }

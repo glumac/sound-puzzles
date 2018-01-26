@@ -118,17 +118,19 @@ export class Buffer {
   loadSound(url) {
     let thisBuffer = this;
 
-    fetch(url)
+    window.fetch(url)
       .then(response => response.arrayBuffer())
-      .then(arrayBuffer => this.context.decodeAudioData(arrayBuffer))
-      .then(audioBuffer => {
-        thisBuffer.buffer[0] = audioBuffer;
+      .then((arrayBuffer) => {
+        return this.context.decodeAudioData(arrayBuffer, (audioBuffer) => {
+          console.log('callback');
+          thisBuffer.buffer[0] = audioBuffer;
 
-        return this.songLoaded();
+          return this.songLoaded();
+        });
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch((error, message) => {
+        console.log(error, message);
+      })      
   }
 
   getBuffer() {
@@ -202,7 +204,10 @@ export class SnippetAction {
 
     this.gainNode.gain.setTargetAtTime(0.001, this.context.currentTime, 0.03);
     // still need to actually stop it or will hear oh so faintly playing
-    this.source.stop(this.context.currentTime + 0.5);
+  
+    // if (this.source.context.state === 'running') {
+      this.source.stop(this.context.currentTime + 0.5);
+    // }
   }
 
   setListenerForAudioEnd(setTrackEndedState) {

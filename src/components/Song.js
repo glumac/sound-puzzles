@@ -5,6 +5,7 @@ import { Buffer, SnippetAction, checkIfInOrder, createSnippets } from "../helper
 import last from "lodash/last";
 import nth from "lodash/nth";
 
+
 let playTimeout = "",
   playAllSnippets = [],
   playAllNextSnippet,
@@ -14,9 +15,6 @@ let playTimeout = "",
 class Song extends React.Component {
   constructor(props) {
     super();
-
-    console.log('LOGGING', props.difficultyLevel);
-    
 
     this.state = {
       details: songsData[props.difficultyLevel][props.songIndex],
@@ -112,7 +110,6 @@ class Song extends React.Component {
 
       clearTimeout(playTimeout);
     } else if (this.state.currentlyPlayingSnippet === details.id) {
-      console.log("stoppingasfasdfaasdfasdfadsf");
       window.clearTimeout(stopPlayingTimeout);
 
       return this.stopSnippet(details.id);
@@ -352,11 +349,11 @@ class Song extends React.Component {
           {button}
 
         </div>
-        {/*!this.state.isLoaded && (
+        {!this.state.isLoaded && (
           <div className="sp-song-loading-overlay">
             <h2>Loading song...</h2>
           </div>
-        )*/}
+        )}
      
       </div>
 
