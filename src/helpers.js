@@ -203,11 +203,10 @@ export class SnippetAction {
     // console.log(this.context);
 
     this.gainNode.gain.setTargetAtTime(0.001, this.context.currentTime, 0.03);
-    // still need to actually stop it or will hear oh so faintly playing
-  
-    // if (this.source.context.state === 'running') {
-      this.source.stop(this.context.currentTime + 0.5);
-    // }
+    
+    // still need to actually stop it or will hear oh so faintly playing - EDIT maybe not.
+    // this.source.stop(this.context.currentTime + 0.5);
+    
   }
 
   setListenerForAudioEnd(setTrackEndedState) {
