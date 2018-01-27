@@ -178,11 +178,7 @@ export class SnippetAction {
 
     if (!length) return;
 
-    this.gainNode.gain.setTargetAtTime(
-      0.00001,
-      this.context.currentTime + length,
-      0.03
-    );
+    this.gainNode.gain.setTargetAtTime(0.00001, this.context.currentTime + length, 0.03);
     this.source.stop(this.context.currentTime + length + 0.2);
 
     // console.log(offset, length, startTime);
@@ -200,11 +196,16 @@ export class SnippetAction {
 
     // this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
     // this.source.stop(ct);
-    // console.log(this.context);
+    // console.log(this.context); 
 
     this.gainNode.gain.setTargetAtTime(0.001, this.context.currentTime, 0.03);
     
-    // still need to actually stop it or will hear oh so faintly playing - EDIT maybe not.
+    // still need to actually stop it or will hear oh so faintly playing - disconnecting instead of stopping as Safari error on stop
+    setTimeout(()=>{
+      this.gainNode.disconnect();
+    }, 200);
+
+
     // this.source.stop(this.context.currentTime + 0.5);
     
   }

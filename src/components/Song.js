@@ -201,24 +201,17 @@ class Song extends React.Component {
             playAllSnippets[playAllNextSnippet]
           );
 
-          // const snippetToStop = playAllSnippets[actuallyPlayingSnippet];
-
-          // if (snippetToStop) snippetToStop.stop();
-
           this.clearPlayAll(false, true);
 
           playAllNextSnippet = null;
 
-          console.log("CLEAR THE TIMEOUT");
-
           return clearTimeout(playTimeout);
-          // return this.audioElem.pause();d
+  
         }
 
-        // console.log(this.state.currentlyPlayingSnippet, this.state.currentlyPlayingSnippet > -1);
 
         if (typeof this.state.currentlyPlayingSnippet === "number")
-          this.stopSnippet(this.state.currentlyPlayingSnippet);
+          this.snippetAction.stop();
 
         playAllNextSnippet = 0;
 
@@ -263,32 +256,16 @@ class Song extends React.Component {
 
               // playAllSnippets[playAllNextSnippet - 1].cancelScheduledValues();
             } else {
-              playAllSnippets.push(
-                new SnippetAction(
-                  this.props.context,
-                  this.buffer.getSound(0),
-                  this.setCurrentlyPlayingSnippet
-                )
-              );
+              playAllSnippets.push(new SnippetAction(this.props.context, this.buffer.getSound(0), this.setCurrentlyPlayingSnippet));
 
-              last(playAllSnippets).play(
-                snippet.startTime,
-                null,
-                null,
-                snippet.id,
-                false
-              );
+              last(playAllSnippets).play(snippet.startTime, null, null, snippet.id, false);
 
               // stop the previous snippet
               if (playAllSnippets.length > 1) nth(playAllSnippets, -2).stop();
             }
 
-            console.log(playAllSnippets, actuallyPlayingSnippet);
-
-            // why doesnt prevSnippet work here?
-
-            // console.log('logging');
-
+            // console.log(playAllSnippets, actuallyPlayingSnippet);
+      
             playAllNextSnippet += 1;
           }
 
@@ -354,9 +331,7 @@ class Song extends React.Component {
             <h2>Loading song...</h2>
           </div>
         )}
-     
       </div>
-
     );
   }
 }
