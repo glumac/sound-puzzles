@@ -12,6 +12,24 @@ import { capitalizeFirstLetter } from "./helpers.js";
 
 let context = new (window.AudioContext || window.webkitAudioContext)();
 
+
+// window.addEventListener(
+//   "touchstart",
+//   function() {
+//     // create empty buffer
+//     var buffer = context.createBuffer(1, 1, 22050);
+//     var source = context.createBufferSource();
+//     source.buffer = buffer;
+
+//     // connect to output (your speakers)
+//     source.connect(context.destination);
+
+//     // play the file
+//     source.noteOn(0);
+//   },
+//   false
+// );
+
 class App extends Component {
   constructor() {
     super();
@@ -53,14 +71,28 @@ class App extends Component {
   setDifficulty = (event, level) => {
     event.preventDefault();
 
-    console.log(context);
+    context.close().then(() => {
+      context = new (window.AudioContext || window.webkitAudioContext)();
+
+      this.setState({ difficultyLevel: level });
+    });
+  }
+
+  changeSong = (event, level, songId) => {
+    event.preventDefault();
+
+    console.log(event, level, songId);
 
     context.close().then(() => {
       context = new (window.AudioContext || window.webkitAudioContext)();
 
-      this.setState({ difficultyLevel: level.toLowerCase() });
+      this.setState({ 
+        difficultyLevel: level,
+        currentSongInLevel: songId
+      });
     });
   }
+
 
   render() {
     const songIndex = this.findFirstIncomplete();
@@ -82,9 +114,9 @@ class App extends Component {
                     </a>
 
                     <div className="sp-level-songs">
-                      {/*this.state.songsData[level].map(song => {
-                        return <span key={song.id} className={`sp-level-song ${song.isSolved ? "sp-level-song--solved" : ""}`} />;
-                      })*/}
+                      {this.state.songsData[level].map(song => {
+                        return <span key={song.id} className={`sp-level-song ${song.isSolved ? "sp-level-song--solved" : ""} ${this.state.difficultyLevel === level && this.state.currentSongInLevel == song.id ? "sp-level-song--current" : ""}`} onClick={event => this.changeSong(event, level, song.id)} />;
+                      })}
                     </div>
                   </div>;})}
           </div>
@@ -104,7 +136,7 @@ class App extends Component {
           })}
 
           <p className="sp-instructions">
-            Instructions: Click to play the sound snippets blocks. Drag them
+            Instructions: Click to play the colored sound snippets blocks. Drag them
             into sequence, and "Play All" to see if you have the order
             right!
           </p>

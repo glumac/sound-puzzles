@@ -5,32 +5,7 @@ export function randomFromArray(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-const colors = [
-  "#023fa5",
-  "#7d87b9",
-  "#bec1d4",
-  "#d6bcc0",
-  "#bb7784",
-  "#8e063b",
-  "#4a6fe3",
-  "#8595e1",
-  "#b5bbe3",
-  "#e6afb9",
-  "#e07b91",
-  "#d33f6a",
-  "#11c638",
-  "#8dd593",
-  "#c6dec7",
-  "#ead3c6",
-  "#f0b98d",
-  "#ef9708",
-  "#0fcfc0",
-  "#9cded6",
-  "#d5eae7",
-  "#f3e1eb",
-  "#f6c4e1",
-  "#f79cd4"
-];
+const colors = [ "#023fa5", "#7d87b9", "#bec1d4", "#d6bcc0", "#bb7784", "#8e063b", "#4a6fe3", "#8595e1", "#b5bbe3", "#e6afb9", "#e07b91", "#d33f6a", "#11c638", "#8dd593", "#c6dec7", "#ead3c6", "#f0b98d", "#ef9708", "#0fcfc0", "#9cded6", "#d5eae7", "#f3e1eb", "#f6c4e1", "#f79cd4"];
 
 export function getRandomColor() {
   return randomFromArray(colors);
@@ -40,8 +15,8 @@ export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export function assignRandomColorsNoRepeats(array) {
-  let colorArray = colors.slice();
+export function assignRandomColorsNoRepeats(array, albumColors) {
+  let colorArray = albumColors ? albumColors.slice() : colors.slice();
   let random;
 
   return array.map(item => {
@@ -81,7 +56,7 @@ export function shuffleAssureNotInOriginalOrder(array) {
   return shuffledArray;
 }
 
-export const createSnippets = (numSnippets, snippetLength) => {
+export const createSnippets = (numSnippets, snippetLength, albumColors) => {
   let snippets = [],
     snippetIndex;
 
@@ -90,13 +65,15 @@ export const createSnippets = (numSnippets, snippetLength) => {
 
     snippet.id = snippetIndex;
     snippet.startTime = snippetIndex * snippetLength;
-    snippet.endTime = (snippetIndex * snippetLength) + snippetLength;
+    snippet.endTime = snippetIndex * snippetLength + snippetLength;
     snippet.length = snippetLength;
 
     snippets.push(snippet);
   }
 
-  snippets = assignRandomColorsNoRepeats(snippets);
+  console.log(albumColors);
+  
+  snippets = assignRandomColorsNoRepeats(snippets, albumColors);
 
   snippets = shuffleAssureNotInOriginalOrder(snippets);
 
@@ -105,7 +82,6 @@ export const createSnippets = (numSnippets, snippetLength) => {
   return snippets;
 };
 
-// Probably helper function here for splitting up audio track into "snippets" with beginning and ending timestamps
 export class Buffer {
   constructor(context, url, songLoaded, songKey) {
     this.context = context;
@@ -118,11 +94,11 @@ export class Buffer {
   loadSound(url) {
     let thisBuffer = this;
 
-    window.fetch(url)
+    window
+      .fetch(url)
       .then(response => response.arrayBuffer())
-      .then((arrayBuffer) => {
-        return this.context.decodeAudioData(arrayBuffer, (audioBuffer) => {
-          console.log('callback');
+      .then(arrayBuffer => {
+        return this.context.decodeAudioData(arrayBuffer, audioBuffer => {
           thisBuffer.buffer[0] = audioBuffer;
 
           return this.songLoaded();
@@ -130,7 +106,7 @@ export class Buffer {
       })
       .catch((error, message) => {
         console.log(error, message);
-      })      
+      });
   }
 
   getBuffer() {
@@ -178,7 +154,11 @@ export class SnippetAction {
 
     if (!length) return;
 
-    this.gainNode.gain.setTargetAtTime(0.00001, this.context.currentTime + length, 0.03);
+    this.gainNode.gain.setTargetAtTime(
+      0.00001,
+      this.context.currentTime + length,
+      0.03
+    );
     this.source.stop(this.context.currentTime + length + 0.2);
 
     // console.log(offset, length, startTime);
@@ -196,18 +176,16 @@ export class SnippetAction {
 
     // this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
     // this.source.stop(ct);
-    // console.log(this.context); 
+    // console.log(this.context);
 
     this.gainNode.gain.setTargetAtTime(0.001, this.context.currentTime, 0.03);
-    
+
     // still need to actually stop it or will hear oh so faintly playing - disconnecting instead of stopping as Safari error on stop
-    setTimeout(()=>{
+    setTimeout(() => {
       this.gainNode.disconnect();
     }, 200);
 
-
     // this.source.stop(this.context.currentTime + 0.5);
-    
   }
 
   setListenerForAudioEnd(setTrackEndedState) {

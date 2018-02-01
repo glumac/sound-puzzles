@@ -16,15 +16,7 @@ class Song extends React.Component {
   constructor(props) {
     super();
 
-    this.state = {
-      details: songsData[props.difficultyLevel][props.songIndex],
-      snippets: createSnippets(songsData[props.difficultyLevel][props.songIndex].numSnippets, songsData[props.difficultyLevel][props.songIndex].snippetSecondsLength),
-      currentlyPlayingSnippet: null,
-      isCurrentlyPlayingAll: false,
-      isLoaded: false,
-      isInCorrectOrder: false,
-      isResetAllowed: false
-    };
+    this.state = { details: songsData[props.difficultyLevel][props.songIndex], snippets: createSnippets(songsData[props.difficultyLevel][props.songIndex].numSnippets, songsData[props.difficultyLevel][props.songIndex].snippetSecondsLength, songsData[props.difficultyLevel][props.songIndex].colorPalette), currentlyPlayingSnippet: null, isCurrentlyPlayingAll: false, isLoaded: false, isInCorrectOrder: false, isResetAllowed: false };
   }
 
   resetSong = () => {
@@ -32,7 +24,7 @@ class Song extends React.Component {
 
     this.setState({
       details: songData,
-      snippets: createSnippets(songData.numSnippets, songData.snippetSecondsLength),
+      snippets: createSnippets(songData.numSnippets, songData.snippetSecondsLength, songData.colorPalette),
       currentlyPlayingSnippet: null,
       isCurrentlyPlayingAll: false,
       isInCorrectOrder: false,
@@ -291,18 +283,24 @@ class Song extends React.Component {
     }
 
 
-    return (
-      <div
-        className={`sp-song ${
-          this.state.isInCorrectOrder ? "sp-song--in-order" : ""
-        }`}
-      >
+    return <div className={`sp-song ${this.state.isInCorrectOrder ? "sp-song--in-order" : ""}`}>
         <div className={`sp-song-inner ${this.state.isLoaded ? "sp-song-inner--loaded" : ""}`}>
-          <h2>
-            <a className="sp-music-link" href={details.songUrl} target="blank">{details.title}</a>
-            {" "}-{" "}
-            <a className="sp-music-link" href={details.artistUrl} target="blank">{details.artist}</a>
-          </h2>
+          <div className="sp-music-info">
+            <div className="sp-music-img-wrap">
+              <img className="sp-cover-img" src={details.coverImg} alt="" />
+            </div>
+            <div className="sp-music-txt-wrap">
+              <h2 className="sp-music-txt-wrap__h2">
+                <a className="sp-music-link" href={details.songUrl} target="blank">
+                  {details.title}
+                </a>
+              </h2>
+              <h5 className="sp-music-txt-wrap__h5">
+               <a className="sp-music-link" href={details.artistUrl} target="blank">
+                {details.artist}</a>
+              </h5>
+            </div>
+          </div>
           <div className="sp-snippets-wrap">
             <ul className="sp-snippets">
               {snippets.map((snippet, index) => (
@@ -311,28 +309,24 @@ class Song extends React.Component {
                   index={index}
                   details={snippets[index]}
                   playSnippet={this.playSnippet}
-                  isPlaying={this.state.currentlyPlayingSnippet === snippet.id}
+                  isPlaying={
+                    this.state.currentlyPlayingSnippet === snippet.id
+                  }
                   moveSnippet={this.moveSnippet}
                 />
               ))}
             </ul>
-            {this.state.isInCorrectOrder && (
-              <div className="sp-snippets-overlay">
+            {this.state.isInCorrectOrder && <div className="sp-snippets-overlay">
                 <h3>You got it!</h3>
-              </div>
-            )}
+              </div>}
           </div>
 
           {button}
-
         </div>
-        {!this.state.isLoaded && (
-          <div className="sp-song-loading-overlay">
+        {!this.state.isLoaded && <div className="sp-song-loading-overlay">
             <h2>Loading song...</h2>
-          </div>
-        )}
-      </div>
-    );
+          </div>}
+      </div>;
   }
 }
 
