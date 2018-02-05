@@ -2,8 +2,10 @@ import React from "react";
 
 const Footer = props => {
   return <footer className="sp-footer">
-      <span>
-        Created with ❤ in NYC by <a href="https://glum.ac">Glumac</a>
+      <span className="sp-built-info">
+        Built @ Brooklyn Boulders with chalky fingers by <a href="https://glum.ac">
+          Glumac
+        </a>
       </span>
 
       <a href="https://github.com/glumac/sound-puzzles">

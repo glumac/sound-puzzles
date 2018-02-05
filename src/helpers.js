@@ -71,7 +71,7 @@ export const createSnippets = (numSnippets, snippetLength, albumColors) => {
     snippets.push(snippet);
   }
 
-  console.log(albumColors);
+  // console.log(albumColors);
   
   snippets = assignRandomColorsNoRepeats(snippets, albumColors);
 

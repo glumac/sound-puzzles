@@ -16,7 +16,15 @@ class Song extends React.Component {
   constructor(props) {
     super();
 
-    this.state = { details: songsData[props.difficultyLevel][props.songIndex], snippets: createSnippets(songsData[props.difficultyLevel][props.songIndex].numSnippets, songsData[props.difficultyLevel][props.songIndex].snippetSecondsLength, songsData[props.difficultyLevel][props.songIndex].colorPalette), currentlyPlayingSnippet: null, isCurrentlyPlayingAll: false, isLoaded: false, isInCorrectOrder: false, isResetAllowed: false };
+    this.state = { 
+      details: songsData[props.difficultyLevel][props.songIndex], 
+      snippets: createSnippets(songsData[props.difficultyLevel][props.songIndex].numSnippets, songsData[props.difficultyLevel][props.songIndex].snippetSecondsLength, songsData[props.difficultyLevel][props.songIndex].colorPalette), 
+      currentlyPlayingSnippet: null, 
+      isCurrentlyPlayingAll: false, 
+      isLoaded: false, 
+      isInCorrectOrder: false, 
+      isResetAllowed: false 
+    };
   }
 
   resetSong = () => {
@@ -27,7 +35,7 @@ class Song extends React.Component {
       snippets: createSnippets(songData.numSnippets, songData.snippetSecondsLength, songData.colorPalette),
       currentlyPlayingSnippet: null,
       isCurrentlyPlayingAll: false,
-      isInCorrectOrder: false,
+      isInCorrectOrder: true,
       isResetAllowed: false
     });
   }
@@ -35,7 +43,7 @@ class Song extends React.Component {
   songLoaded = () => {
     this.setState({ isLoaded: true });
 
-    console.log('loadedddd!!');
+    // console.log('loadedddd!!');
   };
 
   moveSnippet = (dragIndex, hoverIndex) => {
@@ -141,6 +149,8 @@ class Song extends React.Component {
       isCurrentlyPlayingAll: false,
       isResetAllowed: true
     });
+
+    this.props.goToNextPuzzle();
   }
 
 
@@ -287,7 +297,9 @@ class Song extends React.Component {
         <div className={`sp-song-inner ${this.state.isLoaded ? "sp-song-inner--loaded" : ""}`}>
           <div className="sp-music-info">
             <div className="sp-music-img-wrap">
-              <img className="sp-cover-img" src={details.coverImg} alt="" />
+              <a href={details.albumUrl} className="sp-album-link" target="blank">
+                <img className="sp-cover-img" src={details.coverImg} alt="" />
+              </a>
             </div>
             <div className="sp-music-txt-wrap">
               <h2 className="sp-music-txt-wrap__h2">
@@ -296,8 +308,9 @@ class Song extends React.Component {
                 </a>
               </h2>
               <h5 className="sp-music-txt-wrap__h5">
-               <a className="sp-music-link" href={details.artistUrl} target="blank">
-                {details.artist}</a>
+                <a className="sp-music-link" href={details.artistUrl} target="blank">
+                  {details.artist}
+                </a>
               </h5>
             </div>
           </div>
@@ -317,11 +330,15 @@ class Song extends React.Component {
               ))}
             </ul>
             {this.state.isInCorrectOrder && <div className="sp-snippets-overlay">
-                <h3>You got it!</h3>
-              </div>}
+              <h3>You got it!</h3>
+            </div>}
           </div>
 
           {button}
+
+          {this.state.isInCorrectOrder && <div className="sp-next-song">
+            <a onClick={this.props.goToNextPuzzle}>Go to next Sound Puzzle</a>
+          </div>}
         </div>
         {!this.state.isLoaded && <div className="sp-song-loading-overlay">
             <h2>Loading song...</h2>
