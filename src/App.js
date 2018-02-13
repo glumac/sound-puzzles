@@ -22,12 +22,15 @@ class App extends Component {
     this.state = {
       songsData: songsData,
       difficultyLevel: "easy",
-      currentSongInLevel: 0
+      currentSongInLevel: 0,
+      areAllSongsSolved: false
     }
   }
 
   componentWillMount() {
     this.checkLocalStorageForSolved();
+
+    if (this.checkIfAllSolved()) this.setState({ areAllSongsSolved: true });
 
     this.goToNextPuzzle(); 
   }
@@ -97,6 +100,9 @@ class App extends Component {
       localStorage.setItem(songsData[difficulty][songIndex].id, "solved");
 
     this.setState({ songsData });
+
+    if (this.checkIfAllSolved())
+      this.setState({ areAllSongsSolved: true });
   };
 
   setDifficulty = (event, level) => {
@@ -130,6 +136,22 @@ class App extends Component {
     });
   };
 
+  checkIfAllSolved = () => {
+    let areAllSolved = true;
+
+    Object.keys(this.state.songsData).map((level, index) => {
+      return this.state.songsData[level].map((song, songIndex) => {
+        if (!song.isSolved) {
+          return areAllSolved = false;
+        } else {
+          return true;
+        }
+      });
+    });
+
+    return areAllSolved;
+  }
+
   changeSong = (event, level, songId) => {
     if (event) event.preventDefault();
 
@@ -143,6 +165,23 @@ class App extends Component {
     });
   };
 
+  resetPuzzles = () => {
+    localStorage.clear();
+
+    let songsData = { ...this.state.songsData };
+
+    Object.keys(songsData).map((level, index) => {
+      return songsData[level].map((song, songIndex) => {
+        return song.isSolved = false;
+      });
+    });
+
+    this.setState({ 
+      songsData: songsData,
+      areAllSolved: false 
+    }, this.goToNextPuzzle);
+  }
+
   render() {
     return (
       <div className="App">
@@ -150,48 +189,53 @@ class App extends Component {
 
         <div className="sp-songs">
           <div>
-            <div className="sp-levels">
-              {/*<span className="sp-levels__label">Difficulty:</span>*/}
+            <div className="sp-levels-wrap">
+              <div className="sp-levels">
+                {/*<span className="sp-levels__label">Difficulty:</span>*/}
 
-              {Object.keys(this.state.songsData).map((level, index) => {
-                return (
-                  <div key={level} className="sp-level">
-                    <a
-                      key={level}
-                      className={`sp-level--link ${
-                        this.state.difficultyLevel === level
-                          ? "sp-level--link--selected"
-                          : ""
-                      }`}
-                      onClick={event => this.setDifficulty(event, level)}
-                    >
-                      {capitalizeFirstLetter(level)}
-                    </a>
+                {Object.keys(this.state.songsData).map((level, index) => {
+                  return (
+                    <div key={level} className="sp-level">
+                      <a
+                        key={level}
+                        className={`sp-level__link ${
+                          this.state.difficultyLevel === level
+                            ? "sp-level__link--selected"
+                            : ""
+                        }`}
+                        onClick={event => this.setDifficulty(event, level)}
+                      >
+                        {capitalizeFirstLetter(level)}
+                      </a>
 
-                    <div className="sp-level-songs">
-                      {this.state.songsData[level].map((song, songIndex) => {
-                        return (
-                          <div className="sp-level-song-wrap" key={song.id}>
-                            <span
-                              className={`sp-level-song ${
-                                song.isSolved ? "sp-level-song--solved" : ""
-                              } ${
-                                this.state.difficultyLevel === level &&
-                                this.state.currentSongInLevel === songIndex
-                                  ? "sp-level-song--current"
-                                  : ""
-                              }`}
-                              onClick={event =>
-                                this.changeSong(event, level, songIndex)
-                              }
-                            />
-                          </div>
-                        );
-                      })}
+                      <div className="sp-level-songs">
+                        {this.state.songsData[level].map((song, songIndex) => {
+                          return (
+                            <div className="sp-level-song-wrap" key={song.id}>
+                              <span
+                                className={`sp-level-song ${
+                                  song.isSolved ? "sp-level-song--solved" : ""
+                                } ${
+                                  this.state.difficultyLevel === level &&
+                                  this.state.currentSongInLevel === songIndex
+                                    ? "sp-level-song--current"
+                                    : ""
+                                }`}
+                                onClick={event =>
+                                  this.changeSong(event, level, songIndex)
+                                }
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+
+
+              </div>
+              {this.state.areAllSongsSolved && <a className="sp-level sp-level--clear" onClick={this.resetPuzzles}>Reset All</a>}
             </div>
 
             {Object.keys(this.state.songsData).map(key => {

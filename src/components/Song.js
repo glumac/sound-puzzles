@@ -36,7 +36,8 @@ class Song extends React.Component {
       currentlyPlayingSnippet: null,
       isCurrentlyPlayingAll: false,
       isInCorrectOrder: true,
-      isResetAllowed: false
+      isResetAllowed: false,
+      isImgLoaded: false
     });
   }
 
@@ -273,6 +274,10 @@ class Song extends React.Component {
     );
   };
 
+  imgLoaded = () => {
+    this.setState({ isImgLoaded: true });
+  }
+
   render() {
     const details = this.state.details;
     const snippets = this.state.snippets
@@ -292,7 +297,7 @@ class Song extends React.Component {
           <div className="sp-music-info">
             <div className="sp-music-img-wrap">
               <a href={details.albumUrl} className="sp-album-link" target="blank">
-                <img className="sp-cover-img" src={details.coverImg} alt=""/>
+                <img className={`sp-cover-img ${this.state.isImgLoaded ? "sp-cover-img--loaded" : ""}`} src={details.coverImg} alt="" onLoad={this.imgLoaded}/>
               </a>
             </div>
             <div className="sp-music-txt-wrap">
