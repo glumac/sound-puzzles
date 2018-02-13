@@ -18,6 +18,10 @@ body {
 }
 
 
+/* * {
+  box-sizing: border-box;
+} */
+
 a {
   cursor: pointer;
 }
@@ -115,7 +119,7 @@ ul {
 }
 
 .sp-level--link--selected {
-  font-weight: bold;
+  /* font-weight: bold; */
   color: #fff;
 }
 
@@ -150,19 +154,34 @@ ul {
 }
 
 .sp-level-song--solved {
-  background-color: #fff;
+  width: 0;
+  height: 0;
+  background: none;
+  border-radius:0;
+  border-style: solid;
+  border-width: 0 5px 8.7px 5px;
+  border-color: transparent transparent rgb(190, 193, 212) transparent;
 }
 
 .sp-level-song--current {
   width: 12px;
   height: 12px;
+  background: #fff;
 }
 
+.sp-level-song--current.sp-level-song--solved {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  background: none;
+  border-width: 0 7.5px 13.0px 7.5px;
+  border-color: transparent transparent #ffffff transparent;
+}
 
 .sp-song {
   position: relative;
   margin-bottom: 35px;
-  padding: 40px;
+  padding: 40px 40px 0;
   background: #181818;
   color: #fff;
   border: 3px solid rgba(255, 255, 255, 0);
@@ -335,12 +354,13 @@ ul {
   /* background-color: #0b1424; */
 }
 
-.sp-next-song {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  margin: 10px 0;
+.sp-next-song-wrap {
+  min-height: 40px;
+  /* border: 1px solid green; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 
 .main {
   padding: 40px;
@@ -352,7 +372,7 @@ ul {
   margin-left: 30px;
 }
 
-.sp-instructions {
+.sp-instructions__p {
   padding-top: 15px;
   margin: 0 auto;
   max-width: 400px;
@@ -377,20 +397,119 @@ ul {
   transition: all 0.25s ease-out;
 }
 
+.sp-footer__dash {
+  display: none;
+}
+
 .sp-github-icon:hover {
   fill: #fff;
 }
 
-@media screen and (max-width: 800px) {
-  .sp-song {
-    padding: 40px 10px;
+@media screen and (max-width: 813px) {
+  .sp-header {
+    padding-bottom: 0;
+  }
+
+  .sp-header__h1 {
+    font-size: 30px;
+    margin: 30px 0 0;
+  }
+
+  .sp-header__h3 {
+    font-size: 16px;
   }
 
   .sp-songs {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  .sp-song {
+    padding: 20px 5px 0;
+    margin-bottom: 0;
+  }
+
+  .sp-music-info {
+    /* justify-content: flex-start; */
+  }
+
+  .sp-music-img-wrap {
+    text-align: left;
+    min-height: auto;
+    width: auto;
+  }
+
+  .sp-music-txt-wrap {
+    width: auto;
+  }
+
+  .sp-cover-img {
+    width: 75px;
+  }
+
+  .sp-next-song-wrap {
+    min-height: 30px;
+  }
+
+  .sp-music-txt-wrap__h2 {
+    font-size: 24px;
+  }
+
+  .sp-music-txt-wrap__h5 {
+    font-size: 16px;
   }
 
   .sp-difficulty {
     margin-left: 10px;
+  }
+
+  .sp-levels {
+    justify-content: space-around;
+    font-size: 15px;
+  }
+  
+  .sp-level {
+    padding-right: 0;
+  }
+
+  .sp-level--link {
+    padding: 0;
+    margin: 0px 3px 0 0
+  }
+
+  .sp-bb {
+    display: none;
+  }
+
+  .sp-instructions {
+    display: flex;
+    align-items: center;
+  }
+
+  .sp-instructions__p {
+    font-size: 11px;
+  }
+
+  .sp-footer__dash { 
+    display: inline; 
+  }
+
+  .sp-footer__dash {
+    font-size: 13px;
+    margin: 0 10px;
+  }
+
+  .sp-github-icon {
+    margin-top: 0;
+    width: 19px;
+    display: inline;
+  }
+
+  .sp-footer {
+    display: flex;
+    padding: 0 0 5px;
+    justify-content: center;
   }
 }

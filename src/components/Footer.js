@@ -3,10 +3,12 @@ import React from "react";
 const Footer = props => {
   return <footer className="sp-footer">
       <span className="sp-built-info">
-        Built @ Brooklyn Boulders with chalky fingers by <a href="https://glum.ac">
+        Built <span className="sp-bb">@ Brooklyn Boulders</span> by <a href="https://glum.ac">
           Glumac
         </a>
       </span>
+
+      <span className="sp-footer__dash">-</span>
 
       <a href="https://github.com/glumac/sound-puzzles">
         <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="sp-github-icon">

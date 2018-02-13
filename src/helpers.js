@@ -75,7 +75,7 @@ export const createSnippets = (numSnippets, snippetLength, albumColors) => {
   
   snippets = assignRandomColorsNoRepeats(snippets, albumColors);
 
-  snippets = shuffleAssureNotInOriginalOrder(snippets);
+  // snippets = shuffleAssureNotInOriginalOrder(snippets);
 
   // console.log(snippets);
 

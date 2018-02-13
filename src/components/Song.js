@@ -197,20 +197,14 @@ class Song extends React.Component {
         let nextNotetime = this.props.context.currentTime;
 
         if (!this.state.isCurrentlyPlayingAll) {
-          console.log(
-            playAllSnippets,
-            playAllNextSnippet,
-            playAllSnippets[playAllNextSnippet]
-          );
+          // console.log(playAllSnippets, playAllNextSnippet, playAllSnippets[playAllNextSnippet]);
 
           this.clearPlayAll(false, true);
 
           playAllNextSnippet = null;
 
           return clearTimeout(playTimeout);
-  
         }
-
 
         if (typeof this.state.currentlyPlayingSnippet === "number")
           this.snippetAction.stop();
@@ -228,7 +222,7 @@ class Song extends React.Component {
           if (playAllNextSnippet >= snippetsLength) {
             // console.log(playAllSnippets, playAllNextSnippet - 1, playAllSnippets[playAllNextSnippet - 1]);
 
-            console.log("endind", playAllSnippets, actuallyPlayingSnippet);
+            // console.log("endind", playAllSnippets, actuallyPlayingSnippet);
 
             return (playTimeout = window.setTimeout(() => {
               this.clearPlayAll(true, false);
@@ -298,7 +292,7 @@ class Song extends React.Component {
           <div className="sp-music-info">
             <div className="sp-music-img-wrap">
               <a href={details.albumUrl} className="sp-album-link" target="blank">
-                <img className="sp-cover-img" src={details.coverImg} alt="" />
+                <img className="sp-cover-img" src={details.coverImg} alt=""/>
               </a>
             </div>
             <div className="sp-music-txt-wrap">
@@ -335,10 +329,12 @@ class Song extends React.Component {
           </div>
 
           {button}
-
-          {this.state.isInCorrectOrder && <div className="sp-next-song">
-            <a onClick={this.props.goToNextPuzzle}>Go to next Sound Puzzle</a>
-          </div>}
+            
+          <div className="sp-next-song-wrap">
+            {this.state.isInCorrectOrder && <div className="sp-next-song">
+              <a onClick={this.props.goToNextPuzzle}>Go to next Sound Puzzle</a>
+            </div>}
+          </div>
         </div>
         {!this.state.isLoaded && <div className="sp-song-loading-overlay">
             <h2>Loading song...</h2>

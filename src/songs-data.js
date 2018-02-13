@@ -1,7 +1,7 @@
 const songs = {
   easy: [
     {   
-      id: 0,
+      id: 100,
       title: "Guilty",
       artist: "Lady Wray",
       album: "Queen Alone",
@@ -10,7 +10,7 @@ const songs = {
       albumUrl: "https://open.spotify.com/album/4iJH23rAmDOdapyI9DFRd8?si=ljXVFFtgTGipXDZjbP-AoQ",
       fileName: ["https://glum.ac/sounds/guilty_final_chorus.m4a"],
       mbid: '7a0813ca-4712-46be-9f4b-929ea0382726',
-      coverImg: 'https://ia601209.us.archive.org/33/items/mbid-8c9fd0d5-e4e9-44f1-9c33-67965f6bc371/mbid-8c9fd0d5-e4e9-44f1-9c33-67965f6bc371-14521749995_thumb500.jpg',
+      coverImg: "http://soundpuzzl.es/images/album-covers/guilty.jpg",
       colorPalette: ['#104947', '#eb7fa7', '#ed6382', '#a16472', '#616272', '#526156', '#573229', '#ab282c', '#e93a45'],
       difficulty: "easy",
       numSnippets: 4,
@@ -18,7 +18,7 @@ const songs = {
       isSolved: false
     },
     {
-      id: 1,
+      id: 101,
       title: "All Apologies",
       artist: "Iron Horse",
       album: "Pickin' On Nirvana",
@@ -26,7 +26,7 @@ const songs = {
       songUrl: "https://open.spotify.com/track/2V20qEDlwFlpTZsvL5TqgS?si=4VPWPY_vSQ2GyniiMCnBeQ",
       albumUrl: "https://open.spotify.com/album/40uCxIjfM2ixXThi8SHwdF?si=SmQaZe-cSS-sVRwZ_In2yg",
       fileName: ["https://glum.ac/sounds/all-apologies-first-verse.m4a"],
-      coverImg: "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/31/a6/a9/31a6a92d-a212-c0a5-916a-ab2e750ca25e/PickinOn_Nirvana_digital_3000x3000px_1.jpg/1200x630bb.jpg",
+      coverImg: "http://soundpuzzl.es/images/album-covers/all-apologies.jpg",
       colorPalette: ["#F2F2F0","#3E3526","#71675A","#BDB4A6","#271C14"],
       difficulty: "easy",
       numSnippets: 4,
@@ -34,7 +34,7 @@ const songs = {
       isSolved: false
     },
     {
-      id: 2,
+      id: 102,
       title: "Bette Davis Eyes",
       artist: "Kim Carnes",
       album: "Mistaken Identity",
@@ -42,7 +42,7 @@ const songs = {
       songUrl: "https://open.spotify.com/track/0odIT9B9BvOCnXfS0e4lB5",
       albumUrl: "https://open.spotify.com/album/3iMwQk5yE0UDDKbLCdcxZA?si=RomGCGraTTiy5y8RFJz-KA",
       fileName: ["https://glum.ac/sounds/bette_davis_eyes_first_verse.m4a"],
-      coverImg: 'https://ia801407.us.archive.org/20/items/mbid-414a33fd-0daa-49c7-9ca9-9c9809f8cad5/mbid-414a33fd-0daa-49c7-9ca9-9c9809f8cad5-8842857004_thumb500.jpg',
+      coverImg: "http://soundpuzzl.es/images/album-covers/bette-davis-eyes.jpg",
       colorPalette: ["#19150b","#655c3c","#e38d6f","#5c2909","#af6f12","#86470d","#a46a59","#728667","#a67633","#dfd2ae"],
       difficulty: "easy",
       numSnippets: 4,
@@ -52,7 +52,7 @@ const songs = {
   ],
   medium: [
     {
-      id: 0,
+      id: 200,
       title: "River",
       artist: "Leon Bridges",
       album: "Coming Home",
@@ -62,13 +62,13 @@ const songs = {
       fileName: ["https://glum.ac/sounds/river_chorus.m4a"],
       difficulty: "medium",
       numSnippets: 7,
-      coverImg: 'https://ia800508.us.archive.org/21/items/mbid-6b8be9a4-44a9-496e-a8e0-1867d8382b52/mbid-6b8be9a4-44a9-496e-a8e0-1867d8382b52-10766581573_thumb500.jpg',
+      coverImg: "http://soundpuzzl.es/images/album-covers/river.jpg",
       colorPalette: ['#8c0726','#a50a2a','#750123','#312528','#be6b73','#d19ea5','#75666e','#5f1327', '#e4cfc4'],
       snippetSecondsLength: 1.75,
       isSolved: false
     },
     {
-      id: 1,
+      id: 201,
       title: "He Called Me Baby",
       artist: "Candi Staton",
       album: "Coming Home",
@@ -78,13 +78,13 @@ const songs = {
       fileName: ["https://glum.ac/sounds/he-called-me-baby-last-verse.m4a"],
       difficulty: "medium",
       numSnippets: 7,
-      coverImg: 'https://ia801509.us.archive.org/6/items/mbid-c762c0f8-7706-407b-8285-51273bbc2ffd/mbid-c762c0f8-7706-407b-8285-51273bbc2ffd-18999253065_thumb500.jpg',
+      coverImg: "http://soundpuzzl.es/images/album-covers/he-called-me-baby.jpg",
       colorPalette: ["#150e84","#160a06","#ad9b72","#ea2a1a","#ac86a1","#dfaba2","#55226f","#965220","#913959","#aa1e38"],
       snippetSecondsLength: 1.5,
       isSolved: false
     },
     {
-      id: 2,
+      id: 202,
       title: "At The River",
       artist: "Groove Armada",
       album: "Vertigo",
@@ -94,7 +94,7 @@ const songs = {
       fileName: ["https://glum.ac/sounds/at-the-river-last-chorus-short.m4a"],
       difficulty: "medium",
       numSnippets: 7,
-      coverImg: 'http://chartarchive.org/artwork/17304-raw.jpg',
+      coverImg: "http://soundpuzzl.es/images/album-covers/at-the-river.jpg",
       colorPalette: ["rgb(56, 69, 90)", "rgb(133, 181, 193)", "rgb(54, 113, 139)", "rgb(44, 112, 116)", "rgb(244, 244, 244)", "rgb(25, 61, 43)", "rgb(42, 53, 26)"],
       snippetSecondsLength: 2.07,
       isSolved: false
@@ -102,7 +102,7 @@ const songs = {
   ],
   hard: [
     {
-      id: 0,
+      id: 300,
       title: "Vitamin C",
       artist: "Can",
       album: "Ege Bamyasi",
@@ -110,7 +110,7 @@ const songs = {
       songUrl: "https://open.spotify.com/track/1tzXnPndBrd2G5GXrOBc1c",
       albumUrl: "https://open.spotify.com/album/3Qa2CdymyGvXkqoqIZykmT?si=h1Ca4WVbTA6BXXmIww_CGg",
       fileName: ["https://glum.ac/sounds/vitamin_c_chorus_shorter.m4a"],
-      coverImg: 'https://ia801708.us.archive.org/34/items/mbid-f2b31e52-fc72-310b-8dfe-0afde8306bc2/mbid-f2b31e52-fc72-310b-8dfe-0afde8306bc2-4395428645_thumb500.jpg',
+      coverImg: "http://soundpuzzl.es/images/album-covers/can.jpg",
       colorPalette: ['#0e0b19', '#77a821', '#52782d','#8dad8e','#b1b119','#f0f4f0','#182f10','#c06326','#e8972c','#354747', '#f3f3f1'],
       difficulty: "hard",
       numSnippets: 12,
@@ -118,7 +118,7 @@ const songs = {
       isSolved: false
     },
     {
-      id: 1,
+      id: 301,
       title: "Suicide",
       artist: "Midnight to Monaco",
       album: "Suicide",
@@ -128,13 +128,13 @@ const songs = {
       fileName: ["https://glum.ac/sounds/suicide-start.m4a"],
       difficulty: "hard",
       numSnippets: 12,
-      coverImg: 'http://www.marathonartists.com/wp-content/uploads/2015/08/FCL156_DIGITAL_1600.jpg',
+      coverImg: "http://soundpuzzl.es/images/album-covers/suicide.jpg",
       colorPalette: ["#3F080F","#002223","#456C6A","#C09650","#5B4E3B","#ff530d","#d9d7d3"],
       snippetSecondsLength: 3.3,
       isSolved: false
     },
         {
-      id: 2,
+      id: 302,
       title: "A Moment Apart",
       artist: "ODESZA",
       album: "A Moment Apart",
@@ -144,7 +144,7 @@ const songs = {
       fileName: ["https://glum.ac/sounds/a-moment-apart-end.m4a"],
       difficulty: "hard",
       numSnippets: 10,
-      coverImg: 'https://ia800802.us.archive.org/16/items/mbid-3fcba414-83ba-4933-9fea-3bfeae435839/mbid-3fcba414-83ba-4933-9fea-3bfeae435839-17742270310_thumb500.jpg',
+      coverImg: "http://soundpuzzl.es/images/album-covers/a-moment-apart.jpg",
       colorPalette: ["rgb(22, 82, 113)", "rgb(14, 69, 86)","rgb(67, 145, 167)","rgb(241, 207, 140)","rgb(139, 63, 34)","rgb(10, 14, 14)","rgb(238, 178, 151)","rgb(38, 75, 6)","rgb(138, 121, 141)","rgb(225, 225, 225)","rgb(246, 221, 146)","rgb(34, 36, 32)"],
       snippetSecondsLength: 2,
       isSolved: false
