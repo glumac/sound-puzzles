@@ -149,13 +149,6 @@ ul {
   cursor: pointer;
 }
 
-.sp-next-song-wrap {
-  min-height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .main {
   padding: 40px;
   display: flex;

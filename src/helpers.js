@@ -1,11 +1,17 @@
-import shuffle from "lodash/shuffle";
+import shuffle from 'lodash/shuffle';
+
+const colors = [ '#023fa5', '#7d87b9', '#bec1d4', '#d6bcc0', '#bb7784', '#8e063b', '#4a6fe3', '#8595e1', '#b5bbe3', '#e6afb9', '#e07b91', '#d33f6a', '#11c638', '#8dd593', '#c6dec7', '#ead3c6', '#f0b98d', '#ef9708', '#0fcfc0', '#9cded6', '#d5eae7', '#f3e1eb', '#f6c4e1', '#f79cd4'];
+const tryAgainMessages = ['Close...', '...but no cigar.', 'Keep trying!', '¡Intentalo otra vez!', 'You can do it!', 'Nope.', 'Soldier on...', 'No, but I believe in you!', 'Stay curious.'];
 
 // To possibly get random songs
 export function randomFromArray(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-const colors = [ "#023fa5", "#7d87b9", "#bec1d4", "#d6bcc0", "#bb7784", "#8e063b", "#4a6fe3", "#8595e1", "#b5bbe3", "#e6afb9", "#e07b91", "#d33f6a", "#11c638", "#8dd593", "#c6dec7", "#ead3c6", "#f0b98d", "#ef9708", "#0fcfc0", "#9cded6", "#d5eae7", "#f3e1eb", "#f6c4e1", "#f79cd4"];
+export function randomTryAgainMessage() {
+  return randomFromArray(tryAgainMessages);
+} 
+
 
 export function getRandomColor() {
   return randomFromArray(colors);
@@ -48,8 +54,6 @@ export function shuffleAssureNotInOriginalOrder(array) {
   let shuffledArray = shuffle(array);
 
   while (checkIfInOrder(shuffledArray)) {
-    console.log("was in order");
-
     shuffledArray = shuffle(array);
   }
 
@@ -84,7 +88,7 @@ export const createSnippets = (numSnippets, snippetLength, albumColors) => {
 
 
 export const injectStyle = style => {
-  const styleElement = document.createElement("style");
+  const styleElement = document.createElement('style');
   let styleSheet = null;
   
   document.head.appendChild(styleElement);
@@ -191,7 +195,7 @@ export class SnippetAction {
     // var ct = decay ? time + decay : this.context.currentTime + 1.9;
 
     // console.log(ct);
-    // console.log("stopppppppping", time, decay);
+    // console.log('stopppppppping', time, decay);
 
     // this.gainNode.gain.exponentialRampToValueAtTime(0.001, ct);
     // this.source.stop(ct);
