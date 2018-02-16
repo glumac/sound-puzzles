@@ -1,0 +1,49 @@
+.sp-footer {
+  padding: 30px 0;
+}
+
+.sp-built-info {
+  font-size: 13px;
+}
+
+.sp-github-icon {
+  color: #fff;
+  width: 25px;
+  display: block;
+  margin: 20px auto 0;
+  fill: rgb(190, 193, 212);
+  transition: all 0.25s ease-out;
+}
+
+.sp-footer__dash {
+  display: none;
+}
+
+.sp-github-icon:hover {
+  fill: #fff;
+}
+
+@media screen and (max-width: 813px) {
+  .sp-footer {
+    display: flex;
+    padding: 0 0 5px;
+    justify-content: center;
+  }
+
+  .sp-footer__dash {
+    display: inline;
+  }
+
+  .sp-footer__dash {
+    font-size: 13px;
+    margin: 0 10px;
+  }
+
+  .sp-github-icon {
+    margin-top: 0;
+    width: 19px;
+    display: inline;
+  }
+
+
+}

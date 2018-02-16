@@ -75,11 +75,23 @@ export const createSnippets = (numSnippets, snippetLength, albumColors) => {
   
   snippets = assignRandomColorsNoRepeats(snippets, albumColors);
 
-  snippets = shuffleAssureNotInOriginalOrder(snippets);
+  // snippets = shuffleAssureNotInOriginalOrder(snippets);
 
   // console.log(snippets);
 
   return snippets;
+};
+
+
+export const injectStyle = style => {
+  const styleElement = document.createElement("style");
+  let styleSheet = null;
+  
+  document.head.appendChild(styleElement);
+
+  styleSheet = styleElement.sheet;
+
+  styleSheet.insertRule(style, styleSheet.cssRules.length);
 };
 
 export class Buffer {
@@ -132,6 +144,10 @@ export class SnippetAction {
     this.source.connect(this.gainNode);
     this.gainNode.connect(this.context.destination);
     this.gainNode.gain.setValueAtTime(0.001, this.context.currentTime);
+    this.analyser = this.context.createAnalyser();
+    this.source.connect(this.analyser);
+    // this.analyser.connect(this.context.destination);
+    this.analyser.fftSize = 2048;
   }
 
   play(offset, length, startTime, id, stopSnippet) {
@@ -168,6 +184,9 @@ export class SnippetAction {
     // console.log(time, decay, 'stopping');
 
     this.cancelScheduledValues();
+    // console.log(this.analyser, 'stopping');
+        
+    this.analyser = null;
 
     // var ct = decay ? time + decay : this.context.currentTime + 1.9;
 

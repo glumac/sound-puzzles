@@ -1,4 +1,5 @@
 import React from "react";
+import "../style/Header.css";
 
 const Header = (props) => {
   return <header className="sp-header">

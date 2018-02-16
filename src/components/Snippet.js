@@ -2,6 +2,7 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import ItemTypes from "../ItemTypes";
+import AudioCanvas from "./AudioCanvas";
 
 const snippetSource = {
   beginDrag(props) {
@@ -86,13 +87,20 @@ class Snippet extends React.Component {
       flexBasis: details.length * 50,
       flexShrink: 1
     }
+
+    let audioCanvas = null;
+
+    if (isPlaying) {
+      audioCanvas = <AudioCanvas snippetAction={this.props.snippetAction} color={details.color}/>
+    }
+
     return connectDragSource(connectDropTarget(
       <li 
         className={`sp-snippet ${isDragging ? "dragging" : ""} ${isPlaying ? "playing" : "not-playing"}`}
         onClick={() => this.props.playSnippet(details)} 
         style={snippetStyle}
       >
-        {/*details.id*/}
+        {audioCanvas}
       </li>
     ));
   }

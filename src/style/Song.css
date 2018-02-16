@@ -1,0 +1,162 @@
+.sp-song {
+  position: relative;
+  margin-bottom: 35px;
+  padding: 40px 40px 0;
+  background: #181818;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.sp-song-inner {
+  opacity: 0;
+  transition: all 1.1s ease-out;
+}
+
+.sp-song-inner--loaded {
+  opacity: 1;
+}
+
+.sp-music-info {
+  display: flex;
+  justify-content: center;
+}
+
+.sp-music-img-wrap,
+.sp-music-txt-wrap {
+  width: 50%;
+  padding: 10px;
+}
+
+.sp-music-img-wrap {
+  text-align: right;
+  min-height: 180px;
+}
+
+.sp-music-txt-wrap {
+  text-align: left;
+}
+
+.sp-music-txt-wrap__h2 {
+  font-size: 36px;
+}
+
+.sp-music-txt-wrap__h5 {
+  font-size: 18px;
+}
+
+.sp-music-txt-wrap__h2,
+.sp-music-txt-wrap__h5 {
+  margin: 0;
+}
+
+.sp-music-link:hover {
+  color: #fff;
+}
+
+.sp-cover-img {
+  max-width: 175px;
+  opacity: 0;
+  transition: all 0.45s ease-out;
+}
+
+.sp-cover-img--loaded {
+  opacity: 1;
+}
+
+.sp-song.sp-song--in-order {
+}
+
+.sp-song.sp-song--in-order .sp-play-all,
+.sp-song.sp-song--in-order .sp-play-all--playing {
+  background: #0b1424;
+}
+
+.sp-snippets-wrap {
+  position: relative;
+}
+
+.sp-snippets {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  /* background: #3A69BD; */
+}
+
+.sp-snippets-overlay {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.sp-song-loading-overlay {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.sp-snippet {
+  background-color: #ff830e;
+  transition: all 0.25s ease-out;
+  cursor: pointer;
+  height: 50px;
+  flex-shrink: 1;
+  flex-grow: 0;
+  position: relative;
+}
+
+.audio-canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+@media screen and (max-width: 813px) {
+  .sp-song {
+    padding: 20px 5px 0;
+    margin-bottom: 0;
+  }
+
+  .sp-music-img-wrap {
+    text-align: left;
+    min-height: auto;
+    width: auto;
+  }
+
+  .sp-music-txt-wrap {
+    width: auto;
+  }
+
+  .sp-cover-img {
+    width: 75px;
+  }
+
+  .sp-next-song-wrap {
+    min-height: 30px;
+  }
+
+  .sp-music-txt-wrap__h2 {
+    font-size: 24px;
+  }
+
+  .sp-music-txt-wrap__h5 {
+    font-size: 16px;
+  }
+}

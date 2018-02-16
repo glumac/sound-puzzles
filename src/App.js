@@ -10,7 +10,8 @@ import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch";
 import { capitalizeFirstLetter } from "./helpers.js";
 import Howler from "howler";
 
-let context = new (window.AudioContext || window.webkitAudioContext)();
+const context = new (window.AudioContext || window.webkitAudioContext)();
+// const analyser = context.createAnalyser();
 
 // Leveraging Howler.js's mobile audio enabling. Plan to switch addl HTML5 audio code to Howler for max x-browser and device compatability
 Howler.mobileAutoEnable = true;
@@ -110,14 +111,14 @@ class App extends Component {
 
     console.log(level);
 
-    context.close().then(() => {
-      context = new (window.AudioContext || window.webkitAudioContext)();
+    // context.close().then(() => {
+      // context = new (window.AudioContext || window.webkitAudioContext)();
 
       this.setState({
         difficultyLevel: level,
         currentSongInLevel: this.findFirstIncomplete(level)
       });
-    });
+    // });
   };
 
   checkLocalStorageForSolved = () => {    
@@ -155,15 +156,15 @@ class App extends Component {
   changeSong = (event, level, songId) => {
     if (event) event.preventDefault();
 
-    context.close().then(() => {
-      context = new (window.AudioContext || window.webkitAudioContext)();
+    // context.close().then(() => {
+      // context = new (window.AudioContext || window.webkitAudioContext)();
 
       this.setState({
         difficultyLevel: level,
         currentSongInLevel: songId
       });
-    });
-  };
+    // });
+  }
 
   resetPuzzles = () => {
     localStorage.clear();
@@ -189,6 +190,7 @@ class App extends Component {
 
         <div className="sp-songs">
           <div>
+            
             <div className="sp-levels-wrap">
               <div className="sp-levels">
                 {/*<span className="sp-levels__label">Difficulty:</span>*/}

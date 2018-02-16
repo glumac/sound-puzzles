@@ -1,10 +1,10 @@
 import React from "react";
+import "../style/Song.css";
 import songsData from "../songs-data";
 import Snippet from "./Snippet";
-import { Buffer, SnippetAction, checkIfInOrder, createSnippets } from "../helpers.js";
+import { Buffer, SnippetAction, checkIfInOrder, createSnippets, injectStyle } from "../helpers.js";
 import last from "lodash/last";
 import nth from "lodash/nth";
-
 
 let playTimeout = "",
   playAllSnippets = [],
@@ -43,16 +43,10 @@ class Song extends React.Component {
 
   songLoaded = () => {
     this.setState({ isLoaded: true });
-
-    // console.log('loadedddd!!');
   };
 
   moveSnippet = (dragIndex, hoverIndex) => {
     let snippets = [...this.state.snippets];
-
-    // console.log(snippets, dragIndex, hoverIndex);
-    
-    // const { cards } = this.state.songData.songs[0].snippets;
 
     const dragSnippet = snippets[dragIndex];
 
@@ -60,17 +54,10 @@ class Song extends React.Component {
     snippets.splice(hoverIndex, 0, dragSnippet);
 
     this.setState({ snippets: snippets });
-
-    // this.setState(
-    //   update(this.state, {
-    //     cards: {
-    //       $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
-    //     },
-    //   }),
-    // )
   };
 
   stopSnippet = () => {
+
     this.snippetAction.stop();
 
     this.setState({ currentlyPlayingSnippet: null });
@@ -86,6 +73,21 @@ class Song extends React.Component {
     });
   };
 
+  setupSuccessColorBackgroundCSSAnimation = () => {
+    const animationArray = ["0% { background: rgb(24,24,24);}"]; 
+    const animationIncrementPercent =  100 / this.state.details.colorPalette.length;
+
+    this.state.details.colorPalette.forEach((color, index) => {
+      animationArray.push(
+        `${Math.floor(animationIncrementPercent * (index + 1))}% { background: ${color};}`
+      );
+    });
+
+    const keyframes = `@keyframes color-me-in {${animationArray.join('')}`;
+
+    injectStyle(keyframes);
+  };
+
   componentDidMount() {
     this.snippetAction = null;
     this.buffer = new Buffer(
@@ -94,10 +96,24 @@ class Song extends React.Component {
       this.songLoaded,
       this.props.songKey
     );
+    // this.analyser = this.props.context.createAnalyser();
     this.snippetActionSound = this.buffer.getBuffer();
+
+    this.setupSuccessColorBackgroundCSSAnimation();
   }
 
+
+  
+
   // componentWillUpdate() { console.log('updatingggggg'); // }
+
+  componentWillUnmount() {
+    if (this.state.isCurrentlyPlayingAll) 
+      this.clearPlayAll(false, true);
+        
+    if (this.snippetAction) 
+      this.stopSnippet();
+  }
 
   playSnippet = details => {
     // console.log(this.state.currentlyPlayingSnippet);
@@ -107,8 +123,6 @@ class Song extends React.Component {
 
       playAllNextSnippet = null;
 
-      console.log("CLEAR THE TIMEOUT");
-
       clearTimeout(playTimeout);
     } else if (this.state.currentlyPlayingSnippet === details.id) {
       window.clearTimeout(stopPlayingTimeout);
@@ -117,7 +131,7 @@ class Song extends React.Component {
     } else if (typeof this.state.currentlyPlayingSnippet === "number") {
       // console.log("currentplay", this.state.currentlyPlayingSnippet);
 
-      this.stopSnippet(this.state.currentlyPlayingSnippet);
+      this.stopSnippet();
     }
 
     this.snippetAction = new SnippetAction(
@@ -133,7 +147,7 @@ class Song extends React.Component {
       details.id,
       true
     );
-
+  
     stopPlayingTimeout = setTimeout(() => {
       // console.log('stopping music');
       if (this.state.currentlyPlayingSnippet !== details.id) return;
@@ -154,18 +168,22 @@ class Song extends React.Component {
     this.props.goToNextPuzzle();
   }
 
-
   clearPlayAll = (orderCheck, stopSnippet) => {
     this.setState({
       currentlyPlayingSnippet: null,
     });
 
-    console.log(playAllSnippets.length);
+    clearTimeout(playTimeout);
+
+    // console.log(playAllSnippets.length);
 
     // nth(playAllSnippets, -2).stop();
 
+    console.log('clearplayallparams', orderCheck, stopSnippet);
+    
+
     if (stopSnippet) {
-      last(playAllSnippets).stop();
+      this.snippetAction.stop();
 
       this.setState({ isCurrentlyPlayingAll: false });
 
@@ -174,7 +192,7 @@ class Song extends React.Component {
       // if (secondFromLast) secondFromLast.stop();
     }
 
-    if (!orderCheck) return last(playAllSnippets).stop();
+    if (!orderCheck) return this.snippetAction.stop();
 
     if (checkIfInOrder(this.state.snippets)) {
       last(playAllSnippets).setListenerForAudioEnd(this.setTrackEndedState);
@@ -182,10 +200,14 @@ class Song extends React.Component {
 
       this.setState({ isInCorrectOrder: true });
 
-      this.props.setSongAsSolved(this.props.difficultyLevel, this.props.songIndex);
+      this.props.setSongAsSolved(this.props.difficultyLevel, this.props.songIndex, true);
     } else {
+      console.log('not in order');
+
+
+      
       this.setState({ isCurrentlyPlayingAll: false });
-      last(playAllSnippets).stop();
+      this.snippetAction.stop();
     }
   };
 
@@ -255,6 +277,8 @@ class Song extends React.Component {
             } else {
               playAllSnippets.push(new SnippetAction(this.props.context, this.buffer.getSound(0), this.setCurrentlyPlayingSnippet));
 
+              this.snippetAction = last(playAllSnippets);
+
               last(playAllSnippets).play(snippet.startTime, null, null, snippet.id, false);
 
               // stop the previous snippet
@@ -282,6 +306,14 @@ class Song extends React.Component {
     const details = this.state.details;
     const snippets = this.state.snippets
     let button = null;
+    let style = {
+      animationName: 'color-me-in',
+      animationTimingFunction: 'ease-in-out',
+      animationDuration: `${details.colorPalette.length * 4}s`,
+      animationIterationCount: 'infinite',
+      animationDirection: 'normal',
+      animationFillMode: 'forwards'
+    };
     
     if (this.state.isResetAllowed) {
       button = <button className="sp-btn sp-btn--reset" onClick={this.resetSong}>Reset</button>;
@@ -291,13 +323,12 @@ class Song extends React.Component {
               </button>;
     }
 
-
-    return <div className={`sp-song ${this.state.isInCorrectOrder ? "sp-song--in-order" : ""}`}>
+    return <div style={this.state.isInCorrectOrder ? style : {}} className={`sp-song ${this.state.isInCorrectOrder ? "sp-song--in-order" : ""}`}>
         <div className={`sp-song-inner ${this.state.isLoaded ? "sp-song-inner--loaded" : ""}`}>
           <div className="sp-music-info">
             <div className="sp-music-img-wrap">
               <a href={details.albumUrl} className="sp-album-link" target="blank">
-                <img className={`sp-cover-img ${this.state.isImgLoaded ? "sp-cover-img--loaded" : ""}`} src={details.coverImg} alt="" onLoad={this.imgLoaded}/>
+                <img className={`sp-cover-img ${this.state.isImgLoaded ? "sp-cover-img--loaded" : ""}`} src={details.coverImg} alt="" onLoad={this.imgLoaded} />
               </a>
             </div>
             <div className="sp-music-txt-wrap">
@@ -325,20 +356,23 @@ class Song extends React.Component {
                     this.state.currentlyPlayingSnippet === snippet.id
                   }
                   moveSnippet={this.moveSnippet}
+                  snippetAction={this.snippetAction}
                 />
               ))}
             </ul>
             {this.state.isInCorrectOrder && <div className="sp-snippets-overlay">
-              <h3>You got it!</h3>
-            </div>}
+                <h3>You got it!</h3>
+              </div>}
           </div>
 
           {button}
-            
+
           <div className="sp-next-song-wrap">
             {this.state.isInCorrectOrder && <div className="sp-next-song">
-              <a onClick={this.props.goToNextPuzzle}>Go to next Sound Puzzle</a>
-            </div>}
+                <a onClick={this.props.goToNextPuzzle}>
+                  Go to next Sound Puzzle
+                </a>
+              </div>}
           </div>
         </div>
         {!this.state.isLoaded && <div className="sp-song-loading-overlay">
