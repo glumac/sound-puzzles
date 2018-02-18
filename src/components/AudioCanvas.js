@@ -33,7 +33,7 @@ import React from "react";
               }
             }, 0) / bufferLength;
 
-          const fill = `rgba(255,255,255,${Math.sqrt(averageVelocity) / 400})`;
+          const fill = `rgba(255,255,255,${Math.sqrt(averageVelocity) / 150})`;
 
           ctx.beginPath();
           ctx.rect(0, 0, WIDTH, HEIGHT);
