@@ -269,7 +269,7 @@ class App extends Component {
           </div>
           <div className="sp-instructions">
             <p className="sp-instructions__p">
-              Instructions: Click to play the colored sound snippets blocks.
+              Instructions: Click to play the colored sound snippets.
               Drag them into sequence, and "Play All" to see if you have the
               order right!
             </p>
