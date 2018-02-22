@@ -316,7 +316,9 @@ class Song extends React.Component {
       animationFillMode: 'forwards'
     };
     
-    if (this.state.isResetAllowed) {
+    if (this.state.isInCorrectOrder) {
+      button = <button className="sp-btn sp-btn--reset" onClick={this.props.goToNextPuzzle}>Next Puzzle</button>;
+    } else if (this.state.isResetAllowed) {
       button = <button className="sp-btn sp-btn--reset" onClick={this.resetSong}>Reset</button>;
     } else {
       button = <button className={`sp-btn sp-play-all ${this.state.isCurrentlyPlayingAll ? "sp-play-all--playing" : ""}`} onClick={this.playAll}>
@@ -369,12 +371,6 @@ class Song extends React.Component {
           {button}
 
           <div className="sp-msg-wrap">
-            {this.state.isInCorrectOrder && <div className="sp-msg">
-                <a onClick={this.props.goToNextPuzzle}>
-                  Go to next Sound Puzzle
-                </a>
-              </div>}
-
             {this.state.tryAgainMessage && <div className="sp-msg">
                 <a onClick={this.props.goToNextPuzzle}>
                   {this.state.tryAgainMessage}
