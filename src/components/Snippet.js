@@ -8,7 +8,8 @@ const snippetSource = {
   beginDrag(props) {
     return {
       id: props.details.id,
-      index: props.index
+      index: props.index,
+      color: props.details.color
     };
   }
 };
