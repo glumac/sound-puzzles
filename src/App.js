@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Footer from "./components/Footer";
 import songsData from './songs-data';
 import { DragDropContext } from "react-dnd";
-import MultiBackend from "react-dnd-multi-backend";
+import MultiBackend, { Preview } from "react-dnd-multi-backend";
 import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch";
 import { capitalizeFirstLetter } from "./helpers.js";
 import Howler from "howler";
@@ -183,6 +183,11 @@ class App extends Component {
     }, this.goToNextPuzzle);
   }
 
+  generatePreview(type, item, style) {
+    Object.assign(style, { backgroundColor: item.color, width: '100px', height: '50px' });
+    return <div style={style}>Snippet</div>;
+  }
+
   render() {
     return (
       <div className="App">
@@ -275,6 +280,8 @@ class App extends Component {
             </p>
           </div>
         </div>
+
+        <Preview generator={this.generatePreview} />
 
         <Footer />
       </div>
