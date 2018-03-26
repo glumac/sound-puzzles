@@ -1,3 +1,3 @@
 export default {
-  SNIPPET: "snippet"
+  SNIPPET: 'snippet'
 };

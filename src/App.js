@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 import Song from './components/Song';
 import Header from './components/Header';
-import Footer from "./components/Footer";
+import Footer from './components/Footer';
 import songsData from './songs-data';
-import { DragDropContext } from "react-dnd";
-import MultiBackend from "react-dnd-multi-backend";
-import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch";
-import { capitalizeFirstLetter } from "./helpers.js";
-import Howler from "howler";
+import { DragDropContext } from 'react-dnd';
+import MultiBackend from 'react-dnd-multi-backend';
+import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
+import { capitalizeFirstLetter } from './helpers.js';
+import Howler from 'howler';
 
 const context = new (window.AudioContext || window.webkitAudioContext)();
 // const analyser = context.createAnalyser();
@@ -22,10 +22,10 @@ class App extends Component {
 
     this.state = {
       songsData: songsData,
-      difficultyLevel: "easy",
+      difficultyLevel: 'easy',
       currentSongInLevel: 0,
       areAllSongsSolved: false
-    }
+    };
   }
 
   componentWillMount() {
@@ -33,7 +33,7 @@ class App extends Component {
 
     if (this.checkIfAllSolved()) this.setState({ areAllSongsSolved: true });
 
-    this.goToNextPuzzle(); 
+    this.goToNextPuzzle();
   }
 
   findFirstIncomplete = (level, startingIndex) => {
@@ -98,12 +98,11 @@ class App extends Component {
     songsData[difficulty][songIndex].isSolved = true;
 
     if (setLocalStorage)
-      localStorage.setItem(songsData[difficulty][songIndex].id, "solved");
+      localStorage.setItem(songsData[difficulty][songIndex].id, 'solved');
 
     this.setState({ songsData });
 
-    if (this.checkIfAllSolved())
-      this.setState({ areAllSongsSolved: true });
+    if (this.checkIfAllSolved()) this.setState({ areAllSongsSolved: true });
   };
 
   setDifficulty = (event, level) => {
@@ -112,23 +111,23 @@ class App extends Component {
     console.log(level);
 
     // context.close().then(() => {
-      // context = new (window.AudioContext || window.webkitAudioContext)();
+    // context = new (window.AudioContext || window.webkitAudioContext)();
 
-      this.setState({
-        difficultyLevel: level,
-        currentSongInLevel: this.findFirstIncomplete(level)
-      });
+    this.setState({
+      difficultyLevel: level,
+      currentSongInLevel: this.findFirstIncomplete(level)
+    });
     // });
   };
 
-  checkLocalStorageForSolved = () => {    
+  checkLocalStorageForSolved = () => {
     let localStorageSong = null;
 
     Object.keys(this.state.songsData).map((level, index) => {
       return this.state.songsData[level].map((song, songIndex) => {
         localStorageSong = localStorage.getItem(song.id);
-      
-        if (localStorageSong === "solved") {
+
+        if (localStorageSong === 'solved') {
           return this.setSongAsSolved(level, songIndex, false);
         } else {
           return false;
@@ -143,7 +142,7 @@ class App extends Component {
     Object.keys(this.state.songsData).map((level, index) => {
       return this.state.songsData[level].map((song, songIndex) => {
         if (!song.isSolved) {
-          return areAllSolved = false;
+          return (areAllSolved = false);
         } else {
           return true;
         }
@@ -151,20 +150,20 @@ class App extends Component {
     });
 
     return areAllSolved;
-  }
+  };
 
   changeSong = (event, level, songId) => {
     if (event) event.preventDefault();
 
     // context.close().then(() => {
-      // context = new (window.AudioContext || window.webkitAudioContext)();
+    // context = new (window.AudioContext || window.webkitAudioContext)();
 
-      this.setState({
-        difficultyLevel: level,
-        currentSongInLevel: songId
-      });
+    this.setState({
+      difficultyLevel: level,
+      currentSongInLevel: songId
+    });
     // });
-  }
+  };
 
   resetPuzzles = () => {
     localStorage.clear();
@@ -173,15 +172,18 @@ class App extends Component {
 
     Object.keys(songsData).map((level, index) => {
       return songsData[level].map((song, songIndex) => {
-        return song.isSolved = false;
+        return (song.isSolved = false);
       });
     });
 
-    this.setState({ 
-      songsData: songsData,
-      areAllSolved: false 
-    }, this.goToNextPuzzle);
-  }
+    this.setState(
+      {
+        songsData: songsData,
+        areAllSolved: false
+      },
+      this.goToNextPuzzle
+    );
+  };
 
   render() {
     return (
@@ -190,7 +192,6 @@ class App extends Component {
 
         <div className="sp-songs">
           <div>
-            
             <div className="sp-levels-wrap">
               <div className="sp-levels">
                 {/*<span className="sp-levels__label">Difficulty:</span>*/}
@@ -202,8 +203,8 @@ class App extends Component {
                         key={level}
                         className={`sp-level__link ${
                           this.state.difficultyLevel === level
-                            ? "sp-level__link--selected"
-                            : ""
+                            ? 'sp-level__link--selected'
+                            : ''
                         }`}
                         onClick={event => this.setDifficulty(event, level)}
                       >
@@ -216,12 +217,12 @@ class App extends Component {
                             <div className="sp-level-song-wrap" key={song.id}>
                               <span
                                 className={`sp-level-song ${
-                                  song.isSolved ? "sp-level-song--solved" : ""
+                                  song.isSolved ? 'sp-level-song--solved' : ''
                                 } ${
                                   this.state.difficultyLevel === level &&
                                   this.state.currentSongInLevel === songIndex
-                                    ? "sp-level-song--current"
-                                    : ""
+                                    ? 'sp-level-song--current'
+                                    : ''
                                 }`}
                                 onClick={event =>
                                   this.changeSong(event, level, songIndex)
@@ -234,10 +235,15 @@ class App extends Component {
                     </div>
                   );
                 })}
-
-
               </div>
-              {this.state.areAllSongsSolved && <a className="sp-level sp-level--clear" onClick={this.resetPuzzles}>Reset All</a>}
+              {this.state.areAllSongsSolved && (
+                <a
+                  className="sp-level sp-level--clear"
+                  onClick={this.resetPuzzles}
+                >
+                  Reset All
+                </a>
+              )}
             </div>
 
             {Object.keys(this.state.songsData).map(key => {
@@ -269,9 +275,8 @@ class App extends Component {
           </div>
           <div className="sp-instructions">
             <p className="sp-instructions__p">
-              Instructions: Click to play the colored sound snippets.
-              Drag them into sequence, and "Play All" to see if you have the
-              order right!
+              Instructions: Click to play the colored sound snippets. Drag them
+              into sequence, and "Play All" to see if you have the order right!
             </p>
           </div>
         </div>

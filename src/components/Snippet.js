@@ -1,8 +1,8 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
-import ItemTypes from "../ItemTypes";
-import AudioCanvas from "./AudioCanvas";
+import ItemTypes from '../ItemTypes';
+import AudioCanvas from './AudioCanvas';
 
 const snippetSource = {
   beginDrag(props) {
@@ -19,7 +19,6 @@ const snippetTarget = {
     const hoverIndex = props.index;
 
     // console.log(dragIndex, hoverIndex, props.moveSnippet);
-    
 
     // Don't replace items with themselves
     if (dragIndex === hoverIndex) {
@@ -63,53 +62,60 @@ const snippetTarget = {
   }
 };
 
-/**
- * Specifies the props to inject into your component.
- */
-// function collect(connect, monitor) {
-//   return {
-//     connectDragSource: connect.dragSource(),
-//     connectDropTarget: connect.dropTarget(),
-//     isDragging: monitor.isDragging()
-//   };
-// }
-
-
 class Snippet extends React.Component {
-  render () {
+  render() {
     // console.log(this.props);
     // const { details, isPlaying } = this.props;
-    const { details, isPlaying, isDragging, connectDragSource, connectDropTarget } = this.props;
+    const {
+      details,
+      isPlaying,
+      isDragging,
+      connectDragSource,
+      connectDropTarget
+    } = this.props;
 
     const snippetStyle = {
       // backgroundColor: isDragging ? 'red' : details.color
       backgroundColor: details.color,
       flexBasis: details.length * 50,
       flexShrink: 1
-    }
+    };
 
     let audioCanvas = null;
 
     if (isPlaying) {
-      audioCanvas = <AudioCanvas snippetAction={this.props.snippetAction} color={details.color}/>
+      audioCanvas = (
+        <AudioCanvas
+          snippetAction={this.props.snippetAction}
+          color={details.color}
+        />
+      );
     }
 
-    return connectDragSource(connectDropTarget(
-      <li 
-        className={`sp-snippet ${isDragging ? "dragging" : ""} ${isPlaying ? "playing" : "not-playing"}`}
-        onClick={() => this.props.playSnippet(details)} 
-        style={snippetStyle}
-      >
-        {audioCanvas}
-      </li>
-    ));
+    return connectDragSource(
+      connectDropTarget(
+        <li
+          className={`sp-snippet ${isDragging ? 'dragging' : ''} ${
+            isPlaying ? 'playing' : 'not-playing'
+          }`}
+          onClick={() => this.props.playSnippet(details)}
+          style={snippetStyle}
+        >
+          {audioCanvas}
+        </li>
+      )
+    );
   }
 }
 
-export default DragSource(ItemTypes.SNIPPET, snippetSource, (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
-}))(
+export default DragSource(
+  ItemTypes.SNIPPET,
+  snippetSource,
+  (connect, monitor) => ({
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  })
+)(
   DropTarget(ItemTypes.SNIPPET, snippetTarget, connect => ({
     connectDropTarget: connect.dropTarget()
   }))(Snippet)

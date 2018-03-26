@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Open Sans', sans-serif;
-  color: #F4F2F4;
+  color: #f4f2f4;
   background: #232526;
   /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #414345, #232526);
@@ -41,7 +41,6 @@ ul {
   width: 800px;
   justify-self: center;
 }
-
 
 /* Nav / Levels - TO DO: move into partial */
 .sp-levels-wrap {
@@ -110,7 +109,7 @@ ul {
   width: 0;
   height: 0;
   background: none;
-  border-radius:0;
+  border-radius: 0;
   border-style: solid;
   border-width: 0 5px 8.7px 5px;
   border-color: transparent transparent rgb(190, 193, 212) transparent;
@@ -127,16 +126,16 @@ ul {
   height: 0;
   border-style: solid;
   background: none;
-  border-width: 0 7.5px 13.0px 7.5px;
+  border-width: 0 7.5px 13px 7.5px;
   border-color: transparent transparent #ffffff transparent;
 }
 
 .sp-btn {
   transition: all 0.25s ease-out;
   display: inline-block;
-  border: 1px solid #F4F2F4;
+  border: 1px solid #f4f2f4;
   border: none;
-  color: #F4F2F4;
+  color: #f4f2f4;
   padding: 8px;
   width: 120px;
   font-size: 16px;
@@ -145,7 +144,7 @@ ul {
   background: #232526;
 }
 
-.sp-btn:hover{
+.sp-btn:hover {
   cursor: pointer;
 }
 
@@ -188,14 +187,14 @@ ul {
     justify-content: space-around;
     font-size: 15px;
   }
-  
+
   .sp-level {
     padding-right: 0;
   }
 
   .sp-level__link {
     padding: 0;
-    margin: 0px 3px 0 0
+    margin: 0px 3px 0 0;
   }
 
   .sp-bb {

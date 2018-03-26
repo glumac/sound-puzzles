@@ -1,7 +1,42 @@
 import shuffle from 'lodash/shuffle';
 
-const colors = [ '#023fa5', '#7d87b9', '#bec1d4', '#d6bcc0', '#bb7784', '#8e063b', '#4a6fe3', '#8595e1', '#b5bbe3', '#e6afb9', '#e07b91', '#d33f6a', '#11c638', '#8dd593', '#c6dec7', '#ead3c6', '#f0b98d', '#ef9708', '#0fcfc0', '#9cded6', '#d5eae7', '#f3e1eb', '#f6c4e1', '#f79cd4'];
-const tryAgainMessages = ['Close...', '...but no cigar.', 'Keep trying!', '¡Intentalo otra vez!', 'You can do it!', 'Nope.', 'Soldier on...', 'No, but I believe in you!', 'Stay curious.'];
+const colors = [
+  '#023fa5',
+  '#7d87b9',
+  '#bec1d4',
+  '#d6bcc0',
+  '#bb7784',
+  '#8e063b',
+  '#4a6fe3',
+  '#8595e1',
+  '#b5bbe3',
+  '#e6afb9',
+  '#e07b91',
+  '#d33f6a',
+  '#11c638',
+  '#8dd593',
+  '#c6dec7',
+  '#ead3c6',
+  '#f0b98d',
+  '#ef9708',
+  '#0fcfc0',
+  '#9cded6',
+  '#d5eae7',
+  '#f3e1eb',
+  '#f6c4e1',
+  '#f79cd4'
+];
+const tryAgainMessages = [
+  'Close...',
+  '...but no cigar.',
+  'Keep trying!',
+  '¡Intentalo otra vez!',
+  'You can do it!',
+  'Nope.',
+  'Soldier on...',
+  'No, but I believe in you!',
+  'Stay curious.'
+];
 
 // To possibly get random songs
 export function randomFromArray(arr) {
@@ -10,8 +45,7 @@ export function randomFromArray(arr) {
 
 export function randomTryAgainMessage() {
   return randomFromArray(tryAgainMessages);
-} 
-
+}
 
 export function getRandomColor() {
   return randomFromArray(colors);
@@ -76,7 +110,7 @@ export const createSnippets = (numSnippets, snippetLength, albumColors) => {
   }
 
   // console.log(albumColors);
-  
+
   snippets = assignRandomColorsNoRepeats(snippets, albumColors);
 
   snippets = shuffleAssureNotInOriginalOrder(snippets);
@@ -86,11 +120,10 @@ export const createSnippets = (numSnippets, snippetLength, albumColors) => {
   return snippets;
 };
 
-
 export const injectStyle = style => {
   const styleElement = document.createElement('style');
   let styleSheet = null;
-  
+
   document.head.appendChild(styleElement);
 
   styleSheet = styleElement.sheet;
@@ -189,7 +222,7 @@ export class SnippetAction {
 
     this.cancelScheduledValues();
     // console.log(this.analyser, 'stopping');
-        
+
     this.analyser = null;
 
     // var ct = decay ? time + decay : this.context.currentTime + 1.9;

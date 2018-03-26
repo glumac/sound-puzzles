@@ -1,12 +1,19 @@
-import React from "react";
-import "../style/Song.css";
-import songsData from "../songs-data";
-import Snippet from "./Snippet";
-import { Buffer, SnippetAction, checkIfInOrder, createSnippets, injectStyle, randomTryAgainMessage } from "../helpers.js";
-import last from "lodash/last";
-import nth from "lodash/nth";
+import React from 'react';
+import '../style/Song.css';
+import songsData from '../songs-data';
+import Snippet from './Snippet';
+import {
+  Buffer,
+  SnippetAction,
+  checkIfInOrder,
+  createSnippets,
+  injectStyle,
+  randomTryAgainMessage
+} from '../helpers.js';
+import last from 'lodash/last';
+import nth from 'lodash/nth';
 
-let playTimeout = "",
+let playTimeout = '',
   playAllSnippets = [],
   playAllNextSnippet,
   actuallyPlayingSnippet,
@@ -16,31 +23,40 @@ class Song extends React.Component {
   constructor(props) {
     super();
 
-    this.state = { 
-      details: songsData[props.difficultyLevel][props.songIndex], 
-      snippets: createSnippets(songsData[props.difficultyLevel][props.songIndex].numSnippets, songsData[props.difficultyLevel][props.songIndex].snippetSecondsLength, songsData[props.difficultyLevel][props.songIndex].colorPalette), 
-      currentlyPlayingSnippet: null, 
-      isCurrentlyPlayingAll: false, 
-      isLoaded: false, 
-      isInCorrectOrder: false, 
+    this.state = {
+      details: songsData[props.difficultyLevel][props.songIndex],
+      snippets: createSnippets(
+        songsData[props.difficultyLevel][props.songIndex].numSnippets,
+        songsData[props.difficultyLevel][props.songIndex].snippetSecondsLength,
+        songsData[props.difficultyLevel][props.songIndex].colorPalette
+      ),
+      currentlyPlayingSnippet: null,
+      isCurrentlyPlayingAll: false,
+      isLoaded: false,
+      isInCorrectOrder: false,
       isResetAllowed: false,
       tryAgainMessage: ''
     };
   }
 
   resetSong = () => {
-    const songData = songsData[this.props.difficultyLevel][this.props.songIndex];
+    const songData =
+      songsData[this.props.difficultyLevel][this.props.songIndex];
 
     this.setState({
       details: songData,
-      snippets: createSnippets(songData.numSnippets, songData.snippetSecondsLength, songData.colorPalette),
+      snippets: createSnippets(
+        songData.numSnippets,
+        songData.snippetSecondsLength,
+        songData.colorPalette
+      ),
       currentlyPlayingSnippet: null,
       isCurrentlyPlayingAll: false,
       isInCorrectOrder: true,
       isResetAllowed: false,
       isImgLoaded: false
     });
-  }
+  };
 
   songLoaded = () => {
     this.setState({ isLoaded: true });
@@ -58,7 +74,6 @@ class Song extends React.Component {
   };
 
   stopSnippet = () => {
-
     this.snippetAction.stop();
 
     this.setState({ currentlyPlayingSnippet: null });
@@ -75,12 +90,15 @@ class Song extends React.Component {
   };
 
   setupSuccessColorBackgroundCSSAnimation = () => {
-    const animationArray = ["0% { background: rgb(24,24,24);}"]; 
-    const animationIncrementPercent =  100 / this.state.details.colorPalette.length;
+    const animationArray = ['0% { background: rgb(24,24,24);}'];
+    const animationIncrementPercent =
+      100 / this.state.details.colorPalette.length;
 
     this.state.details.colorPalette.forEach((color, index) => {
       animationArray.push(
-        `${Math.floor(animationIncrementPercent * (index + 1))}% { background: ${color};}`
+        `${Math.floor(
+          animationIncrementPercent * (index + 1)
+        )}% { background: ${color};}`
       );
     });
 
@@ -106,11 +124,9 @@ class Song extends React.Component {
   // componentWillUpdate() { console.log('updatingggggg'); // }
 
   componentWillUnmount() {
-    if (this.state.isCurrentlyPlayingAll) 
-      this.clearPlayAll(false, true);
-        
-    if (this.snippetAction) 
-      this.stopSnippet();
+    if (this.state.isCurrentlyPlayingAll) this.clearPlayAll(false, true);
+
+    if (this.snippetAction) this.stopSnippet();
   }
 
   playSnippet = details => {
@@ -128,7 +144,7 @@ class Song extends React.Component {
       window.clearTimeout(stopPlayingTimeout);
 
       return this.stopSnippet(details.id);
-    } else if (typeof this.state.currentlyPlayingSnippet === "number") {
+    } else if (typeof this.state.currentlyPlayingSnippet === 'number') {
       // console.log("currentplay", this.state.currentlyPlayingSnippet);
 
       this.stopSnippet();
@@ -147,7 +163,7 @@ class Song extends React.Component {
       details.id,
       true
     );
-  
+
     stopPlayingTimeout = setTimeout(() => {
       // console.log('stopping music');
       if (this.state.currentlyPlayingSnippet !== details.id) return;
@@ -159,17 +175,17 @@ class Song extends React.Component {
   };
 
   setTrackEndedState = () => {
-    this.setState({ 
+    this.setState({
       isCurrentlyPlayingAll: false,
       isResetAllowed: true
     });
 
     this.props.goToNextPuzzle();
-  }
+  };
 
   clearPlayAll = (orderCheck, stopSnippet) => {
     this.setState({
-      currentlyPlayingSnippet: null,
+      currentlyPlayingSnippet: null
     });
 
     clearTimeout(playTimeout);
@@ -196,15 +212,19 @@ class Song extends React.Component {
 
       this.setState({ isInCorrectOrder: true });
 
-      this.props.setSongAsSolved(this.props.difficultyLevel, this.props.songIndex, true);
+      this.props.setSongAsSolved(
+        this.props.difficultyLevel,
+        this.props.songIndex,
+        true
+      );
     } else {
-      this.setState({ 
+      this.setState({
         isCurrentlyPlayingAll: false,
         tryAgainMessage: randomTryAgainMessage()
       });
 
       setTimeout(() => {
-        this.setState({ tryAgainMessage: ''});
+        this.setState({ tryAgainMessage: '' });
       }, 3000);
 
       this.snippetAction.stop();
@@ -230,7 +250,7 @@ class Song extends React.Component {
           return clearTimeout(playTimeout);
         }
 
-        if (typeof this.state.currentlyPlayingSnippet === "number")
+        if (typeof this.state.currentlyPlayingSnippet === 'number')
           this.snippetAction.stop();
 
         playAllNextSnippet = 0;
@@ -266,8 +286,7 @@ class Song extends React.Component {
 
             if (
               playAllNextSnippet > 0 &&
-              snippet.id - 1 ===
-                this.state.snippets[playAllNextSnippet - 1].id
+              snippet.id - 1 === this.state.snippets[playAllNextSnippet - 1].id
             ) {
               //   // console.log(snippet, this.state.snippets[playAllNextSnippet + 1]);
               // console.log( "its the same", playAllSnippets, actuallyPlayingSnippet);
@@ -276,18 +295,30 @@ class Song extends React.Component {
 
               // playAllSnippets[playAllNextSnippet - 1].cancelScheduledValues();
             } else {
-              playAllSnippets.push(new SnippetAction(this.props.context, this.buffer.getSound(0), this.setCurrentlyPlayingSnippet));
+              playAllSnippets.push(
+                new SnippetAction(
+                  this.props.context,
+                  this.buffer.getSound(0),
+                  this.setCurrentlyPlayingSnippet
+                )
+              );
 
               this.snippetAction = last(playAllSnippets);
 
-              last(playAllSnippets).play(snippet.startTime, null, null, snippet.id, false);
+              last(playAllSnippets).play(
+                snippet.startTime,
+                null,
+                null,
+                snippet.id,
+                false
+              );
 
               // stop the previous snippet
               if (playAllSnippets.length > 1) nth(playAllSnippets, -2).stop();
             }
 
             // console.log(playAllSnippets, actuallyPlayingSnippet);
-      
+
             playAllNextSnippet += 1;
           }
 
@@ -301,11 +332,11 @@ class Song extends React.Component {
 
   imgLoaded = () => {
     this.setState({ isImgLoaded: true });
-  }
+  };
 
   render() {
     const details = this.state.details;
-    const snippets = this.state.snippets
+    const snippets = this.state.snippets;
     let button = null;
     let style = {
       animationName: 'color-me-in',
@@ -315,33 +346,80 @@ class Song extends React.Component {
       animationDirection: 'normal',
       animationFillMode: 'forwards'
     };
-    
+
     if (this.state.isInCorrectOrder) {
-      button = <button className="sp-btn sp-btn--reset" onClick={this.props.goToNextPuzzle}>Next Puzzle</button>;
+      button = (
+        <button
+          className="sp-btn sp-btn--reset"
+          onClick={this.props.goToNextPuzzle}
+        >
+          Next Puzzle
+        </button>
+      );
     } else if (this.state.isResetAllowed) {
-      button = <button className="sp-btn sp-btn--reset" onClick={this.resetSong}>Reset</button>;
+      button = (
+        <button className="sp-btn sp-btn--reset" onClick={this.resetSong}>
+          Reset
+        </button>
+      );
     } else {
-      button = <button className={`sp-btn sp-play-all ${this.state.isCurrentlyPlayingAll ? "sp-play-all--playing" : ""}`} onClick={this.playAll}>
-                {this.state.isCurrentlyPlayingAll ? "Playing All" : "Play All"}
-              </button>;
+      button = (
+        <button
+          className={`sp-btn sp-play-all ${
+            this.state.isCurrentlyPlayingAll ? 'sp-play-all--playing' : ''
+          }`}
+          onClick={this.playAll}
+        >
+          {this.state.isCurrentlyPlayingAll ? 'Playing All' : 'Play All'}
+        </button>
+      );
     }
 
-    return <div style={this.state.isInCorrectOrder ? style : {}} className={`sp-song ${this.state.isInCorrectOrder ? "sp-song--in-order" : ""}`}>
-        <div className={`sp-song-inner ${this.state.isLoaded ? "sp-song-inner--loaded" : ""}`}>
+    return (
+      <div
+        style={this.state.isInCorrectOrder ? style : {}}
+        className={`sp-song ${
+          this.state.isInCorrectOrder ? 'sp-song--in-order' : ''
+        }`}
+      >
+        <div
+          className={`sp-song-inner ${
+            this.state.isLoaded ? 'sp-song-inner--loaded' : ''
+          }`}
+        >
           <div className="sp-music-info">
             <div className="sp-music-img-wrap">
-              <a href={details.albumUrl} className="sp-album-link" target="blank">
-                <img className={`sp-cover-img ${this.state.isImgLoaded ? "sp-cover-img--loaded" : ""}`} src={details.coverImg} alt="" onLoad={this.imgLoaded} />
+              <a
+                href={details.albumUrl}
+                className="sp-album-link"
+                target="blank"
+              >
+                <img
+                  className={`sp-cover-img ${
+                    this.state.isImgLoaded ? 'sp-cover-img--loaded' : ''
+                  }`}
+                  src={details.coverImg}
+                  alt=""
+                  onLoad={this.imgLoaded}
+                />
               </a>
             </div>
             <div className="sp-music-txt-wrap">
               <h2 className="sp-music-txt-wrap__h2">
-                <a className="sp-music-link" href={details.songUrl} target="blank">
+                <a
+                  className="sp-music-link"
+                  href={details.songUrl}
+                  target="blank"
+                >
                   {details.title}
                 </a>
               </h2>
               <h5 className="sp-music-txt-wrap__h5">
-                <a className="sp-music-link" href={details.artistUrl} target="blank">
+                <a
+                  className="sp-music-link"
+                  href={details.artistUrl}
+                  target="blank"
+                >
                   {details.artist}
                 </a>
               </h5>
@@ -355,33 +433,38 @@ class Song extends React.Component {
                   index={index}
                   details={snippets[index]}
                   playSnippet={this.playSnippet}
-                  isPlaying={
-                    this.state.currentlyPlayingSnippet === snippet.id
-                  }
+                  isPlaying={this.state.currentlyPlayingSnippet === snippet.id}
                   moveSnippet={this.moveSnippet}
                   snippetAction={this.snippetAction}
                 />
               ))}
             </ul>
-            {this.state.isInCorrectOrder && <div className="sp-snippets-overlay">
+            {this.state.isInCorrectOrder && (
+              <div className="sp-snippets-overlay">
                 <h3>You got it!</h3>
-              </div>}
+              </div>
+            )}
           </div>
 
           {button}
 
           <div className="sp-msg-wrap">
-            {this.state.tryAgainMessage && <div className="sp-msg">
+            {this.state.tryAgainMessage && (
+              <div className="sp-msg">
                 <a onClick={this.props.goToNextPuzzle}>
                   {this.state.tryAgainMessage}
                 </a>
-              </div>}
+              </div>
+            )}
           </div>
         </div>
-        {!this.state.isLoaded && <div className="sp-song-loading-overlay">
+        {!this.state.isLoaded && (
+          <div className="sp-song-loading-overlay">
             <h2>Loading song...</h2>
-          </div>}
-      </div>;
+          </div>
+        )}
+      </div>
+    );
   }
 }
 
