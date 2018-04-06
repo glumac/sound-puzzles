@@ -13,15 +13,15 @@ import {
 import last from 'lodash/last';
 import nth from 'lodash/nth';
 
-let playTimeout = '',
-  playAllSnippets = [],
-  playAllNextSnippet,
-  actuallyPlayingSnippet,
-  stopPlayingTimeout;
-
 class Song extends React.Component {
   constructor(props) {
     super();
+
+    this.playTimeout = '';
+    this.playAllSnippets = [];
+    this.playAllNextSnippet = null;
+    this.actuallyPlayingSnippet = null;
+    this.stopPlayingTimeout = null;
 
     this.state = {
       details: songsData[props.difficultyLevel][props.songIndex],
@@ -82,7 +82,7 @@ class Song extends React.Component {
   setCurrentlyPlayingSnippet = (snippetId, changeActuallyPlayingSnippet) => {
     // console.log('setting current', snippetId);
 
-    if (changeActuallyPlayingSnippet) actuallyPlayingSnippet = snippetId;
+    if (changeActuallyPlayingSnippet) this.actuallyPlayingSnippet = snippetId;
 
     this.setState({ currentlyPlayingSnippet: snippetId }, function() {
       // console.log(this.state.currentlyPlayingSnippet);
@@ -137,11 +137,11 @@ class Song extends React.Component {
     if (this.state.isCurrentlyPlayingAll) {
       this.clearPlayAll(false, true);
 
-      playAllNextSnippet = null;
+      this.playAllNextSnippet = null;
 
-      clearTimeout(playTimeout);
+      clearTimeout(this.playTimeout);
     } else if (this.state.currentlyPlayingSnippet === details.id) {
-      window.clearTimeout(stopPlayingTimeout);
+      window.clearTimeout(this.stopPlayingTimeout);
 
       return this.stopSnippet(details.id);
     } else if (typeof this.state.currentlyPlayingSnippet === 'number') {
@@ -164,7 +164,7 @@ class Song extends React.Component {
       true
     );
 
-    stopPlayingTimeout = setTimeout(() => {
+    this.stopPlayingTimeout = setTimeout(() => {
       // console.log('stopping music');
       if (this.state.currentlyPlayingSnippet !== details.id) return;
 
@@ -188,18 +188,18 @@ class Song extends React.Component {
       currentlyPlayingSnippet: null
     });
 
-    clearTimeout(playTimeout);
+    clearTimeout(this.playTimeout);
 
-    // console.log(playAllSnippets.length);
+    // console.log(this.playAllSnippets.length);
 
-    // nth(playAllSnippets, -2).stop();
+    // nth(this.playAllSnippets, -2).stop();
 
     if (stopSnippet) {
       this.snippetAction.stop();
 
       this.setState({ isCurrentlyPlayingAll: false });
 
-      // const secondFromLast = nth(playAllSnippets, -2);
+      // const secondFromLast = nth(this.playAllSnippets, -2);
 
       // if (secondFromLast) secondFromLast.stop();
     }
@@ -207,7 +207,9 @@ class Song extends React.Component {
     if (!orderCheck) return this.snippetAction.stop();
 
     if (checkIfInOrder(this.state.snippets)) {
-      last(playAllSnippets).setListenerForAudioEnd(this.setTrackEndedState);
+      last(this.playAllSnippets).setListenerForAudioEnd(
+        this.setTrackEndedState
+      );
       // console.log("ITS IN ORDER!!!");
 
       this.setState({ isInCorrectOrder: true });
@@ -241,61 +243,62 @@ class Song extends React.Component {
         let nextNotetime = this.props.context.currentTime;
 
         if (!this.state.isCurrentlyPlayingAll) {
-          // console.log(playAllSnippets, playAllNextSnippet, playAllSnippets[playAllNextSnippet]);
+          // console.log(this.playAllSnippets, this.playAllNextSnippet, this.playAllSnippets[this.playAllNextSnippet]);
 
           this.clearPlayAll(false, true);
 
-          playAllNextSnippet = null;
+          this.playAllNextSnippet = null;
 
-          return clearTimeout(playTimeout);
+          return clearTimeout(this.playTimeout);
         }
 
         if (typeof this.state.currentlyPlayingSnippet === 'number')
           this.snippetAction.stop();
 
-        playAllNextSnippet = 0;
+        this.playAllNextSnippet = 0;
 
         var snippetsLength = this.state.snippets.length;
 
         var scheduler = () => {
-          var snippet = this.state.snippets[playAllNextSnippet];
-          var prevSnippet = this.state.snippets[playAllNextSnippet - 1];
+          var snippet = this.state.snippets[this.playAllNextSnippet];
+          var prevSnippet = this.state.snippets[this.playAllNextSnippet - 1];
 
-          // console.log(playAllSnippets);
+          // console.log(this.playAllSnippets);
 
-          if (playAllNextSnippet >= snippetsLength) {
-            // console.log(playAllSnippets, playAllNextSnippet - 1, playAllSnippets[playAllNextSnippet - 1]);
+          if (this.playAllNextSnippet >= snippetsLength) {
+            // console.log(this.playAllSnippets, this.playAllNextSnippet - 1, this.playAllSnippets[this.playAllNextSnippet - 1]);
 
-            // console.log("endind", playAllSnippets, actuallyPlayingSnippet);
+            // console.log("endind", this.playAllSnippets, this.actuallyPlayingSnippet);
 
-            return (playTimeout = window.setTimeout(() => {
+            return (this.playTimeout = window.setTimeout(() => {
               this.clearPlayAll(true, false);
             }, prevSnippet.length * 1000));
 
-            // return playTimeout = window.setTimeout(() => {this.clearPlayAll(true, playAllSnippets[playAllNextSnippet - 1])}, prevSnippet.length * 1000);
+            // return this.playTimeout = window.setTimeout(() => {this.clearPlayAll(true, this.playAllSnippets[this.playAllNextSnippet - 1])}, prevSnippet.length * 1000);
           }
 
           while (nextNotetime < this.props.context.currentTime + 0.1) {
             nextNotetime += snippet.length;
 
-            // console.log(snippet.id + 1, this.state.snippets[playAllNextSnippet + 1].id);
+            // console.log(snippet.id + 1, this.state.snippets[this.playAllNextSnippet + 1].id);
 
-            if ((playAllNextSnippet > 0, playAllSnippets)) {
-              // console.log(snippet.id, this.state.snippets[playAllNextSnippet - 1].id);
+            if ((this.playAllNextSnippet > 0, this.playAllSnippets)) {
+              // console.log(snippet.id, this.state.snippets[this.playAllNextSnippet - 1].id);
             }
 
             if (
-              playAllNextSnippet > 0 &&
-              snippet.id - 1 === this.state.snippets[playAllNextSnippet - 1].id
+              this.playAllNextSnippet > 0 &&
+              snippet.id - 1 ===
+                this.state.snippets[this.playAllNextSnippet - 1].id
             ) {
-              //   // console.log(snippet, this.state.snippets[playAllNextSnippet + 1]);
-              // console.log( "its the same", playAllSnippets, actuallyPlayingSnippet);
+              //   // console.log(snippet, this.state.snippets[this.playAllNextSnippet + 1]);
+              // console.log( "its the same", this.playAllSnippets, this.actuallyPlayingSnippet);
 
               this.setCurrentlyPlayingSnippet(snippet.id, false);
 
-              // playAllSnippets[playAllNextSnippet - 1].cancelScheduledValues();
+              // this.playAllSnippets[this.playAllNextSnippet - 1].cancelScheduledValues();
             } else {
-              playAllSnippets.push(
+              this.playAllSnippets.push(
                 new SnippetAction(
                   this.props.context,
                   this.buffer.getSound(0),
@@ -303,9 +306,9 @@ class Song extends React.Component {
                 )
               );
 
-              this.snippetAction = last(playAllSnippets);
+              this.snippetAction = last(this.playAllSnippets);
 
-              last(playAllSnippets).play(
+              last(this.playAllSnippets).play(
                 snippet.startTime,
                 null,
                 null,
@@ -314,15 +317,16 @@ class Song extends React.Component {
               );
 
               // stop the previous snippet
-              if (playAllSnippets.length > 1) nth(playAllSnippets, -2).stop();
+              if (this.playAllSnippets.length > 1)
+                nth(this.playAllSnippets, -2).stop();
             }
 
-            // console.log(playAllSnippets, actuallyPlayingSnippet);
+            // console.log(this.playAllSnippets, this.actuallyPlayingSnippet);
 
-            playAllNextSnippet += 1;
+            this.playAllNextSnippet += 1;
           }
 
-          playTimeout = window.setTimeout(scheduler, 500.0);
+          this.playTimeout = window.setTimeout(scheduler, 500.0);
         };
 
         scheduler();
